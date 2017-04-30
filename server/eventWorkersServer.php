@@ -18,4 +18,4 @@ require_once WEBPATH . '/vendor/autoload.php';
 //载入swoole frameworkZ框架配置
 require_once WEBPATH . '/vendor/matyhtf/swoole_framework/libs/lib_config.php';
 //执行脚本
-Swoole::$php->event->runWorker(10);
+Swoole::$php->event->runWorker(2);

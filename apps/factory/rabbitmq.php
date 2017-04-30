@@ -30,5 +30,5 @@ if (empty($config['debug'])){
     $config['debug'] = true;
 }
 
-$rabbitmq = new App\RabbitMQ($config);
+$rabbitmq = new App\Component\RabbitMQ($config);
 return $rabbitmq;
