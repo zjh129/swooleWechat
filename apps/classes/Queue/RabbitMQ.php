@@ -42,6 +42,17 @@ class RabbitMQ implements \Swoole\IFace\Queue
         if (!empty($config['key'])) {
             $this->queueName = $config['key'];
         }
+        //设置rabbitmq配置值
+        global $php;
+        $rabbitmqConfig = $php->config['rabbitmq'][$php->factory_key];
+        $this->host = $rabbitmqConfig['host'];
+        $this->port = $rabbitmqConfig['port'];
+        $this->user = $rabbitmqConfig['user'];
+        $this->pass = $rabbitmqConfig['pass'];
+        $this->vhost = $rabbitmqConfig['vhost'];
+
+        //创建连接
+        $this->connect();
     }
 
     /**
