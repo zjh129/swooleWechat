@@ -30,5 +30,5 @@ if (empty($config['debug'])){
     $config['debug'] = true;
 }
 
-$rabbitmq = new Swoole\Component\RabbitMQ($config);
+$rabbitmq = new App\RabbitMQ($config);
 return $rabbitmq;

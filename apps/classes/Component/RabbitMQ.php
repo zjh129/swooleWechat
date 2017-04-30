@@ -1,6 +1,6 @@
 <?php
-namespace Swoole\Component;
-use Swoole;
+namespace App\Component;
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
