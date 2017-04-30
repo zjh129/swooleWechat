@@ -1,6 +1,8 @@
 <?php
 namespace Swoole\Component;
 use Swoole;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
 /**
  * Class RabbitMQ
@@ -8,6 +10,15 @@ use Swoole;
  */
 class RabbitMQ
 {
+    //配置项
+    private $host;
+    private $port;
+    private $user;
+    private $pass;
+    private $vhost;
+    protected $exchangeName = 'swoole';
+    protected $queueName = 'swoole:queue';
+
     const READ_LINE_NUMBER = 0;
     const READ_LENGTH = 1;
     const READ_DATA = 2;
@@ -26,89 +37,100 @@ class RabbitMQ
 
     public static $prefix = "autoinc_key:";
 
-    /**
-     * 获取自增ID
-     * @param $appKey
-     * @param int $init_id
-     * @return bool|int
-     */
-    function getIncreaseId($appKey, $init_id = 1)
-    {
-        if (empty($appKey))
-        {
-            return false;
-        }
-        $main_key = self::$prefix . $appKey;
-        //已存在 就加1
-        if ($this->_redis->exists($main_key))
-        {
-            $inc = $this->_redis->incr($main_key);
-            if (empty($inc))
-            {
-                \Swoole::$php->log->put("redis::incr() failed. Error: ".$this->_redis->getLastError());
-                return false;
-            }
-            return $inc;
-        }
-        //上面的if条件返回false,可能是有错误，或者key不存在，这里要判断下
-        else if($this->_redis->getLastError())
-        {
-            return false;
-        }
-        //这才是说明key不存在，需要初始化
-        else
-        {
-            $init = $this->_redis->set($main_key, $init_id);
-            if ($init == false)
-            {
-                \Swoole::$php->log->put("redis::set() failed. Error: ".$this->_redis->getLastError());
-                return false;
-            }
-            else
-            {
-                return $init_id;
-            }
-        }
-    }
-
     function __construct($config)
     {
         $this->config = $config;
+
+        //设置rabbitmq配置值
+        $this->host = $this->config['host'];
+        $this->port = $this->config['port'];
+        $this->user = $this->config['user'];
+        $this->pass = $this->config['pass'];
+        $this->vhost = $this->config['vhost'];
+
         $this->connect();
     }
 
+    /**
+     * 连接rabbitmq消息队列
+     * @return bool
+     */
     function connect()
     {
         try
         {
-            if ($this->_redis)
+            if ($this->connection)
             {
-                unset($this->_redis);
+                unset($this->connection);
             }
-            $this->_redis = new \Redis();
-            if ($this->config['pconnect'])
-            {
-                $this->_redis->pconnect($this->config['host'], $this->config['port'], $this->config['timeout']);
-            }
-            else
-            {
-                $this->_redis->connect($this->config['host'], $this->config['port'], $this->config['timeout']);
-            }
-
-            if (!empty($this->config['password']))
-            {
-                $this->_redis->auth($this->config['password']);
-            }
-            if (!empty($this->config['database']))
-            {
-                $this->_redis->select($this->config['database']);
-            }
+            $this->connection = new AMQPStreamConnection($this->host, $this->port, $this->user, $this->pass, $this->vhost);
         }
-        catch (\RedisException $e)
+        catch (\Exception $e)
         {
-            \Swoole::$php->log->error(__CLASS__ . " Swoole Redis Exception" . var_export($e, 1));
+            \Swoole::$php->log->error(__CLASS__ . " Swoole RabbitMQ Exception" . var_export($e, 1));
             return false;
         }
+    }
+
+    /**
+     * 关闭连接
+     */
+    function close()
+    {
+        $this->channel->close();
+        $this->connection->close();
+    }
+
+    /**
+     * 设置交换机名称
+     * @param string $exchangeName
+     */
+    function setExchangeName($exchangeName = '')
+    {
+        $exchangeName && $this->exchangeName = $exchangeName;
+    }
+
+    /**
+     * 设置队列名称
+     * @param string $queueName
+     */
+    function setQueueName($queueName = '')
+    {
+        $queueName && $this->queueName = $queueName;
+    }
+
+    /**
+     * 设置频道
+     */
+    function initChannel()
+    {
+        //通道
+        $this->channel = $this->connection->channel();
+        $this->channel->queue_declare($this->queueName, false, true, false, false);
+        $this->channel->exchange_declare($this->exchangeName, 'direct', false, true, false);
+        $this->channel->queue_bind($this->queueName, $this->exchangeName);
+    }
+
+    /**
+     * 获取队列数据
+     * @return mixed
+     */
+    function pop()
+    {
+        $ret = $this->channel->basic_get($this->queueName);
+        return $ret;
+    }
+
+    /**
+     * 插入队列数据
+     * @param $data
+     * @return bool
+     */
+    function push($data)
+    {
+        $message = new AMQPMessage($data, ['content_type'=>'text/plain', 'devlivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
+        $this->channel->basic_publish($message, $this->exchangeName);
+        return true;
     }
 
     function __call($method, $args = array())
@@ -118,9 +140,10 @@ class RabbitMQ
         {
             try
             {
-                $result = call_user_func_array(array($this->_redis, $method), $args);
+                $this->initChannel();
+                $result = call_user_func_array(array($this->channel, $method), $args);
             }
-            catch (\RedisException $e)
+            catch (\Exception $e)
             {
                 //已重连过，仍然报错
                 if ($reConnect)
@@ -128,13 +151,15 @@ class RabbitMQ
                     throw $e;
                 }
 
-                \Swoole::$php->log->error(__CLASS__ . " [" . posix_getpid() . "] Swoole Redis[{$this->config['host']}:{$this->config['port']}]
-                 Exception(Msg=" . $e->getMessage() . ", Code=" . $e->getCode() . "), Redis->{$method}, Params=" . var_export($args, 1));
-                if ($this->_redis->isConnected())
+                \Swoole::$php->log->error(__CLASS__ . " [" . posix_getpid() . "] Swoole RabbitMQ[{$this->config['host']}:{$this->config['port']}]
+                 Exception(Msg=" . $e->getMessage() . ", Code=" . $e->getCode() . "), RabbitMQ->{$method}, Params=" . var_export($args, 1));
+                if ($this->connection)
                 {
-                    $this->_redis->close();
+                    $this->close();
                 }
+
                 $this->connect();
+
                 $reConnect = true;
                 continue;
             }
