@@ -102,4 +102,8 @@ class RabbitMQ implements \Swoole\IFace\Queue
         $this->channel->basic_publish($message, $this->exchangeName);
         return true;
     }
+    public function __debugInfo()
+    {
+        // TODO: Implement __debugInfo() method.
+    }
 }
