@@ -10,6 +10,9 @@ Swoole\Network\Server::setPidFile(WEBPATH . '/server/pid/appServer.pid');
  * php app_server.php start|stop|reload
  */
 Swoole\Network\Server::start(function () {
+    //添加自定义路由
+    Swoole::$php->addRouter(new App\Router\ModuleRouter(), false);
+
     $server = Swoole\Protocol\WebServer::create(WEBPATH . '/server/swoole.ini');
     //设置应用所在的目录
     $server->setAppPath(WEBPATH . '/apps/');
