@@ -1,6 +1,6 @@
 <?php
 $redis['master'] = [
-    'host'    => "172.17.0.2",
+    'host'    => "172.17.0.3",
     'port'    => 6379,
     'password' => '',
     'timeout' => 0.25,
@@ -8,7 +8,7 @@ $redis['master'] = [
 //    'database' => 1,
 ];
 $redis['event'] = [
-    'host'    => "172.17.0.2",
+    'host'    => "172.17.0.3",
     'port'    => 6379,
     'password' => '',
     'timeout' => 0.25,

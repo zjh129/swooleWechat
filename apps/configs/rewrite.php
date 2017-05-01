@@ -14,6 +14,10 @@ $array[] = [
      */
     'get'  => 'app,id',
 ];
+$array[] = [
+    'regx' => '^/Api/',
+    'mvc' => ['directory' => 'Api', 'controller' => 'Index', 'view' => 'index']
+];
 //favicon
 /*$array[] = [
     'regx' => 'favicon.ico',

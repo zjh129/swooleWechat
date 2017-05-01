@@ -2,6 +2,7 @@
 //载入初始化文件
 require_once __DIR__ . '/initServer.php';
 
+Swoole\Config::$debug = true;
 //设置PID文件的存储路径
 Swoole\Network\Server::setPidFile(WEBPATH . '/server/pid/appServer.pid');
 /**
