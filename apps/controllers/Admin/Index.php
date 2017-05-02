@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Api;
+namespace App\Controller\Admin;
 
 class Index extends Base
 {
@@ -7,7 +7,7 @@ class Index extends Base
     {
         parent::__construct($swoole);
     }
-
+    
     public function index()
     {
         echo __METHOD__;
