@@ -4,10 +4,11 @@ require_once __DIR__ . '/initServer.php';
 
 //添加自定义路由,第二个参数表示模块是否插入到开头
 Swoole::getInstance()->addRouter(new App\Router\ModuleRouter(), true);
-
-Swoole\Config::$debug = true;
+//Swoole\Loader::addNameSpace('App\Controller\Api',WEBPATH . '/apps/controllers/Api/');
+//Swoole\Config::$debug = true;
 //设置PID文件的存储路径
 Swoole\Network\Server::setPidFile(WEBPATH . '/server/pid/appServer.pid');
+
 /**
  * 显示Usage界面
  * php app_server.php start|stop|reload
