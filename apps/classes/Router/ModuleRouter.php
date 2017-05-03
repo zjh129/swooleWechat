@@ -33,12 +33,9 @@ class ModuleRouter implements Router
         {
             $array['view'] = $request->get["v"];
         }
-        //目录字符出现的次数
-        $pathStrCount = substr_count($uri, '/');
         //切割字符串
         $request_uri = explode('/', $uri, 4);
         //最后URI参数
-        $lastRequestUri = '';
         $module = isset($request_uri[0]) && $request_uri[0] ? ucwords($request_uri[0]) : '';
         if (in_array($module, $moduleList)){//模块分组
             $array['directory'] = $request_uri[0];
