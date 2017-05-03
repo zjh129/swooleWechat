@@ -1,12 +1,9 @@
 <?php
-$log['master'] = array(
-    'type' => 'FileLog',
-    'file' => WEBPATH . '/logs/app.log',
-);
-
-$log['test'] = array(
-    'type' => 'FileLog',
-    'file' => WEBPATH . '/logs/test.log',
-);
+$conFilePath = __DIR__ . DS . ENV . DS . 'log.php';
+if (file_exists($conFilePath)){
+    $log = require_once $conFilePath;
+}else{
+    $log = [];
+}
 
 return $log;

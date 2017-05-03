@@ -1,20 +1,9 @@
 <?php
-//主队列
-$rabbitmq['master'] = [
-    'host'    => "172.17.0.4",//主机地址
-    'port'    => 5672,//端口
-    'user' => 'guest',//用户
-    'pass' => 'guest',//密码
-    'vhost' => '/',//
-    'debug' => false,//是否开启调试模式
-];
-//事件队列
-$rabbitmq['event'] = [
-    'host'    => "172.17.0.4",//主机地址
-    'port'    => 5672,//端口
-    'user' => 'guest',//用户
-    'pass' => 'guest',//密码
-    'vhost' => '/',//
-    'debug' => false,//是否开启调试模式
-];
+$conFilePath = __DIR__ . DS . ENV . DS . 'rabbitmq.php';
+if (file_exists($conFilePath)){
+    $rabbitmq = require_once $conFilePath;
+}else{
+    $rabbitmq = [];
+}
+
 return $rabbitmq;

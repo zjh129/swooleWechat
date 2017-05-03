@@ -7,4 +7,4 @@
 /uploads
 .php_cs.cache
 /vendor/
-
+/server/Env.php

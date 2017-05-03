@@ -1,8 +1,8 @@
 <?php
 $user['default_avatar'] = '/static/images/default.png';
-$user['login_table'] = 'user';
-$user['login_url'] = '/user/login/';
-/**
+$user['login_table']    = 'user';
+$user['login_url']      = '/user/login/';
+/*
  *
  * CREATE TABLE IF NOT EXISTS `user_login` (
  * `id` int(11) NOT NULL AUTO_INCREMENT,

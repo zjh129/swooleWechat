@@ -1,5 +1,9 @@
 <?php
-$mongo['master'] = array(
-    'host' => '127.0.0.1',
-);
+$conFilePath = __DIR__ . DS . ENV . DS . 'mongo.php';
+if (file_exists($conFilePath)){
+    $mongo = require_once $conFilePath;
+}else{
+    $mongo = [];
+}
+
 return $mongo;

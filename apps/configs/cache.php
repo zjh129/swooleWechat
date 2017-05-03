@@ -1,25 +1,9 @@
 <?php
-$cache['session'] = array(
-    'type' => 'FileCache',
-    'cache_dir' => WEBPATH . '/cache/filecache/',
-);
-$cache['master'] = array(
-    'type' => 'Memcache',
-    'use_memcached' => true, //使用memcached扩展
-    'compress' => true, //启用压缩
-    'servers' => array(
-        array(
-            'host' => '172.17.0.2',
-            'port' => 11211,
-            'weight' => 100,
-            'persistent' => true,
-        ),
-        /*array(
-            'host' => '127.0.0.1',
-            'port' => 11211,
-            'weight' => 100,
-            'persistent' => true,
-        ),*/
-    ),
-);
+$conFilePath = __DIR__ . DS . ENV . DS . 'cache.php';
+if (file_exists($cacheConFilePath)){
+    $cache = require_once $cacheConFilePath;
+}else{
+    $cache = [];
+}
+
 return $cache;

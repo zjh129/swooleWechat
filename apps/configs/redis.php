@@ -1,18 +1,9 @@
 <?php
-$redis['master'] = [
-    'host'    => "172.17.0.3",
-    'port'    => 6379,
-    'password' => '',
-    'timeout' => 0.25,
-    'pconnect' => false,
-//    'database' => 1,
-];
-$redis['event'] = [
-    'host'    => "172.17.0.3",
-    'port'    => 6379,
-    'password' => '',
-    'timeout' => 0.25,
-    'pconnect' => false,
-//    'database' => 1,
-];
+$conFilePath = __DIR__ . DS . ENV . DS . 'redis.php';
+if (file_exists($conFilePath)){
+    $redis = require_once $conFilePath;
+}else{
+    $redis = [];
+}
+
 return $redis;

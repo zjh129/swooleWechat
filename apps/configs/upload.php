@@ -1,6 +1,9 @@
 <?php
-$upload = array(
-    'base_dir' => WEBPATH.'/uploads/',
-    'base_url' => WEBROOT.'/uploads/',
-);
+$conFilePath = __DIR__ . DS . ENV . DS . 'upload.php';
+if (file_exists($conFilePath)){
+    $upload = require_once $conFilePath;
+}else{
+    $upload = [];
+}
+
 return $upload;
