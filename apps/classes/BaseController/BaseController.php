@@ -1,13 +1,13 @@
 <?php
-namespace App\Controller\Api;
+namespace App\BaseController;
 
 use Swoole;
 
 /**
- * 基类控制器
+ * 接口基类控制器
  * @package App\Controller\Api
  */
-class Base extends Swoole\Controller
+class BaseController extends Swoole\Controller
 {
     public function __construct($swoole)
     {
