@@ -10,9 +10,9 @@ $wechat['master'] = [
     /*
      * 账号基本信息，请从微信公众平台/开放平台获取
      */
-    'app_id'  => 'your-app-id',         // AppID
-    'secret'  => 'your-app-secret',     // AppSecret
-    'token'   => 'your-token',          // Token
+    'app_id'  => 'wx40358a59fcd7e2d9',         // AppID
+    'secret'  => '579fe9e95a899ecb220be32c53e61e73',     // AppSecret
+    'token'   => '6118dcd2df092628da0a5f19dcd90ce0',          // Token
     'aes_key' => '',                    // EncodingAESKey，安全模式下请一定要填写！！！
     /*
      * 日志配置

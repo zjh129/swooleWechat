@@ -7,6 +7,11 @@ class Index extends Base
 {
     public function index()
     {
-        echo __METHOD__;
+        $this->wechatapp->server->setMessageHandler(function ($message){
+            return "您好！欢迎关注我！";
+        });
+        $response = $this->wechatapp->server->serve();
+        //将响应输出
+        return $response->send();
     }
 }
