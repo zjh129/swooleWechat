@@ -3,7 +3,7 @@ namespace App\Controller;
 
 use Swoole;
 
-class Home extends Swoole\Controller
+class Index extends Swoole\Controller
 {
     public function __construct($swoole)
     {
