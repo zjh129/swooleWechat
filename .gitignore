@@ -2,7 +2,7 @@
 /examples/webserver.log
 /cache/
 /examples/websocket.log
-/logs/
+/logs/*.log
 *.pid
 /uploads
 .php_cs.cache
