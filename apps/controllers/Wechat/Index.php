@@ -12,6 +12,6 @@ class Index extends Base
         });
         $response = $this->wechatapp->server->serve();
         //将响应输出
-        return $response->send();
+        $response->send();
     }
 }
