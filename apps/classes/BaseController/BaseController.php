@@ -32,5 +32,7 @@ class BaseController extends Swoole\Controller
         }
         $wechatConfig = $this->config['wechat'][\Swoole::$php->factory_key];
         $this->wechatApp = new \EasyWeChat\Foundation\Application($wechatConfig);
+        //设置Request类，改为调用优化好的的Request，因为swoole不支持原生的file_get_content('php://input');
+        $this->wechatApp->server->setRequest(new \App\Component\Request());
     }
 }

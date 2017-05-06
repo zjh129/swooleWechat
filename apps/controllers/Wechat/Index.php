@@ -19,15 +19,36 @@ class Index extends Base
      */
     public function index()
     {
-        $this->log->error('test');
         try{
             $server = $this->wechatApp->server;
-            //设置Request类，改为调用内部的Request，添加了swoole的消息体接收支持
-            $server->setRequest(new \App\Component\Request());
-            $this->log->error('消息内容：' . var_export($server->getMessage(), true));
             $server->setMessageHandler(function ($message){
-                $this->log->info('提示：' . var_export($message, true));
-                return "您好！欢迎关注我！";
+                switch ($message->MsgType) {
+                    case 'event':
+                        return '收到事件消息';
+                        break;
+                    case 'text':
+                        return '收到文字消息';
+                        break;
+                    case 'image':
+                        return '收到图片消息';
+                        break;
+                    case 'voice':
+                        return '收到语音消息';
+                        break;
+                    case 'video':
+                        return '收到视频消息';
+                        break;
+                    case 'location':
+                        return '收到坐标消息';
+                        break;
+                    case 'link':
+                        return '收到链接消息';
+                        break;
+                    // ... 其它消息
+                    default:
+                        return '收到其它消息';
+                        break;
+                }
             });
             $response = $server->serve();
             //将响应输出
