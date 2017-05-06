@@ -22,7 +22,7 @@ class Index extends Base
         $this->log->error('test');
         try{
             $server = $this->wechatApp->server;
-            $requestCon = Swoole::$php->ext_http_server->getRequestBody();
+            $requestCon = $this->http->getRequestBody();
             $this->log->info('内容:'. $requestCon);
             //$this->log->trace('提示:'. var_export($server->getMessage()));
             $server->setMessageHandler(function ($message){
