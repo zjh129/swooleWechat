@@ -22,9 +22,8 @@ class Index extends Base
         $this->log->error('test');
         try{
             $server = $this->wechatApp->server;
-            $requestCon = $this->http->getRequestBody();
-            $this->log->info('内容:'. $requestCon);
-            //$this->log->trace('提示:'. var_export($server->getMessage()));
+            //设置Request类，改为调用内部的Request，添加了swoole的消息体接收支持
+            $server->setRequest(new \App\Component\Request());
             $server->setMessageHandler(function ($message){
                 //$this->log->info('提示：' . var_export($message));
                 return "您好！欢迎关注我！";
