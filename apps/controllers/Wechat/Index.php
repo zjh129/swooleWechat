@@ -22,10 +22,9 @@ class Index extends Base
         $this->log->error('test');
         try{
             $server = $this->wechatApp->server;
-            $this->log->info('提示:'. var_export($_POST, true));
+            $requestCon = Swoole::$php->ext_http_server->getRequestBody();
+            $this->log->info('内容:'. $requestCon);
             //$this->log->trace('提示:'. var_export($server->getMessage()));
-            $request = $server->getRequest()->getContent(false);
-            $this->log->info('提交内容:'. $request);
             $server->setMessageHandler(function ($message){
                 //$this->log->info('提示：' . var_export($message));
                 return "您好！欢迎关注我！";
