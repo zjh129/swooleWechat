@@ -22,7 +22,7 @@ class Index extends Base
         $this->log->error('test');
         try{
             $server = $this->wechatApp->server;
-            $this->log->error('提示:'. var_export($_GET));
+            $this->log->error('提示:'. var_export($_GET, true));
             $this->log->error('提示:'. var_export($server->getMessage()));
             $server->setMessageHandler(function ($message){
                 $this->log->info('提示：' . var_export($message));
