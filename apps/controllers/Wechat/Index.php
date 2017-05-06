@@ -22,10 +22,10 @@ class Index extends Base
         $this->log->error('test');
         try{
             $server = $this->wechatApp->server;
-            $this->log->error('提示:'. var_export($_GET, true));
-            $this->log->error('提示:'. var_export($server->getMessage()));
+            $this->log->info('提示:'. var_export($_GET, true));
+            //$this->log->trace('提示:'. var_export($server->getMessage()));
             $server->setMessageHandler(function ($message){
-                $this->log->info('提示：' . var_export($message));
+                //$this->log->info('提示：' . var_export($message));
                 return "您好！欢迎关注我！";
             });
             $response = $server->serve();
