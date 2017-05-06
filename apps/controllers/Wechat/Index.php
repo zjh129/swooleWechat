@@ -24,12 +24,12 @@ class Index extends Base
             $server = $this->wechatApp->server;
             $this->log->info('提示:'. var_export($_GET, true));
             //$this->log->trace('提示:'. var_export($server->getMessage()));
+            $request = $server->getRequest()->getContent(false);
+            $this->log->info('提交内容:'. $request);
             $server->setMessageHandler(function ($message){
                 //$this->log->info('提示：' . var_export($message));
                 return "您好！欢迎关注我！";
             });
-            $request = $server->getRequest()->getContent(false);
-            $this->log->info('提交内容:'. $request);
             $response = $server->serve();
             //将响应输出
             $response->send();
