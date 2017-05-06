@@ -7,7 +7,7 @@ namespace App\BaseController;
  */
 class WechatBaseController extends BaseController
 {
-    public function __construct($swoole)
+    public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
     }
