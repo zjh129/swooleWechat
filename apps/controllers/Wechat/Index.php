@@ -19,9 +19,11 @@ class Index extends Base
      */
     public function index()
     {
+        $this->log->error('test');
         try{
+            $this->log->error('提示');
             $this->wechatApp->server->setMessageHandler(function ($message){
-                $this->log->info(var_export($message));
+                $this->log->info('提示：' . var_export($message));
                 return "您好！欢迎关注我！";
             });
             $response = $this->wechatApp->server->serve();
