@@ -21,6 +21,7 @@ class Index extends Base
     {
         try{
             $this->wechatApp->server->setMessageHandler(function ($message){
+                $this->log->info(var_export($message));
                 return "您好！欢迎关注我！";
             });
             $response = $this->wechatApp->server->serve();
