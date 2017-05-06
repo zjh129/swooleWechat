@@ -28,6 +28,8 @@ class Index extends Base
                 //$this->log->info('提示：' . var_export($message));
                 return "您好！欢迎关注我！";
             });
+            $request = $server->getRequest()->getContent(false);
+            $this->log->info('提交内容:'. $request);
             $response = $server->serve();
             //将响应输出
             $response->send();
