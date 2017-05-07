@@ -27,11 +27,16 @@ class Index extends Base
             $server->setMessageHandler(function ($message) {
                 $msgType = strtolower($message->MsgType);
                 $msgType = ucfirst($msgType);
+                $controllerClass = '\\App\\WechatHandler\\' . $msgType;
                 $method = 'Index'; //主入口方法
-                $this->swoole->router(function($msgType, $method, $message){
-                    return ['directory' => 'Wechat', 'controller' => $msgType, 'view' => $method,'param' => $message];
-                });
-                return $this->swoole->runMVC();
+                if (!class_exists($controllerClass, false)) {
+                    throw new Exception('消息类型【' . $message->MsgType . '】处理类不存在');
+                }
+                $controller = new $controllerClass($message);
+                if (!method_exists($controllerClass, $method)) {
+                    throw new Exception('处理类【' . $controllerClass . '】的[' . $method . ']主入口方法不存在');
+                }
+                return $controllerClass->$method();
             });
             $response = $server->serve();
             //将响应输出
