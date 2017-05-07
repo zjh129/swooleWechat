@@ -30,9 +30,9 @@ class Index extends Base
                 $msgType = ucfirst($msgType);
                 $controllerClass = '\\App\\WechatHandler\\' . $msgType;
                 $method = 'main'; //主入口方法
-                if (!class_exists($controllerClass, false)) {
+                /*if (!class_exists($controllerClass, false)) {
                     throw new Exception('消息类型【' . $message->MsgType . '】处理类不存在');
-                }
+                }*/
                 $controller = new $controllerClass($message);
                 if (!method_exists($controller, $method)) {
                     throw new Exception('处理类【' . $controllerClass . '】的[' . $method . ']主入口方法不存在');
