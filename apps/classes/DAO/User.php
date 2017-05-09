@@ -6,16 +6,11 @@ namespace App\DAO;
  * example: $user = new App\DAO\User(1);  $user->get();
  * @package App\DAO
  */
-class User
+class User extends Base
 {
-    protected $id;
-    function __construct($id)
-    {
-        $this->id = $id;
-    }
-
-    function get()
-    {
-        return model('User')->get($this->id);
-    }
+    /**
+     * 模型名称
+     * @var string
+     */
+    protected $modelName = 'User';
 }

@@ -10,5 +10,6 @@ class AdminBaseController extends BaseController
     public function __construct($swoole)
     {
         parent::__construct($swoole);
+        $this->template_dir .= 'Admin/';
     }
 }

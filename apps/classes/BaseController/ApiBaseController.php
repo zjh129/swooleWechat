@@ -10,5 +10,6 @@ class ApiBaseController extends BaseController
     public function __construct($swoole)
     {
         parent::__construct($swoole);
+        $this->is_ajax = true;
     }
 }
