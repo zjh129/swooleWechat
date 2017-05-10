@@ -30,6 +30,11 @@ class Request extends SymfonyRequest
         //return "<xml><ToUserName><![CDATA[gh_570de6da66f2]]></ToUserName>\n<FromUserName><![CDATA[ogKdPt-LQTpRjBSRQYEZwNN2dGE4]]></FromUserName>\n<CreateTime>1494429650</CreateTime>\n<MsgType><![CDATA[link]]></MsgType>\n<Title><![CDATA[如何在不停机的情况下，完成百万级数据跨表迁移？]]></Title>\n<Description><![CDATA[Stripe与大家分享了他们在不停服的情况下如何做大规模数据在线迁移的经验，尤其是数据模型发生改变时。]]></Description>\n<Url><![CDATA[http://mp.weixin.qq.com/s?__biz=MzA5Nzc4OTA1Mw==&mid=2659599212&idx=1&sn=9e077c749339923c33ca5abbf73ed22c&chksm=8be9967ebc9e1f689cc20cb15c7abde5bcf34ab310de4fa0d22ede183f25de0c718cf905801a&mpshare=1&scene=24&srcid=0425mAMcR71cvv5U3jArIXbW#rd]]></Url>\n<MsgId>6418526473391316037</MsgId>\n</xml>";
         //自定义菜单点击事件模拟
         //return "<xml><ToUserName><![CDATA[gh_570de6da66f2]]></ToUserName>\n<FromUserName><![CDATA[ogKdPt-LQTpRjBSRQYEZwNN2dGE4]]></FromUserName>\n<CreateTime>1494427415</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[CLICK]]></Event>\n<EventKey><![CDATA[search]]></EventKey>\n</xml>";
+        //关注事件模拟
+        //return "<xml><ToUserName><![CDATA[gh_570de6da66f2]]></ToUserName>\n<FromUserName><![CDATA[ogKdPt-LQTpRjBSRQYEZwNN2dGE4]]></FromUserName>\n<CreateTime>1494430060</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[subscribe]]></Event>\n<EventKey><![CDATA[]]></EventKey>\n</xml>";
+        //取消关注事件模拟
+        //return "<xml><ToUserName><![CDATA[gh_570de6da66f2]]></ToUserName>\n<FromUserName><![CDATA[ogKdPt-LQTpRjBSRQYEZwNN2dGE4]]></FromUserName>\n<CreateTime>1494430044</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[unsubscribe]]></Event>\n<EventKey><![CDATA[]]></EventKey>\n</xml>";
+
         if (null == $this->content || false === $this->content) {
             $this->content = \Swoole::getInstance()->http->getRequestBody();
             return $this->content;
