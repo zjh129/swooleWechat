@@ -14,7 +14,7 @@ class Index extends Swoole\Controller
 
     public function index()
     {
-        echo __METHOD__;
+        echo microtime(true);
     }
 
     public function test()
