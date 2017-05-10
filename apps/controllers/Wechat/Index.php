@@ -3,8 +3,6 @@
 namespace App\Controller\Wechat;
 
 use App\BaseController\WechatBaseController as Base;
-use EasyWeChat\Core\Exception;
-use Swoole\Object;
 
 class Index extends Base
 {

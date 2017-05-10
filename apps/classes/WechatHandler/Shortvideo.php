@@ -5,14 +5,14 @@ namespace App\WechatHandler;
  * 链接消息处理
  * @package App\WechatHandler
  */
-class Link extends Base implements InterfaceHandler
+class Shortvideo extends Base implements InterfaceHandler
 {
     /**
      * 主入口方法
      */
     public function main()
     {
-        return '接受到链接消息';
+        return '接受到视频消息';
     }
 
     /**
@@ -20,16 +20,15 @@ class Link extends Base implements InterfaceHandler
      */
     public function saveRecMessage()
     {
-        $model = Model('WxRecMsgLink');
+        $model = Model('WxRecMsgShortvideo');
         $data = [
             'MsgId' => $this->recMessage->MsgId,
             'MsgType' => $this->recMessage->MsgType,
             'ToUserName' => $this->recMessage->ToUserName,
             'FromUserName' => $this->recMessage->FromUserName,
             'CreateTime' => $this->recMessage->CreateTime,
-            'Title' => $this->recMessage->Title,
-            'Description' => $this->recMessage->Description,
-            'Url' => $this->recMessage->Description,
+            'MediaId' => $this->recMessage->MediaId,
+            'ThumbMediaId' => $this->recMessage->ThumbMediaId,
         ];
         return $model->put($data);
     }

@@ -12,4 +12,10 @@ interface InterfaceHandler
      * @param $message
      */
     public function main();
+
+    /**
+     * 保存消息记录
+     * @return mixed
+     */
+    public function saveRecMessage();
 }

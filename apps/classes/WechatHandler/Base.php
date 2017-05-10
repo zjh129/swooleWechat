@@ -24,5 +24,10 @@ class Base
         }
         $wechatConfig = Swoole::$php->config['wechat'][\Swoole::$php->factory_key];
         $this->wechatApp = new \EasyWeChat\Foundation\Application($wechatConfig);
+
+        //如果有保存数据方法申明，则保存接收到的消息记录
+        if (is_callable([$this, 'saveRecMessage'])){
+            $this->saveRecMessage();
+        }
     }
 }
