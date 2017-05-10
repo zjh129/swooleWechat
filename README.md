@@ -53,7 +53,7 @@ cd /tmp/runkit-ext && phpize && ./configure && sudo make && sudo make install
 │   └── ssl                 https证书目录
 └── vendor                  composer包目录
 ```
-
+[服务脚本说明](server/README.md)
 
 NGINX配置
 ----
@@ -90,7 +90,6 @@ server {
     }
 }
 ```
-[服务脚本说明](server/README.md)
 
 启动http服务
 ----
