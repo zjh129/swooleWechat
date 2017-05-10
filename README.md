@@ -1,5 +1,8 @@
 # swooleProject
-本项目使用swoole framework官方框架开发，在不改动原框架基础上进行优化，目前的优化主要是控制器模块支持、配置文件按环境不同划分
+本项目使用swoole framework官方框架开发，在不改动原框架基础上进行优化，目前的优化主要是控制器模块支持、配置文件按环境不同划分.
+本项目主要为了节省微信服务号的开发成本，采用swoole framework提高项目并发处理能力。
+项目特色：异步处理、异步MySQL、异步Redis、数据库连接池、
+
 框架项目地址：(https://github.com/swoole/framework)
 
 Swoole IDE智能提示

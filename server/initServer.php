@@ -7,6 +7,7 @@ define('WEBPATH', __DIR__ . DS . '..');
 if (file_exists(WEBPATH . 'server/Env.php')){
     require_once WEBPATH . 'server/Env.php';
 }
+//设置配置目录
 if (!defined('ENV')){
     define('ENV', 'devlop');
 }
@@ -14,3 +15,5 @@ if (!defined('ENV')){
 require_once WEBPATH . '/vendor/autoload.php';
 //载入swoole frameworkZ框架配置
 require_once WEBPATH . '/vendor/matyhtf/swoole_framework/libs/lib_config.php';
+
+Swoole::$php->config->setPath(WEBPATH . '/configs/' . ENV . '/');

@@ -7,7 +7,6 @@ Swoole::getInstance()->addRouter(new App\Router\ModuleRouter(), true);
 Swoole\Config::$debug = false;
 //设置PID文件的存储路径
 Swoole\Network\Server::setPidFile(WEBPATH . '/server/pid/appServer.pid');
-
 /**
  * 显示Usage界面
  * php app_server.php start|stop|reload
@@ -23,5 +22,5 @@ Swoole\Network\Server::start(function () {
     //作为守护进程
     //$server->daemonize();
     //启动
-    $server->run(['worker_num' => 1, 'max_request' => 5000, 'log_file' => WEBPATH.'/logs/app-swoole.logs']);
+    $server->run(['worker_num' => 1, 'max_request' => 5000, 'log_file' => WEBPATH . '/logs/app-swoole.logs']);
 });
