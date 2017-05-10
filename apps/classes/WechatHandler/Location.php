@@ -22,15 +22,15 @@ class Location extends Base implements InterfaceHandler
     {
         $model = Model('WxRecMsgLocation');
         $data = [
-            'MsgId' => $this->recMessage->MsgId,
-            'MsgType' => $this->recMessage->MsgType,
-            'ToUserName' => $this->recMessage->ToUserName,
-            'FromUserName' => $this->recMessage->FromUserName,
-            'CreateTime' => $this->recMessage->CreateTime,
-            'Location_X' => $this->recMessage->Location_X,
-            'Location_Y' => $this->recMessage->Location_Y,
-            'Scale' => $this->recMessage->Scale,
-            'Label' => $this->recMessage->Label,
+            'MsgId' => $this->recMessage->MsgId ?? '',
+            'MsgType' => $this->recMessage->MsgType ?? '',
+            'ToUserName' => $this->recMessage->ToUserName ?? '',
+            'FromUserName' => $this->recMessage->FromUserName ?? '',
+            'CreateTime' => $this->recMessage->CreateTime ?? 0,
+            'Location_X' => $this->recMessage->Location_X ?? 0,
+            'Location_Y' => $this->recMessage->Location_Y ?? 0,
+            'Scale' => $this->recMessage->Scale ?? 0,
+            'Label' => $this->recMessage->Label ?? '',
         ];
         return $model->put($data);
     }

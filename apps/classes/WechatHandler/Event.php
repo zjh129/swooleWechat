@@ -47,11 +47,11 @@ class Event extends Base implements InterfaceHandler
     public function saveRecMessage()
     {
         $data = [
-            'MsgType' => $this->recMessage->MsgType,
-            'ToUserName' => $this->recMessage->ToUserName,
-            'FromUserName' => $this->recMessage->FromUserName,
-            'CreateTime' => $this->recMessage->CreateTime,
-            'Event' => $this->recMessage->Event,
+            'MsgType' => $this->recMessage->MsgType ?? '',
+            'ToUserName' => $this->recMessage->ToUserName ?? '',
+            'FromUserName' => $this->recMessage->FromUserName ?? '',
+            'CreateTime' => $this->recMessage->CreateTime ?? 0,
+            'Event' => $this->recMessage->Event ?? '',
         ];
         //关注事件推送
         if ($this->eventType == self::EVENT_TYPE_SUBSCRIBE){
@@ -59,20 +59,20 @@ class Event extends Base implements InterfaceHandler
         }
         //扫码事件
         if ($this->eventType == self::EVENT_TYPE_SCAN){
-            $data['EventKey'] = $this->recMessage->EventKey;
-            $data['Ticket'] = $this->recMessage->Ticket;
+            $data['EventKey'] = $this->recMessage->EventKey ?? '';
+            $data['Ticket'] = $this->recMessage->Ticket ?? '';
             $model = Model('WxRecEventSubscribe');
         }
         //上报地理位置事件
         if ($this->eventType == self::EVENT_TYPE_LOCATION){
-            $data['Latitude'] = $this->recMessage->Latitude;
-            $data['Longitude'] = $this->recMessage->Longitude;
-            $data['Precision'] = $this->recMessage->Precision;
+            $data['Latitude'] = $this->recMessage->Latitude ?? 0;
+            $data['Longitude'] = $this->recMessage->Longitude ?? 0;
+            $data['Precision'] = $this->recMessage->Precision ?? '';
             $model = Model('WxRecEventLocation');
         }
         //自定义菜单事件
         if ($this->eventType == self::EVENT_TYPE_MENU){
-            $data['EventKey'] = $this->recMessage->EventKey;
+            $data['EventKey'] = $this->recMessage->EventKey ?? '';
             $model = Model('WxRecEventMenu');
         }
 

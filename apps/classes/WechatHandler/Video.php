@@ -22,13 +22,13 @@ class Video extends Base implements InterfaceHandler
     {
         $model = Model('WxRecMsgVideo');
         $data = [
-            'MsgId' => $this->recMessage->MsgId,
-            'MsgType' => $this->recMessage->MsgType,
-            'ToUserName' => $this->recMessage->ToUserName,
-            'FromUserName' => $this->recMessage->FromUserName,
-            'CreateTime' => $this->recMessage->CreateTime,
-            'MediaId' => $this->recMessage->MediaId,
-            'ThumbMediaId' => $this->recMessage->ThumbMediaId,
+            'MsgId' => $this->recMessage->MsgId ?? '',
+            'MsgType' => $this->recMessage->MsgType ?? '',
+            'ToUserName' => $this->recMessage->ToUserName ?? '',
+            'FromUserName' => $this->recMessage->FromUserName ?? '',
+            'CreateTime' => $this->recMessage->CreateTime ?? 0,
+            'MediaId' => $this->recMessage->MediaId ?? '',
+            'ThumbMediaId' => $this->recMessage->ThumbMediaId ?? '',
         ];
         return $model->put($data);
     }
