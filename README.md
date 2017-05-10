@@ -1,8 +1,7 @@
-#swooleWechat
-使用swoole framework搭建一个微信服务号接口开发项目，其中使用了EasyWeChat微信开源项目
-
-本项目使用swoole framework官方框架开发.
+# swooleProject
+本项目使用swoole framework官方框架开发，在不改动原框架基础上进行优化，目前的优化主要是控制器模块支持、配置文件按环境不同划分
 框架项目地址：(https://github.com/swoole/framework)
+
 Swoole IDE智能提示
 ----
 ```shell
@@ -11,40 +10,93 @@ https://github.com/eaglewu/swoole-ide-helper
 
 [框架介绍](https://github.com/swoole/framework)
 
-> HttpServer和AppServer虽然可以直接访问，但是还是要配合nginx或apache，请求静态文件是由Nginx/Apache直接处理，当请求的文件不存在时，发送给Swoole服务器，来进行处理。
-
-HttpServer的使用方法
-----
-http服务器跟fpm和apache很像，只是去包含documentRoot中的php文件，没有带有任何额外功能。
-与appServer.php不同，httpServer.php是没有携带任何Swoole Web框架功能的。
-```shell
-php server/httpServer.php
+runkit扩展安装(热部署)，目前某些runkit方法报错，无法正常使用
+```sh
+git clone --depth=1 -v git@github.com:runkit7/runkit7.git /tmp/runkit-ext
+cd /tmp/runkit-ext && phpize && ./configure && sudo make && sudo make install
 ```
 
-HttpClient的使用方法
+
+框架目录介绍
 ----
-类似于curl、file_get_contents等方法，http请求客户端
-```shell
-php server/httpClient.php
+```sh
+├── apps                                        项目目录
+│   ├── classes                              类目录，可以任意添加想要的目录或脚本，swoole会自动注册并加载命名空间
+│   │   ├── BaseController                基类控制器目录了
+│   │   ├── Component                     组件目录
+│   │   ├── DAO                           数据访问层目录
+│   │   ├── Handler                       事件执行脚本目录，用来运行定时任务
+│   │   ├── Observer                      未知
+│   │   ├── Queue                         自定义队列类目录
+│   │   ├── Router                        自定义路由控制目录，需要在对应的Server.php中加入Swoole::getInstance()->addRouter(new App\Router\ModuleRouter(), true);
+│   │   └── Service                       逻辑业务层目录，专门放置逻辑业务代码
+│   ├── configs                              配置文件目录，某些配置可以共用，无需在子目录中区分，具体实现自行控制
+│   │   ├── devlop                        开发环境配置
+│   │   ├── product                       生产环境
+│   │   └── test                          测试环境
+│   ├── controllers                          控制器目录
+│   │   ├── Admin                         Admin模块控制器目录
+│   │   ├── Api                           Api模块控制器目录
+│   │   └── Index                         Index模块控制器目录
+│   ├── events                               事件定义脚本目录，需要启动事件功能，具体参考server/README.md文件
+│   ├── factory                              添加与http请求无关全局对象，否则http请求的数据无法销毁，造成代码执行无法正确路由
+│   ├── models                               数据库访问模型目录
+│   └── templates                            模板文件目录
+│       ├── Admin
+│       ├── Index
+│       ├── page
+│       └── user
+├── public                                      网站公共文件目录，nginx的root配置指向到这里
+├── server                                      swoole启动服务脚本目录
+│   ├── database                             数据库定义目录
+│   ├── pid                                  swoole启动服务的进程ID保存目录
+│   └── ssl                                  https证书目录
+└── vendor                                      composer包目录
+```
+[服务脚本说明](server/README.md)
+
+NGINX配置
+----
+{youDomain}、{youPath}改成自己环境的配置
+```sh
+server {
+    listen       80;
+    server_name  {youDomain}.cn;
+    root   /{youPath}/swooleproject/public/;
+
+    #charset koi8-r;
+
+    access_log  logs/{youDomain}-access.log;
+    error_log   logs/{youDomain}-error.log error;
+
+    location / {
+        index index.html;
+        if (!-e $request_filename){
+            proxy_pass http://127.0.0.1:9501;
+        }
+    }
+
+    location /index.html {
+         proxy_pass http://127.0.0.1:9501/;
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+}
 ```
 
-AppServer的使用方法
+启动http服务
 ----
-AppServer就是Swoole的内置应用服务器，你需要按照Swoole Web框架的规范来写代码，所以应用程序的代码都在apps/目录中。
-URL会路由到Controller的方法中，数据库的处理使用Swoole框架提供的Model或者SelectDB，模板使用smarty引擎或者直接使用php作为模板。
-```shell
+执行如下脚本会自动显示使用帮助：
+```sh
 php server/appServer.php
 ```
 
 
-EventWorkerServer的使用方法
-----
-EventWorkerServer是做事件触发功能,可做异步执行脚本。
-数据处理脚本如下：
-事件定义脚本：/apps/events/*.php
-事件执行脚本：/apps/classes/Handler/*.php
-此功能的好处可以项目中耗时的工作放到这里处理，在一定程度上可以代替常用的队列消息管理器。
-```shell
-php server/eventWorkersServer.php//启动事件触发功能
-php server/eventWorkersClient.php//触发事件
-```
+
