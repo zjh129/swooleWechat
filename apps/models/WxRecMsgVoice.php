@@ -13,5 +13,5 @@ class WxRecMsgVoice extends Swoole\Model
      * 表名
      * @var string
      */
-    public $table = 'wx_rec_msg_shortvideo';
+    public $table = 'wx_rec_msg_voice';
 }

@@ -8,15 +8,6 @@ namespace App\WechatHandler;
 class Text extends Base implements InterfaceHandler
 {
     /**
-     * 构造函数
-     * @param $message
-     */
-    public function __construct($message)
-    {
-        parent::__construct($message);
-    }
-
-    /**
      * 主入口方法
      */
     public function main()
@@ -33,10 +24,10 @@ class Text extends Base implements InterfaceHandler
         $data = [
             'MsgId' => $this->recMessage->MsgId,
             'MsgType' => $this->recMessage->MsgType,
-            'ToUserName' => $this->recMessage->ToUserName,
+            /*'ToUserName' => $this->recMessage->ToUserName,
             'FromUserName' => $this->recMessage->FromUserName,
             'CreateTime' => $this->recMessage->CreateTime,
-            'Content' => $this->recMessage->Content,
+            'Content' => $this->recMessage->Content,*/
         ];
         return $model->put($data);
     }
