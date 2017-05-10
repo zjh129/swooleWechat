@@ -6,7 +6,7 @@ use Swoole;
  * 上报地理位置记录模型
  * @package App\Model
  */
-class WxRecMsgLoaction extends Swoole\Model
+class WxRecMsgLocation extends Swoole\Model
 {
     public $primary = 'id';
     /**
