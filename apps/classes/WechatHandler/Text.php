@@ -8,6 +8,15 @@ namespace App\WechatHandler;
 class Text extends Base implements InterfaceHandler
 {
     /**
+     * 构造函数
+     * @param $message
+     */
+    public function __construct($message)
+    {
+        parent::__construct($message);
+    }
+
+    /**
      * 主入口方法
      */
     public function main()
