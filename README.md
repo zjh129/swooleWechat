@@ -20,40 +20,40 @@ cd /tmp/runkit-ext && phpize && ./configure && sudo make && sudo make install
 框架目录介绍
 ----
 ```sh
-├── apps                                        项目目录
-│   ├── classes                              类目录，可以任意添加想要的目录或脚本，swoole会自动注册并加载命名空间
-│   │   ├── BaseController                基类控制器目录了
-│   │   ├── Component                     组件目录
-│   │   ├── DAO                           数据访问层目录
-│   │   ├── Handler                       事件执行脚本目录，用来运行定时任务
-│   │   ├── Observer                      未知
-│   │   ├── Queue                         自定义队列类目录
-│   │   ├── Router                        自定义路由控制目录，需要在对应的Server.php中加入Swoole::getInstance()->addRouter(new App\Router\ModuleRouter(), true);
-│   │   └── Service                       逻辑业务层目录，专门放置逻辑业务代码
-│   ├── configs                              配置文件目录，某些配置可以共用，无需在子目录中区分，具体实现自行控制
-│   │   ├── devlop                        开发环境配置
-│   │   ├── product                       生产环境
-│   │   └── test                          测试环境
-│   ├── controllers                          控制器目录
-│   │   ├── Admin                         Admin模块控制器目录
-│   │   ├── Api                           Api模块控制器目录
-│   │   └── Index                         Index模块控制器目录
-│   ├── events                               事件定义脚本目录，需要启动事件功能，具体参考server/README.md文件
-│   ├── factory                              添加与http请求无关全局对象，否则http请求的数据无法销毁，造成代码执行无法正确路由
-│   ├── models                               数据库访问模型目录
-│   └── templates                            模板文件目录
+├── apps                    项目目录
+│   ├── classes             类目录，可以任意添加想要的目录或脚本，swoole会自动注册并加载命名空间
+│   │   ├── BaseController  基类控制器目录了
+│   │   ├── Component       组件目录
+│   │   ├── DAO             数据访问层目录
+│   │   ├── Handler         事件执行脚本目录，用来运行定时任务
+│   │   ├── Observer        未知
+│   │   ├── Queue           自定义队列类目录
+│   │   ├── Router          自定义路由控制目录，需要在对应的Server.php中加入Swoole::getInstance()->addRouter(new App\Router\ModuleRouter(), true);
+│   │   └── Service         逻辑业务层目录，专门放置逻辑业务代码
+│   ├── configs             配置文件目录，某些配置可以共用，无需在子目录中区分，具体实现自行控制
+│   │   ├── devlop          开发环境配置
+│   │   ├── product         生产环境
+│   │   └── test            测试环境
+│   ├── controllers         控制器目录
+│   │   ├── Admin           Admin模块控制器目录
+│   │   ├── Api             Api模块控制器目录
+│   │   └── Index           Index模块控制器目录
+│   ├── events              事件定义脚本目录，需要启动事件功能，具体参考server/README.md文件
+│   ├── factory             添加与http请求无关全局对象，否则http请求的数据无法销毁，造成代码执行无法正确路由
+│   ├── models              数据库访问模型目录
+│   └── templates           模板文件目录
 │       ├── Admin
 │       ├── Index
 │       ├── page
 │       └── user
-├── public                                      网站公共文件目录，nginx的root配置指向到这里
-├── server                                      swoole启动服务脚本目录
-│   ├── database                             数据库定义目录
-│   ├── pid                                  swoole启动服务的进程ID保存目录
-│   └── ssl                                  https证书目录
-└── vendor                                      composer包目录
+├── public                  网站公共文件目录，nginx的root配置指向到这里
+├── server                  swoole启动服务脚本目录
+│   ├── database            数据库定义目录
+│   ├── pid                 swoole启动服务的进程ID保存目录
+│   └── ssl                 https证书目录
+└── vendor                  composer包目录
 ```
-[服务脚本说明](server/README.md)
+
 
 NGINX配置
 ----
@@ -90,6 +90,7 @@ server {
     }
 }
 ```
+[服务脚本说明](server/README.md)
 
 启动http服务
 ----
