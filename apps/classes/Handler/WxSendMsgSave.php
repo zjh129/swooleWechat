@@ -3,7 +3,7 @@ namespace App\Handler;
 
 use Swoole;
 
-class Hello2 implements Swoole\IFace\EventHandler
+class WxSendMsgSave implements Swoole\IFace\EventHandler
 {
     function trigger($type, $data)
     {
