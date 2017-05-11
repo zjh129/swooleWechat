@@ -39,7 +39,6 @@ class Index extends Base
             });
             $response = $server->serve();
             //将响应输出
-            $response->getContent();
             $response->send();
         } catch (\Exception $e) {
             echo 'success';
