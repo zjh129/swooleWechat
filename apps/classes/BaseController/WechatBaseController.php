@@ -20,7 +20,7 @@ class WechatBaseController extends BaseController
         //初始化强大的微信SDK开发工具微信EasyWeChat
         if (empty($this->config['wechat'][\Swoole::$php->factory_key]))
         {
-            throw new Swoole\Exception\Factory("wechat->".\Swoole::$php->factory_key." is not found.");
+            throw new \Exception("wechat->".\Swoole::$php->factory_key." is not found.");
         }
         $wechatConfig = $this->config['wechat'][\Swoole::$php->factory_key];
         $this->wechatApp = new \EasyWeChat\Foundation\Application($wechatConfig);
