@@ -13,6 +13,18 @@ class WxSendMsgSave extends WxMsg implements Swoole\IFace\EventHandler
             return false;
         }
         $message = XML::parse($data['message']);
+        if (!$message){
+            return false;
+        }
         var_dump($message);
+        $saveData = [
+            'ToUserName' => $message['ToUserName'],
+            'FromUserName' => $message['FromUserName'],
+            'MsgType' => $message['MsgType'],
+            'CreateTime' => $message['CreateTime'],
+        ];
+        unset($message['ToUserName'], $message['FromUserName'], $message['MsgType'], $message['CreateTime']);
+        $saveData['ContentDetail'] = \GuzzleHttp\json_encode($message);
+
     }
 }
