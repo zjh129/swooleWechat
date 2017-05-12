@@ -3,12 +3,11 @@ namespace App\BaseController;
 
 /**
  * 微信接口基类控制器
+ * @property \EasyWeChat\Foundation\Application $easywechat
  * @package App\Controller\Api
  */
 class WechatBaseController extends BaseController
 {
-    protected $wechatApp;
-
     /**
      * 构造函数
      * @param \Swoole $swoole

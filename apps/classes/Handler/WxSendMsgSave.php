@@ -2,13 +2,17 @@
 namespace App\Handler;
 
 use Swoole;
+use App\WechatHandler\WxMsg;
+use EasyWeChat\Support\XML;
 
-class WxSendMsgSave implements Swoole\IFace\EventHandler
+class WxSendMsgSave extends WxMsg implements Swoole\IFace\EventHandler
 {
     function trigger($type, $data)
     {
-        echo "事件二: ";
-        var_dump($type);
-        var_dump($data);
+        if(!isset($data['message']) || !$data['message']){
+            return false;
+        }
+        $message = XML::parse($data['message']);
+        var_dump($message);
     }
 }
