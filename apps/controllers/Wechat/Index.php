@@ -22,7 +22,9 @@ class Index extends Base
     public function index()
     {
         try {
-            $server = $this->wechatApp->server;
+            //设置Request类，改为调用优化好的的Request，因为swoole不支持原生的file_get_content('php://input');
+            $this->easywechat->server->setRequest(\App\Component\Request::createFromGlobals());
+            $server = $this->easywechat->server;
             $server->setMessageHandler(function ($message) {
                 //触发微信接收消息事件
                 \Swoole::$php->event->trigger("WxRecMsg", array('message' => $message));
