@@ -1,12 +1,11 @@
 <?php
 namespace App\Model;
-use Swoole;
 
 /**
  * 语音接收消息记录模型
  * @package App\Model
  */
-class WxRecMsgVoice extends Swoole\Model
+class WxRecMsgVoice extends \App\Component\BaseModel
 {
     public $primary = 'id';
     /**

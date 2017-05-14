@@ -1,12 +1,11 @@
 <?php
 namespace App\Model;
-use Swoole;
 
 /**
  * 上报地理位置事件记录模型
  * @package App\Model
  */
-class WxRecEventLocation extends Swoole\Model
+class WxRecEventLocation extends \App\Component\BaseModel
 {
     public $primary = 'id';
     /**

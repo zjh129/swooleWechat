@@ -1,5 +1,6 @@
 <?php
 namespace App\Controller;
+use App\Model\WxRecMsgText;
 use Swoole;
 
 class Db extends Swoole\Controller
@@ -94,5 +95,11 @@ class Db extends Swoole\Controller
 
         var_dump($ret1->result->fetchall());
         var_dump($ret2->result->fetchall());
+    }
+    function test()
+    {
+        $model = model('WxRecMsgText');
+        //$model->select = 'MsgId';
+        var_dump($model->getone(['id<'=>0]));
     }
 }

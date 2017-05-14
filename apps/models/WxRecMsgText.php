@@ -1,12 +1,11 @@
 <?php
 namespace App\Model;
-use Swoole;
 
 /**
  * 文本接收消息记录模型
  * @package App\Model
  */
-class WxRecMsgText extends Swoole\Model
+class WxRecMsgText extends \App\Component\BaseModel
 {
     public $primary = 'id';
     /**

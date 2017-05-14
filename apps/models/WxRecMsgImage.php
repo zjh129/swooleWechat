@@ -1,12 +1,11 @@
 <?php
 namespace App\Model;
-use Swoole;
 
 /**
  * 图片接收消息记录模型
  * @package App\Model
  */
-class WxRecMsgImage extends Swoole\Model
+class WxRecMsgImage extends \App\Component\BaseModel
 {
     public $primary = 'id';
     /**

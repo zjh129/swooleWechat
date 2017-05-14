@@ -1,8 +1,7 @@
 <?php
 namespace App\Model;
-use Swoole;
 
-class User extends Swoole\Model
+class User extends \App\Component\BaseModel
 {
     public $primary = 'userId';
     /**

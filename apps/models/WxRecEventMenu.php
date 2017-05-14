@@ -1,13 +1,11 @@
 <?php
 namespace App\Model;
 
-use Swoole;
-
 /**
  * 自定义菜单事件记录模型
  * @package App\Model
  */
-class WxRecEventMenu extends Swoole\Model
+class WxRecEventMenu extends \App\Component\BaseModel
 {
     public $primary = 'id';
     /**

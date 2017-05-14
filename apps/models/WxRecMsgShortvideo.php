@@ -1,12 +1,11 @@
 <?php
 namespace App\Model;
-use Swoole;
 
 /**
  * 短视频接收消息记录模型
  * @package App\Model
  */
-class WxRecMsgShortvideo extends Swoole\Model
+class WxRecMsgShortvideo extends \App\Component\BaseModel
 {
     public $primary = 'id';
     /**
