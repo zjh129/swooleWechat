@@ -10,7 +10,7 @@ $db['master'] = [
     'name'       => 'swooleWechat',
     'charset'    => 'utf8',
     'setname'    => true,
-    'persistent' => true, //MySQL长连接
+    'persistent' => false, //MySQL长连接
     'use_proxy'  => false,  //启动读写分离Proxy
     'slaves'     => [
         ['host' => '127.0.0.1', 'port' => '3307', 'weight' => 100],
