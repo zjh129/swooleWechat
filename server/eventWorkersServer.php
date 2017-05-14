@@ -9,4 +9,93 @@
 //载入初始化文件
 require_once __DIR__ . '/initServer.php';
 //执行脚本
-Swoole::$php->event->runWorker(2);
+//Swoole::$php->event->runWorker(10);
+class Event
+{
+    private static $_instance;
+    static $optionKit;
+    static $pidFile;
+    static $defaultOptions = array(
+        'd|daemon' => '启用守护进程模式',
+        'help' => '显示帮助界面',
+        'w|worker?' => '设置Worker进程的数量',
+    );
+    /**
+     * 设置PID文件
+     * @param $pidFile
+     */
+    static function setPidFile($pidFile)
+    {
+        self::$pidFile = $pidFile;
+        Swoole::$php->myevent->setPidFile($pidFile);
+    }
+    /**
+     * 显示命令行指令
+     */
+    static function start()
+    {
+        /*if (empty(self::$pidFile))
+        {
+            throw new \Exception("require pidFile.");
+        }*/
+        $pid_file = self::$pidFile;
+        if (is_file($pid_file))
+        {
+            $server_pid = file_get_contents($pid_file);
+        }
+        else
+        {
+            $server_pid = 0;
+        }
+
+        if (!self::$optionKit)
+        {
+            Swoole\Loader::addNameSpace('GetOptionKit', LIBPATH . '/module/GetOptionKit/src/GetOptionKit');
+            self::$optionKit = new \GetOptionKit\GetOptionKit;
+        }
+
+        $kit = self::$optionKit;
+        foreach(self::$defaultOptions as $k => $v)
+        {
+            //解决Windows平台乱码问题
+            if (PHP_OS == 'WINNT')
+            {
+                $v = iconv('utf-8', 'gbk', $v);
+            }
+            $kit->add($k, $v);
+        }
+        global $argv;
+        $opt = $kit->parse($argv);
+        //默认创建进程数量
+        $workNum = isset($opt['worker']) && $opt['worker'] ? (int) $opt['worker'] : 2;
+        $daemon = isset($opt['daemon']) && $opt['daemon'] ? $opt['daemon'] : false;
+        if (empty($argv[1]) or isset($opt['help']))
+        {
+            goto usage;
+        }
+        /*elseif ($argv[1] == 'reload')
+        {
+            Swoole::$php->myevent->stopWorker();
+            Swoole::$php->myevent->runWorker(Swoole::$php->myevent->workerNum, true);
+            exit;
+        }*/
+        elseif ($argv[1] == 'stop')
+        {
+            Swoole::$php->myevent->stopWorker();
+            exit;
+        }
+        elseif ($argv[1] == 'start')
+        {
+            Swoole::$php->myevent->runWorker($workNum, $daemon);
+        }
+        else
+        {
+            usage:
+            $kit->specs->printOptions("php {$argv[0]} start|stop");
+            exit;
+        }
+    }
+}
+//执行事件服务
+Event::setPidFile(WEBPATH . '/server/pid/eventServer.pid');
+Event::start();
