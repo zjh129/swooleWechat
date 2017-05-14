@@ -15,7 +15,6 @@ class WxSyncUser implements Swoole\IFace\EventHandler
 
     public function trigger($type, $data)
     {
-        var_dump($type, $data);
         $openid = $data['openid'] ?? '';
         if (!$openid) {
             return false;

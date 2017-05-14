@@ -14,8 +14,7 @@ class WxSaveUserSubLog implements Swoole\IFace\EventHandler
 {
     public function trigger($type, $data)
     {
-        var_dump($type, $data);
-        if (isset($data['openid']) || !$data['openid']) {
+        if (!isset($data['openid']) || !$data['openid']) {
             return false;
         }
         $saveData = [
