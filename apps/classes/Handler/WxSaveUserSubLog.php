@@ -20,7 +20,7 @@ class WxSaveUserSubLog implements Swoole\IFace\EventHandler
         }
         $saveData = [
             'openid'    => $data['openid'],
-            'subscribe' => $data['subscribe'] ? (int) $data['subscribe'] : -1,
+            'subscribe' => isset($data['subscribe']) ? (int) $data['subscribe'] : -1,
             'createTime'    => time(),
         ];
         $model = model('WxUserSubscribeLog');
