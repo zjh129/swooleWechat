@@ -34,11 +34,6 @@ class Event extends Base implements InterfaceHandler
                 case self::RECMSG_EVENT_LOCATION://上报地理位置事件
                     break;
                 case self::RECMSG_EVENT_MENU://自定义菜单事件
-                    //异步触发用户关注取关注事件
-                    \Swoole::$php->event->trigger('WxUserSubscribe', [
-                        'openid' => $this->recMessage->FromUserName,
-                        'subscribe' => $this->recMessage->Event == 'subscribe' ? 1 : 0,
-                    ]);
                     break;
             }
         }
