@@ -100,6 +100,6 @@ class Db extends Swoole\Controller
     {
         $model = model('WxRecMsgText');
         //$model->select = 'MsgId';
-        var_dump($model->getone(['id<'=>0]));
+        var_dump($model->getone(['id<'=>5]));
     }
 }

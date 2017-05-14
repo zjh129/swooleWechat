@@ -1,6 +1,6 @@
 <?php
 $db['master'] = [
-    'type'       => Swoole\Database::TYPE_MYSQL,
+    'type'       => Swoole\Database::TYPE_MYSQLi,
     'host'       => '172.17.0.2',
     'port'       => 3306,
     'dbms'       => 'mysql',
@@ -10,7 +10,7 @@ $db['master'] = [
     'name'       => 'swooleWechat',
     'charset'    => 'utf8',
     'setname'    => true,
-    'persistent' => false, //MySQL长连接
+    'persistent' => true, //MySQL长连接
     'use_proxy'  => false,  //启动读写分离Proxy
     'slaves'     => [
         ['host' => '127.0.0.1', 'port' => '3307', 'weight' => 100],

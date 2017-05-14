@@ -1,6 +1,6 @@
 <?php
 $db['master'] = [
-    'type'       => Swoole\Database::TYPE_MYSQL,
+    'type'       => Swoole\Database::TYPE_MYSQLi,
     'host'       => '172.17.0.2',
     'port'       => 3306,
     'dbms'       => 'mysql',
