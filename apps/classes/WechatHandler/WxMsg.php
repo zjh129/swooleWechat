@@ -82,22 +82,22 @@ class WxMsg
         }
         //关注事件推送
         if ($this->recMessage->MsgType == 'event' && in_array($this->recMessage->Event, ['subscribe', 'unsubscribe']) && !isset($this->recMessage->EventKey)) {
-            $this->recMessageType = self::EVENT_TYPE_SUBSCRIBE;
+            $this->recMessageType = self::RECMSG_EVENT_SUBSCRIBE;
             return true;
         }
         //扫码事件
         if ($this->recMessage->MsgType == 'event' && in_array($this->recMessage->Event, ['subscribe', 'SCAN']) && isset($this->recMessage->EventKey) && strpos($this->recMessage->EventKey, 'qrscene_') !== false) {
-            $this->recMessageType = self::EVENT_TYPE_SCAN;
+            $this->recMessageType = self::RECMSG_EVENT_SCAN;
             return true;
         }
         //上报地理位置事件
         if ($this->recMessage->MsgType == 'event' && in_array($this->recMessage->Event, ['LOCATION'])) {
-            $this->recMessageType = self::EVENT_TYPE_LOCATION;
+            $this->recMessageType = self::RECMSG_EVENT_LOCATION;
             return true;
         }
         //自定义菜单事件
         if ($this->recMessage->MsgType == 'event' && in_array($this->recMessage->Event, ['CLICK', 'VIEW'])) {
-            $this->recMessageType = self::EVENT_TYPE_MENU;
+            $this->recMessageType = self::RECMSG_EVENT_MENU;
             return true;
         }
     }
