@@ -94,14 +94,14 @@ class Event
             elseif ($argv[1] == 'start')
             {
                 Swoole::$php->myevent->runWorker($workNum, $daemon);
-            }elseif ($argv[1] == 'restart'){
+            }elseif ($argv[1] == 'reload'){
                 Swoole::$php->myevent->stopWorker();
                 Swoole::$php->myevent->runWorker($workNum, true);
             }
             else
             {
                 usage:
-                $kit->specs->printOptions("php {$argv[0]} start|stop");
+                $kit->specs->printOptions("php {$argv[0]} start|stop|reload");
                 exit;
             }
         }catch (Exception $e){

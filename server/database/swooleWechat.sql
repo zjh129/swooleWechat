@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-05-10 23:26:19
+Date: 2017-05-15 21:25:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,11 +31,6 @@ CREATE TABLE `sys_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- ----------------------------
--- Records of sys_user
--- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '赵建辉', 'admin', '123456', 'zhaojianhui129@163.com', '2017-02-06 17:13:54', '2017-02-06 17:14:12');
-
--- ----------------------------
 -- Table structure for wx_rec_event_location
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_event_location`;
@@ -53,10 +48,6 @@ CREATE TABLE `wx_rec_event_location` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上报地理位置事件记录表';
 
 -- ----------------------------
--- Records of wx_rec_event_location
--- ----------------------------
-
--- ----------------------------
 -- Table structure for wx_rec_event_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_event_menu`;
@@ -69,11 +60,7 @@ CREATE TABLE `wx_rec_event_menu` (
   `EventKey` varchar(50) NOT NULL DEFAULT '' COMMENT '事件KEY值，与自定义菜单接口中KEY值对应',
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='自定义菜单事件记录表';
-
--- ----------------------------
--- Records of wx_rec_event_menu
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='自定义菜单事件记录表';
 
 -- ----------------------------
 -- Table structure for wx_rec_event_scan
@@ -92,10 +79,6 @@ CREATE TABLE `wx_rec_event_scan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='扫码事件记录表';
 
 -- ----------------------------
--- Records of wx_rec_event_scan
--- ----------------------------
-
--- ----------------------------
 -- Table structure for wx_rec_event_subscribe
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_event_subscribe`;
@@ -107,11 +90,7 @@ CREATE TABLE `wx_rec_event_subscribe` (
   `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，subscribe(订阅)、unsubscribe(取消订阅)',
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='关注与取关注事件消息记录表';
-
--- ----------------------------
--- Records of wx_rec_event_subscribe
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='关注与取关注事件消息记录表';
 
 -- ----------------------------
 -- Table structure for wx_rec_msg_image
@@ -130,14 +109,6 @@ CREATE TABLE `wx_rec_msg_image` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='图片接收消息记录表';
 
 -- ----------------------------
--- Records of wx_rec_msg_image
--- ----------------------------
-INSERT INTO `wx_rec_msg_image` VALUES ('1', '6418510779580815229', 'image', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'http://mmbiz.qpic.cn/mmbiz_jpg/TkwNNc2rue0ZFhiaOCcuyuTZbDB0JoR9gGaTBgayr1kJV1EtaZ0gq7YPfs22EH8Oeu3Yo2lqZxe7bjnTcuZE9Tg/0', 'C8lqeWDeNLd0L9l0UzfmlT5sTuJnZ25IoGN2YEaGKS0IQImV_0niSQgSJ_pisONX', '1494425996');
-INSERT INTO `wx_rec_msg_image` VALUES ('2', '6418527487003597941', 'image', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'http://mmbiz.qpic.cn/mmbiz_jpg/TkwNNc2rue0ZFhiaOCcuyuTZbDB0JoR9gyz0j40aTymppfiagL1WSQt8qJw4wA2xjYfYVOg0hyJckuhwR3RYXe0Q/0', 'g2NGKt9I_xMu4g4wg3a61uDM78fPvP5MrLgxwWxXIliqARZomkwU2HSriQdxl3mS', '1494429886');
-INSERT INTO `wx_rec_msg_image` VALUES ('3', '6418527487003597940', 'image', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'http://mmbiz.qpic.cn/mmbiz_jpg/TkwNNc2rue0ZFhiaOCcuyuTZbDB0JoR9gIgEn8D243uFpOZ5gW4hA9t1h3d6ZqbCibP1VjT2gRKsibfvlg30rp1iaw/0', 'SUVcU_sKhQ-wCviQ99KcNkSjUqkzt5mWlx_RUi_xODhj4f-ElDIcm2KhkN2CJ0Mo', '1494429886');
-INSERT INTO `wx_rec_msg_image` VALUES ('4', '6418527487003597942', 'image', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'http://mmbiz.qpic.cn/mmbiz_jpg/TkwNNc2rue0ZFhiaOCcuyuTZbDB0JoR9gO7YIoUicrH5IJbf6RcpK2DYdDY9tibapvEGyQaM9CKP1s91cCUgSOicWA/0', 'k5s23T0qrAIsemEPFfOYYSljwmywRTie2Cl_TbG8mYknmU-b0rO8efVY2SQPhab8', '1494429886');
-
--- ----------------------------
 -- Table structure for wx_rec_msg_link
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_msg_link`;
@@ -153,13 +124,6 @@ CREATE TABLE `wx_rec_msg_link` (
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='链接接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_link
--- ----------------------------
-INSERT INTO `wx_rec_msg_link` VALUES ('1', '6418511329336629168', 'link', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '25 个常用的 Linux iptables 规则', '一些常用的 Linux iptables 规则，请根据自己的具体需要再修改。', '一些常用的 Linux iptables 规则，请根据自己的具体需要再修改。', '1494426124');
-INSERT INTO `wx_rec_msg_link` VALUES ('2', '6418526473391316037', 'link', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '如何在不停机的情况下，完成百万级数据跨表迁移？', 'Stripe与大家分享了他们在不停服的情况下如何做大规模数据在线迁移的经验，尤其是数据模型发生改变时。', 'Stripe与大家分享了他们在不停服的情况下如何做大规模数据在线迁移的经验，尤其是数据模型发生改变时。', '1494429650');
-INSERT INTO `wx_rec_msg_link` VALUES ('3', '6418527276550200423', 'link', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'WeUI', '为微信 Web 服务量身设计', '为微信 Web 服务量身设计', '1494429837');
 
 -- ----------------------------
 -- Table structure for wx_rec_msg_location
@@ -180,11 +144,6 @@ CREATE TABLE `wx_rec_msg_location` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='地理位置接收消息记录表';
 
 -- ----------------------------
--- Records of wx_rec_msg_location
--- ----------------------------
-INSERT INTO `wx_rec_msg_location` VALUES ('1', '6418527371039480942', 'location', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '23.163044', '113.382989', '15', '广州市天河区岑村圣堂大街福永商场(岑村小学南)', '1494429859');
-
--- ----------------------------
 -- Table structure for wx_rec_msg_shortvideo
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_msg_shortvideo`;
@@ -201,10 +160,6 @@ CREATE TABLE `wx_rec_msg_shortvideo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短视频接收消息记录表';
 
 -- ----------------------------
--- Records of wx_rec_msg_shortvideo
--- ----------------------------
-
--- ----------------------------
 -- Table structure for wx_rec_msg_text
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_msg_text`;
@@ -217,18 +172,7 @@ CREATE TABLE `wx_rec_msg_text` (
   `Content` text NOT NULL COMMENT '文本消息内容',
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_text
--- ----------------------------
-INSERT INTO `wx_rec_msg_text` VALUES ('1', '6418509856162846471', 'text', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '还是基督教', '1494425781');
-INSERT INTO `wx_rec_msg_text` VALUES ('2', '6418509899112519438', 'text', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '真的么？', '1494425791');
-INSERT INTO `wx_rec_msg_text` VALUES ('3', '6418509997896767264', 'text', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '为什么接收消息这么慢？', '1494425814');
-INSERT INTO `wx_rec_msg_text` VALUES ('4', '6418510027961538342', 'text', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '确定么？', '1494425821');
-INSERT INTO `wx_rec_msg_text` VALUES ('5', '6418510667911665518', 'text', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '/::)', '1494425970');
-INSERT INTO `wx_rec_msg_text` VALUES ('6', '6418511114588264346', 'text', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '哈喽哈喽哈喽，我要说话', '1494426074');
-INSERT INTO `wx_rec_msg_text` VALUES ('7', '6418516951448820266', 'text', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '高规格', '1494427433');
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
 
 -- ----------------------------
 -- Table structure for wx_rec_msg_video
@@ -245,13 +189,6 @@ CREATE TABLE `wx_rec_msg_video` (
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='视频接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_video
--- ----------------------------
-INSERT INTO `wx_rec_msg_video` VALUES ('1', '6418510990034212748', 'video', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'wIvUHGkFLdjbXK9TTnto4BkqA3BmgpxzgUcnN0WgfpvNpV8_JAo7qRYc2wW4_M-j', 'UNDVEiILx9bVZrDj1rZfEGtHwrD9E5R9KCFTS92MoS48QEJZKRah6mArx-Mq4qM9', '1494426045');
-INSERT INTO `wx_rec_msg_video` VALUES ('2', '6418514133950273716', 'video', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'YcKkHz4xU76yjiRxYPR5lFwKd1UpBT8rPF6sCu8ZQT52EWQYIE_NKvSh1weOHFr-', 'fZo5NAAWc7_voaABWyEtF4_Xqhep6xyDq15Ysw6eSxCxZtjQbMBKLPI_AAhut_Re', '1494426777');
-INSERT INTO `wx_rec_msg_video` VALUES ('3', '6418527706046930053', 'video', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'iBBo0kY7zkapRsUy0HALm3KQssj9Dnmo0IVCe1wgdoQ27T4D_BNMQ1oFLw7DWJPn', 'PjCwezhIoGHngTouX-oltQP417-1RvBGAMrLPkXGpUIUhLmm2ltsAFNFLkn4elyD', '1494429937');
 
 -- ----------------------------
 -- Table structure for wx_rec_msg_voice
@@ -271,9 +208,55 @@ CREATE TABLE `wx_rec_msg_voice` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='语音接收消息记录表';
 
 -- ----------------------------
--- Records of wx_rec_msg_voice
+-- Table structure for wx_send_msg
 -- ----------------------------
-INSERT INTO `wx_rec_msg_voice` VALUES ('1', '6418515907771767261', 'voice', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'wz3p3bc-kx70LDbS33BgiWwmuFuY0BdJgT27i0f7a_cHaS7FGkjYzxq3G0RFfjv6', 'amr', '', '1494427190');
-INSERT INTO `wx_rec_msg_voice` VALUES ('2', '6418516023735884259', 'voice', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'q0bZNUEgwsPfbqxuBT33yuVx64vyns_sZ0Ql4gV5z9kHqBizXvTXBphAXp6SNb6_', 'amr', '', '1494427217');
-INSERT INTO `wx_rec_msg_voice` VALUES ('3', '6418527413989153905', 'voice', 'gh_570de6da66f2', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', 'BcIn76CIFkNX4rMhjDaPpFRhzO4261sBk9VmbyCehd-MFUh7TmDrOaH0OANxKlzC', 'amr', '', '1494429869');
+DROP TABLE IF EXISTS `wx_send_msg`;
+CREATE TABLE `wx_send_msg` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'text',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `ContentDetail` text NOT NULL COMMENT '回复的消息内容',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
+
+-- ----------------------------
+-- Table structure for wx_user
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_user`;
+CREATE TABLE `wx_user` (
+  `userId` int(10) NOT NULL AUTO_INCREMENT COMMENT 'userId',
+  `subscribe` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户是否订阅该公众号标识',
+  `openid` varchar(30) NOT NULL DEFAULT '' COMMENT '用户的标识，对当前公众号唯一',
+  `unionid` varchar(30) NOT NULL DEFAULT '' COMMENT '只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。',
+  `groupid` int(10) NOT NULL,
+  `tagidList` varchar(150) NOT NULL DEFAULT '' COMMENT '用户被打上的标签ID列表',
+  `nickname` varchar(20) NOT NULL DEFAULT '' COMMENT '用户的昵称',
+  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户的性别，值为1时是男性，值为2时是女性，值为0时是未知',
+  `country` varchar(30) NOT NULL DEFAULT '' COMMENT '用户所在国家',
+  `province` varchar(50) NOT NULL DEFAULT '' COMMENT '用户所在省份',
+  `city` varchar(30) NOT NULL DEFAULT '' COMMENT '用户所在城市',
+  `language` varchar(20) NOT NULL COMMENT '用户的语言，简体中文为zh_CN',
+  `headimgurl` varchar(50) NOT NULL COMMENT '用户头像，最后一个数值代表正方形头像大小',
+  `remark` varchar(150) NOT NULL DEFAULT '' COMMENT '公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注',
+  `subscribeTime` int(10) NOT NULL DEFAULT '0' COMMENT '用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间',
+  `firstSubscribeTime` int(10) NOT NULL DEFAULT '0' COMMENT '时间',
+  `createTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`userId`),
+  KEY `openid` (`openid`,`unionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户表';
+
+-- ----------------------------
+-- Table structure for wx_user_subscribe_log
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_user_subscribe_log`;
+CREATE TABLE `wx_user_subscribe_log` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `openid` varchar(30) NOT NULL DEFAULT '',
+  `subscribe` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号',
+  `createTime` int(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `openid` (`openid`,`subscribe`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户关注日志';
 SET FOREIGN_KEY_CHECKS=1;

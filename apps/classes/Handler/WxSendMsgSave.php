@@ -33,7 +33,7 @@ class WxSendMsgSave extends WxMsg implements Swoole\IFace\EventHandler
             'CreateTime' => $message['CreateTime'],
         ];
         unset($message['ToUserName'], $message['FromUserName'], $message['MsgType'], $message['CreateTime']);
-        $saveData['ContentDetail'] = ($message);
+        $saveData['ContentDetail'] = json_encode($message);
         return model('WxSendMsg')->put($saveData);
     }
 }
