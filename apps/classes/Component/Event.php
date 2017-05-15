@@ -132,16 +132,16 @@ class Event extends \Swoole\Component\Event
             return false;
         }
         //停止运行
-        $this->_atomic->set(0);
+        //$this->_atomic->set(0);
 
-        /*$serverPid = file_get_contents($this->pidFile);
+        $serverPid = file_get_contents($this->pidFile);
         $serverPid && $serverPid = json_decode($serverPid, $serverPid);
         if ($serverPid){
             foreach ($serverPid as $pid){
                 \swoole_process::kill($pid);
             }
             $this->isStop = 1;
-        }*/
+        }
         //删除进程文件
         unlink($this->pidFile);
         /*\swoole_process::signal(SIGTERM, function() {
