@@ -73,6 +73,12 @@ class Event extends \Swoole\Component\Event
             $pidList[] = $process->start();
             $this->_workers[] = $process;
         }
+        //合并已有的pid列表
+        if (file_exists($pidList)){
+            $serverPid = file_get_contents($this->pidFile);
+            $serverPid && $serverPid = json_decode($serverPid, true);
+            $serverPid && $pidList = array_merge((array)$serverPid, (array)$pidList);
+        }
         //写入pid列表到pid文件
         if ($pidList){
             file_put_contents($this->pidFile, json_encode($pidList));
