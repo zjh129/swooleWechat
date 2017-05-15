@@ -146,7 +146,7 @@ class Event extends \Swoole\Component\Event
         }
 
         $serverPid = file_get_contents($this->pidFile);
-        $serverPid && $serverPid = json_decode($serverPid, $serverPid);
+        $serverPid && $serverPid = json_decode($serverPid, true);
         if ($serverPid){
             foreach ($serverPid as $pid){
                 \swoole_process::kill($pid);

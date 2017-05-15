@@ -66,6 +66,18 @@ class Event
         }
         global $argv;
         $opt = $kit->parse($argv);
+        //存储上一次的操作参数
+        $lastOptFile = WEBPATH . '/server/pid/eventOpt.pid';
+        if ($opt){
+            file_put_contents($lastOptFile, json_encode($opt));
+        }
+        if ($argv[1] == 'restart'){
+            $lastOpt = file_get_contents($lastOptFile);
+            $lastOpt && $serverPid = json_decode( $lastOpt, true);
+            $opt = array_merge($opt, $lastOpt);
+        }
+
+
         //默认创建进程数量
         $workNum = isset($opt['worker']) && $opt['worker'] ? (int) $opt['worker'] : 2;
         $daemon = isset($opt['daemon']) && $opt['daemon'] ? $opt['daemon'] : false;
@@ -73,12 +85,6 @@ class Event
         {
             goto usage;
         }
-        /*elseif ($argv[1] == 'reload')
-        {
-            Swoole::$php->myevent->stopWorker();
-            Swoole::$php->myevent->runWorker(Swoole::$php->myevent->workerNum, true);
-            exit;
-        }*/
         elseif ($argv[1] == 'stop')
         {
             Swoole::$php->myevent->stopWorker();
@@ -87,6 +93,9 @@ class Event
         elseif ($argv[1] == 'start')
         {
             Swoole::$php->myevent->runWorker($workNum, $daemon);
+        }elseif ($argv[1] == 'restart'){
+            Swoole::$php->myevent->stopWorker();
+            Swoole::$php->myevent->runWorker($workNum, true);
         }
         else
         {
