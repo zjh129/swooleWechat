@@ -74,7 +74,7 @@ class Event
         if ($argv[1] == 'restart'){
             $lastOpt = file_get_contents($lastOptFile);
             $lastOpt && $serverPid = json_decode( $lastOpt, true);
-            $opt = array_merge($opt, $lastOpt);
+            $opt = array_merge((array)$opt, (array)$lastOpt);
         }
 
 
