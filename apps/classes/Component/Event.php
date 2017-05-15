@@ -60,6 +60,10 @@ class Event extends \Swoole\Component\Event
      */
     public function delPidList()
     {
+        if (!file_exists($this->pidFile)){
+            throw new \Exception('你无法停止未启动的服务');
+            return false;
+        }
         //删除进程文件
         unlink($this->pidFile);
     }
@@ -158,6 +162,8 @@ class Event extends \Swoole\Component\Event
 
         //监听主进程的退出信号，然后退出所有子进程
         \swoole_process::signal(SIGTERM, function() {
+            //删除进程文件
+            $this->delPidList();
             //停止运行
             $this->_atomic->set(0);
             //关闭所有子进程
@@ -165,8 +171,6 @@ class Event extends \Swoole\Component\Event
             {
                 \swoole_process::kill($p->pid);
             }
-            //删除进程文件
-            $this->delPidList();
         });
 
         return ;
@@ -177,9 +181,8 @@ class Event extends \Swoole\Component\Event
      */
     public function stopWorker()
     {
-        if (!file_exists($this->pidFile)){
-            return false;
-        }
+        //删除进程文件
+        $this->delPidList();
 
         $serverPid = $this->getPidList();
         if ($serverPid){
@@ -188,7 +191,5 @@ class Event extends \Swoole\Component\Event
             }
             $this->isStop = 1;
         }
-        //删除进程文件
-        $this->delPidList();
     }
 }
