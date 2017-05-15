@@ -78,32 +78,37 @@ class Event
             $opt = array_merge((array)$opt, (array)$lastOpt);
         }
 
+        try{
+            //默认创建进程数量
+            $workNum = isset($opt['worker']) && $opt['worker'] ? (int) $opt['worker'] : 2;
+            $daemon = isset($opt['daemon']) && $opt['daemon'] ? $opt['daemon'] : false;
+            if (empty($argv[1]) or isset($opt['help']))
+            {
+                goto usage;
+            }
+            elseif ($argv[1] == 'stop')
+            {
+                Swoole::$php->myevent->stopWorker();
+                exit;
+            }
+            elseif ($argv[1] == 'start')
+            {
+                Swoole::$php->myevent->runWorker($workNum, $daemon);
+            }elseif ($argv[1] == 'restart'){
+                Swoole::$php->myevent->stopWorker();
+                Swoole::$php->myevent->runWorker($workNum, true);
+            }
+            else
+            {
+                usage:
+                $kit->specs->printOptions("php {$argv[0]} start|stop");
+                exit;
+            }
+        }catch (Exception $e){
+            echo $e->getMessage();
+            exit;
+        }
 
-        //默认创建进程数量
-        $workNum = isset($opt['worker']) && $opt['worker'] ? (int) $opt['worker'] : 2;
-        $daemon = isset($opt['daemon']) && $opt['daemon'] ? $opt['daemon'] : false;
-        if (empty($argv[1]) or isset($opt['help']))
-        {
-            goto usage;
-        }
-        elseif ($argv[1] == 'stop')
-        {
-            Swoole::$php->myevent->stopWorker();
-            exit;
-        }
-        elseif ($argv[1] == 'start')
-        {
-            Swoole::$php->myevent->runWorker($workNum, $daemon);
-        }elseif ($argv[1] == 'restart'){
-            Swoole::$php->myevent->stopWorker();
-            Swoole::$php->myevent->runWorker($workNum, true);
-        }
-        else
-        {
-            usage:
-            $kit->specs->printOptions("php {$argv[0]} start|stop");
-            exit;
-        }
     }
 }
 //执行事件服务

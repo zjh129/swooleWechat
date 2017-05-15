@@ -28,12 +28,52 @@ class Event extends \Swoole\Component\Event
     }
 
     /**
+     * 保存pid到文件
+     * @param $pidList
+     */
+    public function savePidList($pidList)
+    {
+        //写入pid列表到pid文件
+        if ($pidList){
+            $lastPidList = $this->getPidList();
+            $lastPidList && $pidList = array_merge($lastPidList, $pidList);
+            file_put_contents($this->pidFile, json_encode($pidList));
+        }
+    }
+
+    /**
+     * 获取已有pid列表
+     */
+    public function getPidList()
+    {
+        $serverPid = [];
+        //合并已有的pid列表
+        if (file_exists($this->pidFile)){
+            $serverPid = file_get_contents($this->pidFile);
+            $serverPid && $serverPid = json_decode($serverPid, true);
+        }
+        return $serverPid;
+    }
+
+    /**
+     * 删除pid列表
+     */
+    public function delPidList()
+    {
+        //删除进程文件
+        unlink($this->pidFile);
+    }
+    /**
      * 重构事件
      * @param int $worker_num
      * @param bool $daemon
      */
     public function runWorker($worker_num = 0, $daemon = false)
     {
+        if (file_exists($this->pidFile)){
+            throw new \Exception('服务已经启动');
+            return false;
+        }
         if(is_numeric($worker_num) && $worker_num > 0){
             $this->workerNum = $worker_num;
         }
@@ -64,8 +104,6 @@ class Event extends \Swoole\Component\Event
             \swoole_process::daemon();
         }
 
-        //写入pid列表到pid文件
-        $pidList = [];
         $this->_atomic->set(1);
         for ($i = 0; $i < $this->workerNum; $i++)
         {
@@ -73,16 +111,8 @@ class Event extends \Swoole\Component\Event
             $pidList[] = $process->start();
             $this->_workers[] = $process;
         }
-        //合并已有的pid列表
-        if (file_exists($this->pidFile)){
-            $serverPid = file_get_contents($this->pidFile);
-            $serverPid && $serverPid = json_decode($serverPid, true);
-            $serverPid && $pidList = array_merge((array)$serverPid, (array)$pidList);
-        }
         //写入pid列表到pid文件
-        if ($pidList){
-            file_put_contents($this->pidFile, json_encode($pidList));
-        }
+        $this->savePidList($pidList);
         /**
          * 如果为守护进程，则子进程自动重启
          */
@@ -116,7 +146,7 @@ class Event extends \Swoole\Component\Event
                     }
                     //写入pid列表到pid文件
                     if ($pidList){
-                        file_put_contents($this->pidFile, json_encode($pidList));
+                        $this->savePidList($pidList);
                     }
                 }
                 else
@@ -136,7 +166,7 @@ class Event extends \Swoole\Component\Event
                 \swoole_process::kill($p->pid);
             }
             //删除进程文件
-            unlink($this->pidFile);
+            $this->delPidList();
         });
 
         return ;
@@ -151,8 +181,7 @@ class Event extends \Swoole\Component\Event
             return false;
         }
 
-        $serverPid = file_get_contents($this->pidFile);
-        $serverPid && $serverPid = json_decode($serverPid, true);
+        $serverPid = $this->getPidList();
         if ($serverPid){
             foreach ($serverPid as $pid){
                 \swoole_process::kill($pid);
@@ -160,6 +189,6 @@ class Event extends \Swoole\Component\Event
             $this->isStop = 1;
         }
         //删除进程文件
-        unlink($this->pidFile);
+        $this->delPidList();
     }
 }
