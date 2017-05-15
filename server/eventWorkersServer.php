@@ -71,11 +71,11 @@ class Event
         if ($opt){
             file_put_contents($lastOptFile, json_encode($opt));
         }
+        //合并参数
         if ($argv[1] == 'restart'){
             $lastOpt = file_get_contents($lastOptFile);
             $lastOpt && $lastOpt = json_decode( $lastOpt, true);
             $opt = array_merge((array)$opt, (array)$lastOpt);
-            var_dump($opt);
         }
 
 
