@@ -73,7 +73,7 @@ class Event
         }
         if ($argv[1] == 'restart'){
             $lastOpt = file_get_contents($lastOptFile);
-            $lastOpt && $serverPid = json_decode( $lastOpt, true);
+            $lastOpt && $lastOpt = json_decode( $lastOpt, true);
             $opt = array_merge((array)$opt, (array)$lastOpt);
             var_dump($opt);
         }
