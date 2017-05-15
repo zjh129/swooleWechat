@@ -75,6 +75,7 @@ class Event
             $lastOpt = file_get_contents($lastOptFile);
             $lastOpt && $serverPid = json_decode( $lastOpt, true);
             $opt = array_merge((array)$opt, (array)$lastOpt);
+            var_dump($opt);
         }
 
 
