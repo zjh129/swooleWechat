@@ -72,7 +72,7 @@ class Event
             file_put_contents($lastOptFile, json_encode($opt));
         }
         //合并参数
-        if ($argv[1] == 'restart'){
+        if (!empty($argv[1]) && $argv[1] == 'restart'){
             $lastOpt = file_get_contents($lastOptFile);
             $lastOpt && $lastOpt = json_decode( $lastOpt, true);
             $opt = array_merge((array)$opt, (array)$lastOpt);

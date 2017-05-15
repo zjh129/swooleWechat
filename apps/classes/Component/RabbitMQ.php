@@ -68,7 +68,7 @@ class RabbitMQ
         }
         catch (\Exception $e)
         {
-            \Swoole::$php->log->error(__CLASS__ . " Swoole RabbitMQ Exception" . var_export($e, 1));
+            \Swoole::$php->log->error(__CLASS__ . " Swoole RabbitMQ Exception" . $e->getMessage());
             return false;
         }
     }

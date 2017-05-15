@@ -149,7 +149,7 @@ class Event extends \Swoole\Component\Event
                         }
                     }
                     //写入pid列表到pid文件
-                    if ($pidList){
+                    if ($isStop == 0 && $pidList){
                         $this->savePidList($pidList);
                     }
                 }
