@@ -105,7 +105,7 @@ class Event
                 exit;
             }
         }catch (Exception $e){
-            echo $e->getMessage();
+            echo $e->getMessage()."\r\n";
             exit;
         }
 
