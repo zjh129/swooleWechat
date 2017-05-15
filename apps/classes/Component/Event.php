@@ -80,7 +80,8 @@ class Event extends \Swoole\Component\Event
         /**
          * 如果为守护进程，则子进程自动重启
          */
-        \swoole_process::signal(SIGCHLD, function() {
+        $isStop = $this->isStop;
+        \swoole_process::signal(SIGCHLD, function($isStop) {
             while(true) {
                 $exitProcess = \swoole_process::wait(false);
                 if ($exitProcess)
@@ -91,7 +92,7 @@ class Event extends \Swoole\Component\Event
                     {
                         if ($p->pid == $exitProcess['pid'])
                         {
-                            if ($this->_atomic->get() == 1)
+                            if ($isStop == 0 && $this->_atomic->get() == 1)
                             {
                                 $pidList[] = $p->start();
                             }
@@ -143,8 +144,6 @@ class Event extends \Swoole\Component\Event
         if (!file_exists($this->pidFile)){
             return false;
         }
-        //停止运行
-        $this->_atomic->set(0);
 
         $serverPid = file_get_contents($this->pidFile);
         $serverPid && $serverPid = json_decode($serverPid, $serverPid);
