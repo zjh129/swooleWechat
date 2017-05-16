@@ -23,17 +23,16 @@ class BaseModel extends Swoole\Model
             throw new \Exception("no params.");
         }
 
-        $selectdb = new \Swoole\SelectDB($this->db);
-        $selectdb->from($this->table);
-        $selectdb->primary = $this->primary;
-        $selectdb->select($this->select);
+        $this->dbs->from($this->table);
+        $this->dbs->primary = $this->primary;
+        $this->dbs->select($this->select);
 
         if (!isset($params['order']))
         {
             $params['order'] = "`{$this->table}`.{$this->primary} desc";
         }
-        $selectdb->put($params);
+        $this->dbsb->put($params);
 
-        return $selectdb->getone();
+        return $this->dbs->getone();
     }
 }
