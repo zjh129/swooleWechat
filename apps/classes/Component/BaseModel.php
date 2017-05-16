@@ -4,7 +4,7 @@ namespace App\Component;
 use Swoole;
 
 /**
- * 发送消息模型
+ * 基础模型类
  * @subpackage Model
  * @package App\Model
  */
