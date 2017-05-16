@@ -1,7 +1,7 @@
 # swooleProject
 本项目使用swoole framework官方框架开发，在不改动原框架基础上进行优化，目前的优化主要是控制器模块支持、配置文件按环境不同划分.
 本项目主要为了节省微信服务号的开发成本，采用swoole framework提高项目并发处理能力。
-项目特色：异步处理、异步MySQL、异步Redis、数据库连接池、
+项目特色：异步处理、异步MySQL、异步Redis、数据库连接池
 
 框架项目地址：(https://github.com/swoole/framework)
 
@@ -24,7 +24,7 @@ cd /tmp/runkit-ext && phpize && ./configure && sudo make && sudo make install
 ----
 ```sh
 ├── apps                    项目目录
-│   ├── classes             类目录，可以任意添加想要的目录或脚本，swoole会自动注册并加载命名空间
+│   ├── classes             类目录，可以任意添加想要的目录或脚本，swoole会自动加载并注册命名空间
 │   │   ├── BaseController  基类控制器目录了
 │   │   ├── Component       组件目录
 │   │   ├── DAO             数据访问层目录
@@ -93,13 +93,32 @@ server {
     }
 }
 ```
+构造全局对象
+----
+1、如需配置项则在apps/config/中添加对应的配置文件
+2、在apps/factory/目录中添加注册对象，文件名即是全局对象名，如rabbitmq.php
+3、使用时则\Swoole::$php->rabbitmq->{method}方式使用
+
+如何自定义异步处理类
+----
+1、定义配置，则在apps/configs/中定义配置，如rabitmq.php的event键的配置<br>
+2、消息队列类，如apps/classes/Queue/RabbitMQ.php,该类需实现\Swoole\IFace\Queue接口<br>
+3、调整event配置，首先修改对应的配置目录中event.php中的type消息队列类为App\Queue\RabbitMQ::class<br>
+4、定义事件名，在apps/events/中定义事件处理类，一个事件可以同时丢给多个类处理<br>
+5、处理事件，在apps/classes/Handler/编写实现Swoole\IFace\EventHandler接口的类
+6、触发事件，Swoole::$php->event->trigger("hello2", array('key1'=>'val1','key2'=>'val2'));
 
 启动http服务
 ----
 执行如下脚本会自动显示使用帮助：
 ```sh
-php server/appServer.php
+php server/appServer.php --help
 ```
-
+启动异步处理服务
+----
+执行如下脚本会自动显示使用帮助：
+```sh
+php server/eventWorkersServer.php --help
+```
 
 
