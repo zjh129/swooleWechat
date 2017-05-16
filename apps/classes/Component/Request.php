@@ -17,7 +17,7 @@ class Request extends SymfonyRequest
     public function getContent($asResource = false)
     {
         //文字消息模拟
-        return "<xml><ToUserName><![CDATA[gh_570de6da66f2]]></ToUserName>\n<FromUserName><![CDATA[ogKdPt-LQTpRjBSRQYEZwNN2dGE4]]></FromUserName>\n<CreateTime>1494426074</CreateTime>\n<MsgType><![CDATA[text]]></MsgType>\n<Content><![CDATA[哈喽哈喽哈喽，我要说话]]></Content>\n<MsgId>6418511114588264346</MsgId>\n</xml>";
+        //return "<xml><ToUserName><![CDATA[gh_570de6da66f2]]></ToUserName>\n<FromUserName><![CDATA[ogKdPt-LQTpRjBSRQYEZwNN2dGE4]]></FromUserName>\n<CreateTime>1494426074</CreateTime>\n<MsgType><![CDATA[text]]></MsgType>\n<Content><![CDATA[哈喽哈喽哈喽，我要说话]]></Content>\n<MsgId>6418511114588264346</MsgId>\n</xml>";
         //图片消息模拟
         //return "<xml><ToUserName><![CDATA[gh_570de6da66f2]]></ToUserName>\n<FromUserName><![CDATA[ogKdPt-LQTpRjBSRQYEZwNN2dGE4]]></FromUserName>\n<CreateTime>1494425996</CreateTime>\n<MsgType><![CDATA[image]]></MsgType>\n<PicUrl><![CDATA[http://mmbiz.qpic.cn/mmbiz_jpg/TkwNNc2rue0ZFhiaOCcuyuTZbDB0JoR9gGaTBgayr1kJV1EtaZ0gq7YPfs22EH8Oeu3Yo2lqZxe7bjnTcuZE9Tg/0]]></PicUrl>\n<MsgId>6418510779580815229</MsgId>\n<MediaId><![CDATA[C8lqeWDeNLd0L9l0UzfmlT5sTuJnZ25IoGN2YEaGKS0IQImV_0niSQgSJ_pisONX]]></MediaId>\n</xml>";
         //语音消息模拟
