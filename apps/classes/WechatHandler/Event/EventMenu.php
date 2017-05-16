@@ -2,11 +2,13 @@
 namespace App\WechatHandler\Event;
 
 use Swoole;
+use App\WechatHandler\Base;
+use App\WechatHandler\InterfaceHandler;
 
 /**
  * 自定义菜单事件消息处理.
  */
-class EventMenu extends \App\WechatHandler\Base implements InterfaceHandler
+class EventMenu extends Base implements InterfaceHandler
 {
     /**
      * 主入口方法.

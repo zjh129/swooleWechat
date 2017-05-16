@@ -12,4 +12,8 @@ if (empty($this->config['wechat'][$php->factory_key]))
 }
 $wechatConfig = $this->config['wechat'][$php->factory_key];
 
-return new \EasyWeChat\Foundation\Application($wechatConfig);
+$app = new \EasyWeChat\Foundation\Application($wechatConfig);
+$cache = new App\Component\EasywechatCache();
+$app->access_token->setCache($cache);
+$app->access_token->setPrefix('SUISHI_WX_API_TOKEN');
+return $app;
