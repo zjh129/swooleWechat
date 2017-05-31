@@ -54,6 +54,11 @@ class WxRecMessage
      err(30003) // 原创校验被判定为转载文且用户选择了被判为转载就不群发
      * 模板消息，发送状态为成功
      *
+     * 券点流水详情事件:
+     * 本次订单号的状态,ORDER_STATUS_WAITING 等待支付 ORDER_STATUS_SUCC 支付成功 ORDER_STATUS_FINANCE_SUCC 加代币成功
+     * ORDER_STATUS_QUANTITY_SUCC 加库存成功 ORDER_STATUS_HAS_REFUND 已退币 ORDER_STATUS_REFUND_WAITING 等待退币确认
+     * ORDER_STATUS_ROLLBACK 已回退,系统失败 ORDER_STATUS_HAS_RECEIPT 已开发票
+     *
      * @var
      */
     public $Status;
@@ -85,6 +90,239 @@ class WxRecMessage
      * @var \App\WechatHandler\WxRecCopyrightCheckResult
      */
     public $CopyrightCheckResult;
+    #---------------------卡券属性部分-----------------------
+    /**
+     * 卡券ID
+     * @var
+     */
+    public $CardId;
+    /**
+     * 审核不通过原因
+     * @var
+     */
+    public $RefuseReason;
+    /**
+     * 是否为转赠领取，1代表是，0代表否。
+     * @var
+     */
+    public $IsGiveByFriend;
+    /**
+     * 1、当IsGiveByFriend为1时填入的字段，表示发起转赠用户的openid
+     * 2、接收卡券用户的openid
+     * @var
+     */
+    public $FriendUserName;
+    /**
+     * code序列号
+     * @var
+     */
+    public $UserCardCode;
+    /**
+     * 为保证安全，微信会在转赠发生后变更该卡券的code号，该字段表示转赠前的code.
+     * @var
+     */
+    public $OldUserCardCode;
+    /**
+     * 1、领取场景值，用于领取渠道数据统计。可在生成二维码接口及添加Addcard接口中自定义该字段的字符串值。
+     * 2、开发者发起核销时传入的自定义参数，用于进行核销渠道统计
+     * 3、商户自定义二维码渠道参数，用于标识本次扫码打开会员卡来源来自于某个渠道值的二维码
+     * @var
+     */
+    public $OuterStr;
+    /**
+     * 用户删除会员卡后可重新找回，当用户本次操作为找回时，该值为1，否则为0
+     * @var
+     */
+    public $IsRestoreMemberCard;
+    /**
+     * 是否转赠退回，0代表不是，1代表是。
+     * @var
+     */
+    public $IsReturnBack;
+    /**
+     * 是否是群转赠
+     * @var
+     */
+    public $IsChatRoom;
+    /**
+     * 核销来源。支持开发者统计API核销（FROM_API）、公众平台核销（FROM_MP）、卡券商户助手核销（FROM_MOBILE_HELPER）（核销员微信号）
+     * @var
+     */
+    public $ConsumeSource;
+    /**
+     * 门店ID，当前卡券核销的门店ID（只有通过卡券商户助手和买单核销时才会出现）
+     * @var
+     */
+    public $LocationId;
+    /**
+     * 门店名称，当前卡券核销的门店名称（只有通过自助核销和买单核销时才会出现该字段）
+     * @var
+     */
+    public $LocationName;
+    /**
+     * 核销该卡券核销员的openid（只有通过卡券商户助手核销时才会出现）
+     * @var
+     */
+    public $StaffOpenId;
+    /**
+     * 自助核销时，用户输入的验证码
+     * @var
+     */
+    public $VerifyCode;
+    /**
+     * 自助核销时，用户输入的备注金额
+     * @var
+     */
+    public $RemarkAmount;
+    /**
+     * 微信支付交易订单号（只有使用买单功能核销的卡券才会出现）
+     * @var
+     */
+    public $TransId;
+    /**
+     * 实付金额，单位为分
+     * @var
+     */
+    public $Fee;
+    /**
+     * 应付金额，单位为分
+     * @var
+     */
+    public $OriginalFee;
+    /**
+     * 变动的积分值。
+     * @var
+     */
+    public $ModifyBonus;
+    /**
+     * 变动的余额值。
+     * @var
+     */
+    public $ModifyBalance;
+    /**
+     * 报警详细信息
+     * @var
+     */
+    public $Detail;
+    /**
+     * 本次推送对应的订单号
+     * @var
+     */
+    public $OrderId;
+    /**
+     * 购买券点时，支付二维码的生成时间
+     * @var
+     */
+    public $CreateOrderTime;
+    /**
+     * 购买券点时，实际支付成功的时间
+     * @var
+     */
+    public $PayFinishTime;
+    /**
+     * 支付方式，一般为微信支付充值
+     * @var
+     */
+    public $Desc;
+    /**
+     * 剩余免费券点数量
+     * @var
+     */
+    public $FreeCoinCount;
+    /**
+     * 剩余付费券点数量
+     * @var
+     */
+    public $PayCoinCount;
+    /**
+     * 本次变动的免费券点数量
+     * @var
+     */
+    public $RefundFreeCoinCount;
+    /**
+     * 本次变动的付费券点数量
+     * @var
+     */
+    public $RefundPayCoinCount;
+    /**
+     * 所要拉取的订单类型
+    ORDER_TYPE_SYS_ADD 平台赠送券点 ORDER_TYPE_WXPAY 充值券点 ORDER_TYPE_REFUND 库存未使用回退券点 ORDER_TYPE_REDUCE 券点兑换库存 ORDER_TYPE_SYS_REDUCE 平台扣减
+     * @var
+     */
+    public $OrderType;
+    /**
+     * 系统备注，说明此次变动的缘由，如开通账户奖励、门店奖励、核销奖励以及充值、扣减。
+     * @var
+     */
+    public $Memo;
+    /**
+     * 所开发票的详情
+     * @var
+     */
+    public $ReceiptInfo;
+    #-------------------微信门店相关属性----------------------
+    /**
+     * 商户自己内部ID，即字段中的sid
+     * @var
+     */
+    public $UniqId;
+    /**
+     * 微信的门店ID，微信内门店唯一标示ID
+     * @var
+     */
+    public $PoiId;
+    /**
+     * 审核结果，成功succ 或失败fail
+     * @var
+     */
+    public $Result;
+    /**
+     * 成功的通知信息，或审核失败的驳回理由
+     * @var
+     */
+    public $msg;
+    #-----------------客服会话相关属性------------------
+    /**
+     * 客服账号
+     * @var
+     */
+    public $KfAccount;
+    /**
+     * 转接客服-原客服账号
+     * @var
+     */
+    public $FromKfAccount;
+    /**
+     * 转接客服-新客服账号
+     * @var
+     */
+    public $ToKfAccount;
+    #-------------WIFI连网后下发消息-----------------
+    /**
+     * 连网时间（整型）
+     * @var
+     */
+    public $ConnectTime;
+    /**
+     * 系统保留字段，固定值
+     * @var
+     */
+    public $ExpireTime;
+    /**
+     * 系统保留字段，固定值
+     * @var
+     */
+    public $VendorId;
+    /**
+     * 门店ID，即shop_id
+     * @var
+     */
+    public $ShopId;
+    /**
+     * 连网的设备无线mac地址，对应bssid
+     * @var
+     */
+    public $DeviceNo;
 }
 class WxRecCopyrightCheckResult
 {
