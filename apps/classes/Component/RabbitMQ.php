@@ -133,8 +133,7 @@ class RabbitMQ
                 }
             }catch (\Exception $e)
             {
-                \Swoole::$php->log->error(__CLASS__ . " [" . posix_getpid() . "] Swoole RabbitMQ[{$this->config['host']}:{$this->config['port']}]
-                 Exception(Msg=" . $e->getMessage() . ", Code=" . $e->getCode() . ")");
+                //\Swoole::$php->log->error(__CLASS__ . " [" . posix_getpid() . "] Swoole RabbitMQ[{$this->config['host']}:{$this->config['port']}] Exception(Msg=" . $e->getMessage() . ", Code=" . $e->getCode() . ")");
                 sleep(1);
                 continue;
             }
@@ -159,8 +158,7 @@ class RabbitMQ
                 $this->channel->basic_publish($message, $this->exchangeName);
             }catch (\Exception $e)
             {
-                \Swoole::$php->log->error(__CLASS__ . " [" . posix_getpid() . "] Swoole RabbitMQ[{$this->config['host']}:{$this->config['port']}]
-                 Exception(Msg=" . $e->getMessage() . ", Code=" . $e->getCode() . ")");
+                //\Swoole::$php->log->error(__CLASS__ . " [" . posix_getpid() . "] Swoole RabbitMQ[{$this->config['host']}:{$this->config['port']}] Exception(Msg=" . $e->getMessage() . ", Code=" . $e->getCode() . ")");
                 continue;
             }
             return true;
@@ -187,8 +185,7 @@ class RabbitMQ
                     throw $e;
                 }
 
-                \Swoole::$php->log->error(__CLASS__ . " [" . posix_getpid() . "] Swoole RabbitMQ[{$this->config['host']}:{$this->config['port']}]
-                 Exception(Msg=" . $e->getMessage() . ", Code=" . $e->getCode() . "), RabbitMQ->{$method}, Params=" . var_export($args, 1));
+                \Swoole::$php->log->error(__CLASS__ . " [" . posix_getpid() . "] Swoole RabbitMQ[{$this->config['host']}:{$this->config['port']}] Exception(Msg=" . $e->getMessage() . ", Code=" . $e->getCode() . "), RabbitMQ->{$method}, Params=" . var_export($args, 1));
                 if ($this->connection)
                 {
                     $this->close();
