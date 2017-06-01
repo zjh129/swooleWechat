@@ -129,7 +129,7 @@ class RabbitMQ
                     $this->channel->basic_ack($message->delivery_info['delivery_tag']);
                     $result = $message->body;
                 }else{
-                    throw new Exception('Empty Queue Data');
+                    //throw new Exception('Empty Queue Data');
                 }
             }catch (\Exception $e)
             {
