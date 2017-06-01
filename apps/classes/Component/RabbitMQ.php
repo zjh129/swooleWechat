@@ -1,7 +1,6 @@
 <?php
 namespace App\Component;
 
-use EasyWeChat\Core\Exception;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
