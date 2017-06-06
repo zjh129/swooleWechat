@@ -1,38 +1,60 @@
 <?php
+
 namespace App\Component;
 
-use Swoole;
-
 /**
- * 基础模型类
- * @subpackage Model
- * @package App\Model
+ * 基础模型类.
  */
-class BaseModel extends Swoole\Model
+class BaseModel extends \Swoole\Model
 {
     /**
-     * 获取单个数据
+     * 获取单个数据.
+     *
      * @param $params
-     * @return array
+     *
      * @throws \Exception
+     *
+     * @return array
      */
     public function getone($params)
     {
-        if (empty($params))
-        {
-            throw new \Exception("no params.");
+        if (empty($params)) {
+            throw new \Exception('no params.');
         }
+        $selectdb = new \Swoole\SelectDB($this->db);
+        $selectdb->from($this->table);
+        $selectdb->primary = $this->primary;
+        $selectdb->select($this->select);
 
-        $this->dbs->from($this->table);
-        $this->dbs->primary = $this->primary;
-        $this->dbs->select($this->select);
-
-        if (!isset($params['order']))
-        {
+        if (!isset($params['order'])) {
             $params['order'] = "`{$this->table}`.{$this->primary} desc";
         }
-        $this->dbsb->put($params);
+        $selectdb->put($params);
 
-        return $this->dbs->getone();
+        return $selectdb->getone();
+    }
+
+    /**
+     * 开启事务
+     */
+    public function start()
+    {
+        $this->db->start();
+    }
+
+    /**
+     * 提交事务
+     */
+    public function commit()
+    {
+        $this->db->commit();
+    }
+
+    /**
+     * 事务回滚.
+     */
+    public function rollback()
+    {
+        $this->db->rollback();
     }
 }

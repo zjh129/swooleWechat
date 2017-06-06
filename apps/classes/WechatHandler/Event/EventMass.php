@@ -1,14 +1,13 @@
 <?php
-
 namespace App\WechatHandler\Event;
 
 use App\WechatHandler\Base;
 use App\WechatHandler\InterfaceHandler;
 
 /**
- * 上报地理位置事件消息处理.
+ * 群发消息推送处理.
  */
-class EventLocation extends Base implements InterfaceHandler
+class EventMass extends Base implements InterfaceHandler
 {
     /**
      * 主入口方法.
@@ -16,10 +15,11 @@ class EventLocation extends Base implements InterfaceHandler
     public function main()
     {
         $event = strtolower($this->recMessage->Event);
-        switch ($event) {
-            case 'location':
-                return '上报地理位置事件消息';
+        switch ($event){
+            case 'masssendjobfinish'://群发结果推送
+                return '群发结果推送';
                 break;
         }
+        return false;
     }
 }

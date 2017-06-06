@@ -4,11 +4,12 @@ namespace App\WechatHandler\Event;
 
 use App\WechatHandler\Base;
 use App\WechatHandler\InterfaceHandler;
+use Swoole;
 
 /**
- * 上报地理位置事件消息处理.
+ * 模板消息处理.
  */
-class EventLocation extends Base implements InterfaceHandler
+class EventTemplate extends Base implements InterfaceHandler
 {
     /**
      * 主入口方法.
@@ -17,8 +18,8 @@ class EventLocation extends Base implements InterfaceHandler
     {
         $event = strtolower($this->recMessage->Event);
         switch ($event) {
-            case 'location':
-                return '上报地理位置事件消息';
+            case 'templatesendjobfinish'://模板消息事件推送
+                return '模板消息事件推送';
                 break;
         }
     }

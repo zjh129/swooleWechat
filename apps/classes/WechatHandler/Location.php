@@ -1,17 +1,17 @@
 <?php
+
 namespace App\WechatHandler;
 
 /**
- * 链接消息处理
- * @package App\WechatHandler
+ * 地理位置消息处理.
  */
 class Location extends Base implements InterfaceHandler
 {
     /**
-     * 主入口方法
+     * 主入口方法.
      */
     public function main()
     {
-        return '接受到坐标消息';
+        return '暂不支持地理位置消息';
     }
 }

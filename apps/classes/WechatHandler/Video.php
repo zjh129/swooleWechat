@@ -1,17 +1,17 @@
 <?php
+
 namespace App\WechatHandler;
 
 /**
- * 链接消息处理
- * @package App\WechatHandler
+ * 视频消息处理.
  */
 class Video extends Base implements InterfaceHandler
 {
     /**
-     * 主入口方法
+     * 主入口方法.
      */
     public function main()
     {
-        return '接受到视频消息';
+        return '暂不支持视频消息';
     }
 }
