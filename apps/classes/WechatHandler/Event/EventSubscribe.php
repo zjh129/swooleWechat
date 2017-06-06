@@ -1,5 +1,4 @@
 <?php
-
 namespace App\WechatHandler\Event;
 
 use App\WechatHandler\Base;
