@@ -1,7 +1,7 @@
 <?php
+
 namespace App\WechatHandler\Event;
 
-use Swoole;
 use App\WechatHandler\Base;
 use App\WechatHandler\InterfaceHandler;
 

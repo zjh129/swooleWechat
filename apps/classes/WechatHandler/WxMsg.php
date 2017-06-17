@@ -281,11 +281,13 @@ class WxMsg
         }
         switch ($materialData['type']) {
             case 'text'://文本
+                $materialData['content'] = \Swoole::$php->strip->unsetStrip($materialData['content']);
                 return new \EasyWeChat\Message\Text(['content'=>$materialData['content']]);
                 break;
             case 'video'://视频
                 $mediaId = (new \App\Service\WxMaterial())->getMediaIdByMateriaId($materialData['articles']['material_id']);
-
+                $materialData['articles']['title'] = \Swoole::$php->strip->unsetStrip($materialData['articles']['title']);
+                $materialData['articles']['description'] = \Swoole::$php->strip->unsetStrip($materialData['articles']['description']);
                 return new \EasyWeChat\Message\Video([
                     'title'       => $materialData['articles']['title'],
                     'description' => $materialData['articles']['description'],
@@ -304,7 +306,8 @@ class WxMsg
                 break;
             case 'music'://音乐
                 $mediaId = (new \App\Service\WxMaterial())->getMediaIdByMediaUrl('thumb', $materialData['thumb_url']);
-
+                $materialData['title'] = \Swoole::$php->strip->unsetStrip($materialData['title']);
+                $materialData['description'] = \Swoole::$php->strip->unsetStrip($materialData['description']);
                 return new \EasyWeChat\Message\Music([
                     'title'          => $materialData['title'],
                     'description'    => $materialData['description'],
@@ -316,6 +319,8 @@ class WxMsg
             case 'news'://多图文
                 $news = [];
                 foreach ($materialData['articles'] as $v) {
+                    $v['title'] = \Swoole::$php->strip->unsetStrip($v['title']);
+                    $v['description'] = \Swoole::$php->strip->unsetStrip($v['description']);
                     $news[] = new \EasyWeChat\Message\News([
                         'title'       => $v['title'],
                         'description' => $v['description'],
@@ -328,7 +333,9 @@ class WxMsg
                 break;
             case 'transfer'://客服消息
                 $transfer = new \EasyWeChat\Message\Transfer();
-                $materialData['account'] && $transfer->account($materialData['account']);
+                if (isset($materialData['account']) && $materialData['account']){
+                    $transfer->account($materialData['account']);
+                }
 
                 return $transfer;
                 break;

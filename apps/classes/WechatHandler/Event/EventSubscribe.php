@@ -1,7 +1,7 @@
 <?php
+
 namespace App\WechatHandler\Event;
 
-use Swoole;
 use App\WechatHandler\Base;
 use App\WechatHandler\InterfaceHandler;
 
@@ -15,6 +15,11 @@ class EventSubscribe extends Base implements InterfaceHandler
      */
     public function main()
     {
-        return '关注、取关注事件消息';
+        //触发微信关注取关注消息事件
+        \Swoole::$php->event->trigger('WxUserSubscribe', ['message' => $this->recMessage]);
+        //获取微信欢迎关键词配置
+        $configData = (new \App\Service\WxConfig())->getConfigData('wx_welcome');
+
+        return $this->formatMessage($configData);
     }
 }

@@ -1,11 +1,9 @@
 <?php
+
 namespace App\WechatHandler;
 
-use Swoole;
-
 /**
- * 消息处理基础类
- * @package App\Controller\Wechat
+ * 消息处理基础类.
  */
 class Base extends WxMsg
 {

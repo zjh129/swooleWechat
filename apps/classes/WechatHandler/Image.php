@@ -3,16 +3,15 @@
 namespace App\WechatHandler;
 
 /**
- * 图片消息处理
- * @package App\WechatHandler
+ * 图片消息处理.
  */
 class Image extends Base implements InterfaceHandler
 {
     /**
-     * 主入口方法
+     * 主入口方法.
      */
     public function main()
     {
-        return '接受到图片消息';
+        return '暂不支持图片消息';
     }
 }
