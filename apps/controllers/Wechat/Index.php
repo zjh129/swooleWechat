@@ -48,8 +48,12 @@ class Index extends Base
             //将响应输出
             $response->send();
         } catch (\Exception $e) {
-            echo 'success';
-            $this->log->error($e->getMessage());
+            if (ENV == 'product'){
+                echo 'success';
+                $this->log->error($e->getMessage());
+            }else{
+                throw new \Exception($e->getMessage());
+            }
         }
     }
 }
