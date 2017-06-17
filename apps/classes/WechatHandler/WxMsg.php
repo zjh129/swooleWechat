@@ -76,6 +76,10 @@ class WxMsg
         }
         $this->recMessage = $message;
         $msgType          = strtolower($this->recMessage->MsgType);
+        //过滤空格
+        $this->recMessage->MsgType = trim($this->recMessage->MsgType);
+        $this->recMessage->Event = trim($this->recMessage->Event);
+
         $event            = strtolower($this->recMessage->Event);
         //文本消息推送
         if ($msgType == 'text') {
@@ -126,7 +130,13 @@ class WxMsg
             return true;
         }
         //扫码事件
-        if ($msgType == 'event' && in_array($event, ['subscribe', 'scan']) && isset($this->recMessage->EventKey) && strpos($this->recMessage->EventKey, 'qrscene_') !== false) {
+        if ($msgType == 'event' && in_array($event, ['subscribe']) && isset($this->recMessage->EventKey) && strpos($this->recMessage->EventKey, 'qrscene_') !== false) {
+            $this->recMessageType = self::RECMSG_EVENT_SCAN;
+
+            return true;
+        }
+        if ($msgType == 'event' && in_array($event, ['scan']) && isset($this->recMessage->EventKey))
+        {
             $this->recMessageType = self::RECMSG_EVENT_SCAN;
 
             return true;

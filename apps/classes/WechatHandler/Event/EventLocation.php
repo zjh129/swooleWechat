@@ -15,6 +15,11 @@ class EventLocation extends Base implements InterfaceHandler
      */
     public function main()
     {
-        return '上报地理位置事件消息';
+        $event = strtolower($this->recMessage->Event);
+        switch ($event) {
+            case 'location':
+                return '上报地理位置事件消息';
+                break;
+        }
     }
 }

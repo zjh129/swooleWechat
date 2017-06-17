@@ -16,8 +16,11 @@ class EventTemplate extends Base implements InterfaceHandler
      */
     public function main()
     {
-        Swoole::$php->event->trigger('WxMsgSaveTemplate', ['message'=>$this->recMessage]);
-
-        return '模板消息事件推送';
+        $event = strtolower($this->recMessage->Event);
+        switch ($event) {
+            case 'templatesendjobfinish'://模板消息事件推送
+                return '模板消息事件推送';
+                break;
+        }
     }
 }

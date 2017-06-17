@@ -32,7 +32,8 @@ cd /tmp/runkit-ext && phpize && ./configure && sudo make && sudo make install
 │   │   ├── Observer        未知
 │   │   ├── Queue           自定义队列类目录
 │   │   ├── Router          自定义路由控制目录，需要在对应的Server.php中加入Swoole::getInstance()->addRouter(new App\Router\ModuleRouter(), true);
-│   │   └── Service         逻辑业务层目录，专门放置逻辑业务代码
+│   │   └── Service         业务逻辑层目录，专门放置业务逻辑代码
+│   │   └── WechatHandler   微信事件处理代码，根据不同的消息、事件类别划分
 │   ├── configs             配置文件目录，某些配置可以共用，无需在子目录中区分，具体实现自行控制
 │   │   ├── devlop          开发环境配置
 │   │   ├── product         生产环境

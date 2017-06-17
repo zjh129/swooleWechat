@@ -12,7 +12,7 @@ class Event extends Base implements InterfaceHandler
      */
     public function main()
     {
-        $sendMessage = '接受到事件消息';
+        $sendMessage = '接收到事件消息';
         if ($this->recMessageType) {
             switch ($this->recMessageType) {
                 case self::RECMSG_EVENT_SUBSCRIBE://关注事件推送

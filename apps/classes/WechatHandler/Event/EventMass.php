@@ -17,14 +17,7 @@ class EventMass extends Base implements InterfaceHandler
         $event = strtolower($this->recMessage->Event);
         switch ($event){
             case 'masssendjobfinish'://群发结果推送
-                $massSer = new \App\Service\WxMass();
-                return $massSer->saveJobFinish($this->recMessage->MsgId,[
-                    'status' => $this->recMessage->Status,
-                    'total_num' => $this->recMessage->TotalCount,
-                    'filter_num' => $this->recMessage->FilterCount,
-                    'success_num' => $this->recMessage->SentCount,
-                    'error_num' => $this->recMessage->ErrorCount,
-                ]);
+                return '群发结果推送';
                 break;
         }
         return false;
