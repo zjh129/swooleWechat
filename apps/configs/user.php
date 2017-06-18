@@ -1,5 +1,5 @@
 <?php
-$user['default_avatar'] = '/static/images/default.png';
+$user['default_avatar'] = 'http://static.tudouyu.cn/AdminLTE/2.3.11/img/avatar.png';
 $user['login_table']    = 'user';
 $user['login_url']      = '/user/login/';
 /*

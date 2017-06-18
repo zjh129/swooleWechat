@@ -11,5 +11,8 @@ class AdminBaseController extends BaseController
     {
         parent::__construct($swoole);
         $this->template_dir .= 'Admin/';
+        //开启session
+        $this->session->start();
+        \Swoole\Auth::loginRequire();
     }
 }

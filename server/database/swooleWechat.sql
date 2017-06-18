@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 阿里云
+Source Server         : 本地数据库
 Source Server Version : 80001
-Source Host           : 39.108.11.100:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-05-15 21:25:08
+Date: 2017-06-18 23:35:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,6 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `userId` int(10) NOT NULL AUTO_INCREMENT,
+  `groupId` int(10) NOT NULL DEFAULT '0' COMMENT '用户组ID',
   `userName` varchar(50) NOT NULL,
   `account` varchar(100) NOT NULL,
   `password` varchar(200) NOT NULL,
@@ -29,6 +30,27 @@ CREATE TABLE `sys_user` (
   `createTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
+
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_user_group
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_group`;
+CREATE TABLE `sys_user_group` (
+  `groupId` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户组ID',
+  `groupName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户组名称',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除)',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`groupId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户用户组表';
+
+-- ----------------------------
+-- Records of sys_user_group
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wx_rec_event_location
@@ -48,6 +70,10 @@ CREATE TABLE `wx_rec_event_location` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上报地理位置事件记录表';
 
 -- ----------------------------
+-- Records of wx_rec_event_location
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wx_rec_event_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_event_menu`;
@@ -61,6 +87,10 @@ CREATE TABLE `wx_rec_event_menu` (
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='自定义菜单事件记录表';
+
+-- ----------------------------
+-- Records of wx_rec_event_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wx_rec_event_scan
@@ -79,6 +109,10 @@ CREATE TABLE `wx_rec_event_scan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='扫码事件记录表';
 
 -- ----------------------------
+-- Records of wx_rec_event_scan
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wx_rec_event_subscribe
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_event_subscribe`;
@@ -91,6 +125,10 @@ CREATE TABLE `wx_rec_event_subscribe` (
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='关注与取关注事件消息记录表';
+
+-- ----------------------------
+-- Records of wx_rec_event_subscribe
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wx_rec_msg_image
@@ -109,6 +147,10 @@ CREATE TABLE `wx_rec_msg_image` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='图片接收消息记录表';
 
 -- ----------------------------
+-- Records of wx_rec_msg_image
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wx_rec_msg_link
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_msg_link`;
@@ -124,6 +166,10 @@ CREATE TABLE `wx_rec_msg_link` (
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='链接接收消息记录表';
+
+-- ----------------------------
+-- Records of wx_rec_msg_link
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wx_rec_msg_location
@@ -144,6 +190,10 @@ CREATE TABLE `wx_rec_msg_location` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='地理位置接收消息记录表';
 
 -- ----------------------------
+-- Records of wx_rec_msg_location
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wx_rec_msg_shortvideo
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_msg_shortvideo`;
@@ -158,6 +208,10 @@ CREATE TABLE `wx_rec_msg_shortvideo` (
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短视频接收消息记录表';
+
+-- ----------------------------
+-- Records of wx_rec_msg_shortvideo
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wx_rec_msg_text
@@ -175,6 +229,10 @@ CREATE TABLE `wx_rec_msg_text` (
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
 
 -- ----------------------------
+-- Records of wx_rec_msg_text
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wx_rec_msg_video
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_rec_msg_video`;
@@ -189,6 +247,10 @@ CREATE TABLE `wx_rec_msg_video` (
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='视频接收消息记录表';
+
+-- ----------------------------
+-- Records of wx_rec_msg_video
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wx_rec_msg_voice
@@ -208,6 +270,10 @@ CREATE TABLE `wx_rec_msg_voice` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='语音接收消息记录表';
 
 -- ----------------------------
+-- Records of wx_rec_msg_voice
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wx_send_msg
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_send_msg`;
@@ -220,6 +286,10 @@ CREATE TABLE `wx_send_msg` (
   `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
+
+-- ----------------------------
+-- Records of wx_send_msg
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wx_user
@@ -248,6 +318,10 @@ CREATE TABLE `wx_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户表';
 
 -- ----------------------------
+-- Records of wx_user
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wx_user_subscribe_log
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_user_subscribe_log`;
@@ -259,4 +333,8 @@ CREATE TABLE `wx_user_subscribe_log` (
   PRIMARY KEY (`id`),
   KEY `openid` (`openid`,`subscribe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户关注日志';
+
+-- ----------------------------
+-- Records of wx_user_subscribe_log
+-- ----------------------------
 SET FOREIGN_KEY_CHECKS=1;
