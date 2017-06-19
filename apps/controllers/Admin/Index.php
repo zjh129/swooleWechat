@@ -9,9 +9,12 @@ class Index extends Base
     {
         parent::__construct($swoole);
     }
-    
+
+    /**
+     * 后台主页
+     */
     public function index()
     {
-        echo __METHOD__;
+        $this->display();
     }
 }

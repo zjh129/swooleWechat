@@ -1,5 +1,6 @@
 <?php
 namespace App\BaseController;
+use Swoole\Auth;
 
 /**
  * 管理后台基类控制器
@@ -13,6 +14,7 @@ class AdminBaseController extends BaseController
         $this->template_dir .= 'Admin/';
         //开启session
         $this->session->start();
-        \Swoole\Auth::loginRequire();
+        //\Swoole\Auth::$login_url = '/Admin/Login/index';
+        //\Swoole\Auth::loginRequire();
     }
 }
