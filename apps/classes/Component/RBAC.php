@@ -1,27 +1,31 @@
 <?php
 namespace App\Component;
-
+/**
+ * 权限认证类
+ * @link http://www.thinkphp.cn/topic/4029.html
+ * @package App\Component
+ */
 class RBAC
 {
     //默认配置
     protected $_config = array(
-        'AUTH_ON'           => true, // 认证开关
-        'AUTH_TYPE'         => 1, // 认证方式，1为实时认证；2为登录认证。
-        'AUTH_GROUP'        => 'auth_group', // 用户组数据表名
-        'AUTH_GROUP_ACCESS' => 'auth_group_access', // 用户-用户组关系表
-        'AUTH_RULE'         => 'auth_rule', // 权限规则表
-        'AUTH_USER'         => 'member', // 用户信息表
+        'authOn'           => true, // 认证开关
+        'authType'         => 1, // 认证方式，1为实时认证；2为登录认证。
+        'authGroupTable'        => 'sys_user_group', // 用户组数据表名
+        'authGroupAccessTable' => 'sys_user_group_access', // 用户-用户组关系表
+        'authRuleTable'         => 'sys_user_auth_rule', // 权限规则表
+        'authUser'         => 'sys_user', // 用户信息表
     );
-    public function __construct()
+
+    /**
+     * 构造函数
+     * @param array $config
+     */
+    public function __construct($config = [])
     {
-        $prefix                             = C('DB_PREFIX');
-        $this->_config['AUTH_GROUP']        = $prefix . $this->_config['AUTH_GROUP'];
-        $this->_config['AUTH_RULE']         = $prefix . $this->_config['AUTH_RULE'];
-        $this->_config['AUTH_USER']         = $prefix . $this->_config['AUTH_USER'];
-        $this->_config['AUTH_GROUP_ACCESS'] = $prefix . $this->_config['AUTH_GROUP_ACCESS'];
-        if (C('AUTH_CONFIG')) {
+        if ($config) {
             //可设置配置项 AUTH_CONFIG, 此配置项为数组。
-            $this->_config = array_merge($this->_config, C('AUTH_CONFIG'));
+            $this->_config = array_merge($this->_config, $config);
         }
     }
     /**
@@ -34,7 +38,7 @@ class RBAC
      */
     public function check($name, $uid, $type = 1, $mode = 'url', $relation = 'or')
     {
-        if (!$this->_config['AUTH_ON']) {
+        if (!$this->_config['authOn']) {
             return true;
         }
         $authList = $this->getAuthList($uid, $type); //获取用户需要验证的所有有效规则列表
@@ -87,9 +91,9 @@ class RBAC
             return $groups[$uid];
         }
         $user_groups = M()
-            ->table($this->_config['AUTH_GROUP_ACCESS'] . ' a')
+            ->table($this->_config['authGroupAccessTable'] . ' a')
             ->where("a.uid='$uid' and g.status='1'")
-            ->join($this->_config['AUTH_GROUP'] . " g on a.group_id=g.id")
+            ->join($this->_config['authGroupTable'] . " g on a.group_id=g.id")
             ->field('uid,group_id,title,rules')->select();
         $groups[$uid] = $user_groups ?: array();
         return $groups[$uid];
@@ -106,7 +110,7 @@ class RBAC
         if (isset($_authList[$uid . $t])) {
             return $_authList[$uid . $t];
         }
-        if (2 == $this->_config['AUTH_TYPE'] && isset($_SESSION['_AUTH_LIST_' . $uid . $t])) {
+        if (2 == $this->_config['authType'] && isset($_SESSION['_AUTH_LIST_' . $uid . $t])) {
             return $_SESSION['_AUTH_LIST_' . $uid . $t];
         }
         //读取用户所属用户组
@@ -126,7 +130,7 @@ class RBAC
             'status' => 1,
         );
         //读取用户组所有权限规则
-        $rules = M()->table($this->_config['AUTH_RULE'])->where($map)->field('condition,name')->select();
+        $rules = M()->table($this->_config['authRuleTable'])->where($map)->field('condition,name')->select();
         //循环规则，判断结果。
         $authList = array(); //
         foreach ($rules as $rule) {
@@ -145,7 +149,7 @@ class RBAC
             }
         }
         $_authList[$uid . $t] = $authList;
-        if (2 == $this->_config['AUTH_TYPE']) {
+        if (2 == $this->_config['authType']) {
             //规则列表结果保存到session
             $_SESSION['_AUTH_LIST_' . $uid . $t] = $authList;
         }

@@ -60,7 +60,7 @@ class Db extends Swoole\Controller
     function gets()
     {
         /**
-         * @var $model \App\Model\User
+         * @var $model \App\Model\SysUser
          */
         $model = Model('User');
         //level = 5

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-06-19 12:03:31
+Date: 2017-06-19 17:00:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,14 +20,14 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_auth_rule`;
 CREATE TABLE `sys_auth_rule` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` char(80) NOT NULL DEFAULT '',
-  `title` char(20) NOT NULL DEFAULT '',
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `condition` char(100) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `ruleId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ruleName` varchar(50) NOT NULL DEFAULT '' COMMENT '规则名称',
+  `title` varchar(20) NOT NULL DEFAULT '',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除）',
+  `condition` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`ruleId`),
+  UNIQUE KEY `name` (`ruleName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户认证规则表';
 
 -- ----------------------------
 -- Records of sys_auth_rule
@@ -47,7 +47,7 @@ CREATE TABLE `sys_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -64,10 +64,11 @@ CREATE TABLE `sys_user` (
   `account` varchar(100) NOT NULL,
   `password` varchar(200) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `ruleIds` mediumtext NOT NULL COMMENT '访问规则ID列表,servlize字符串',
   `loginTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `createTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
 
 -- ----------------------------
 -- Records of sys_user
@@ -81,29 +82,32 @@ CREATE TABLE `sys_user_group` (
   `groupId` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户组ID',
   `groupName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户组名称',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除)',
+  `ruleIds` mediumtext NOT NULL COMMENT '访问规则ID列表,servlize字符串',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户用户组表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
 
 -- ----------------------------
 -- Records of sys_user_group
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for sys_user_group_access
+-- Table structure for sys_user_to_group
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_user_group_access`;
-CREATE TABLE `sys_user_group_access` (
-  `uid` int(10) unsigned NOT NULL,
-  `groupId` int(10) unsigned NOT NULL,
-  UNIQUE KEY `uid_group_id` (`uid`,`groupId`),
-  KEY `uid` (`uid`),
+DROP TABLE IF EXISTS `sys_user_to_group`;
+CREATE TABLE `sys_user_to_group` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `userId` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `groupId` int(10) unsigned NOT NULL COMMENT '分组ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid_group_id` (`userId`,`groupId`),
+  KEY `uid` (`userId`),
   KEY `group_id` (`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户分组访问权限表';
 
 -- ----------------------------
--- Records of sys_user_group_access
+-- Records of sys_user_to_group
 -- ----------------------------
 
 -- ----------------------------
