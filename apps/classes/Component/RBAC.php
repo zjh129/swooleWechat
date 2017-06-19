@@ -152,26 +152,30 @@ class RBAC
         }
         //读取用户所属用户组
         $groups = $this->getGroupList($userId);
-        $ids    = []; //保存用户所属用户组设置的所有权限规则id
+        //保存用户所属用户组设置的所有权限规则id
+        $ids    = [];
         foreach ($groups as $g) {
-            $ids = array_merge($ids, explode(',', trim($g['rules'], ',')));
+            $ruleIds = unserialize($g['ruleIds']);
+            $ruleIds && $ids = array_merge($ids, $ruleIds);
         }
+        //保存用户设置的权限规则ID
+        $userData = $this->userModel->get($userId);
+        $ruleIds = unserialize($userData['ruleIds']);
+        $ruleIds && $ids = array_merge($ids, $ruleIds);
+        //去重
         $ids = array_unique($ids);
         if (empty($ids)) {
             $_authList[$userId . $t] = [];
-
             return [];
         }
-        $map = [
-            'id'     => ['in', $ids],
-            'type'   => $type,
-            'status' => 1,
-        ];
         //读取用户组所有权限规则
-        $rules = M()->table($this->_config['authRuleTable'])->where($map)->field('condition,name')->select();
+        $ruleList = $this->authRuleModel->gets([
+            'select' => 'condition,name',
+            'in' => ['ruleId', $ids],
+        ]);
         //循环规则，判断结果。
         $authList = [];
-        foreach ($rules as $rule) {
+        foreach ($ruleList as $rule) {
             if (!empty($rule['condition'])) {
                 //根据condition进行验证
                 $user    = $this->getUserInfo($userId); //获取用户信息,一维数组
