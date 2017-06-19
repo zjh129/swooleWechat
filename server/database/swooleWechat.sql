@@ -1,19 +1,57 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
+Source Server         : local_swooleWechat
 Source Server Version : 80001
-Source Host           : 127.0.0.1:3306
+Source Host           : 192.168.174.128:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-06-18 23:35:33
+Date: 2017-06-19 12:03:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for sys_auth_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_auth_rule`;
+CREATE TABLE `sys_auth_rule` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(80) NOT NULL DEFAULT '',
+  `title` char(20) NOT NULL DEFAULT '',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `condition` char(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_auth_rule
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu`;
+CREATE TABLE `sys_menu` (
+  `menuId` int(10) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+  `menuName` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单名称',
+  `link` varchar(100) NOT NULL DEFAULT '' COMMENT '链接',
+  `parentMenuId` int(10) NOT NULL DEFAULT '0' COMMENT '父级菜单ID',
+  `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`menuId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -50,6 +88,22 @@ CREATE TABLE `sys_user_group` (
 
 -- ----------------------------
 -- Records of sys_user_group
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_user_group_access
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_group_access`;
+CREATE TABLE `sys_user_group_access` (
+  `uid` int(10) unsigned NOT NULL,
+  `groupId` int(10) unsigned NOT NULL,
+  UNIQUE KEY `uid_group_id` (`uid`,`groupId`),
+  KEY `uid` (`uid`),
+  KEY `group_id` (`groupId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_user_group_access
 -- ----------------------------
 
 -- ----------------------------
@@ -337,4 +391,3 @@ CREATE TABLE `wx_user_subscribe_log` (
 -- ----------------------------
 -- Records of wx_user_subscribe_log
 -- ----------------------------
-SET FOREIGN_KEY_CHECKS=1;
