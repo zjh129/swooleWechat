@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local_swooleWechat
+Source Server         : 本地数据库
 Source Server Version : 80001
-Source Host           : 192.168.174.128:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-06-19 17:00:24
+Date: 2017-06-20 23:42:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -60,10 +60,10 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `userId` int(10) NOT NULL AUTO_INCREMENT,
   `groupId` int(10) NOT NULL DEFAULT '0' COMMENT '用户组ID',
-  `userName` varchar(50) NOT NULL,
-  `account` varchar(100) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  `email` varchar(50) NOT NULL,
+  `userName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名称',
+  `account` varchar(100) NOT NULL DEFAULT '' COMMENT '账号',
+  `password` varchar(200) NOT NULL DEFAULT '' COMMENT '密码',
+  `email` varchar(50) NOT NULL DEFAULT '' COMMENT '邮箱',
   `ruleIds` mediumtext NOT NULL COMMENT '访问规则ID列表,servlize字符串',
   `loginTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `createTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -395,3 +395,4 @@ CREATE TABLE `wx_user_subscribe_log` (
 -- ----------------------------
 -- Records of wx_user_subscribe_log
 -- ----------------------------
+SET FOREIGN_KEY_CHECKS=1;

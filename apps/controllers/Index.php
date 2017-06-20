@@ -23,4 +23,14 @@ class Index extends Swoole\Controller
 
         return json_encode($data);
     }
+
+    /**
+     * 网站favicon
+     */
+    public function favicon()
+    {
+        $favicon = file_get_contents(WEBPATH . '/public/favicon.ico');
+        $this->response->setHeader('Content-Type', 'image/jpeg');
+        echo $favicon;
+    }
 }

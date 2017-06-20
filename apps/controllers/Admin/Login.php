@@ -19,6 +19,7 @@ class Login extends Base
      */
     public function index()
     {
+        $error = '';
         //使用crypt密码
         \Swoole\Auth::$password_hash = \Swoole\Auth::HASH_CRYPT;
 
@@ -29,23 +30,34 @@ class Login extends Base
             $this->http->redirect('/Admin/Index/index');
             return;
         }
-        if (!empty($_POST['password']))
+        if ($_POST)
         {
-            $r = $this->user->login(trim($_POST['username']), $_POST['password']);
-            if ($r)
-            {
+            try{
+                if (!$_POST['username']){
+                    throw new \Exception('请输入管理账号');
+                }
+                if (!$_POST['password']){
+                    throw new \Exception('请输入管理密码');
+                }
+                if (!$_POST['captcha']){
+                    throw new \Exception('请输入验证码');
+                }
+                if ($_POST['captcha'] != $_SESSION['vcode']){
+                    throw new \Exception('验证码错误');
+                }
+                $r = $this->user->login(trim($_POST['username']), $_POST['password']);
+                if (!$r)
+                {
+                    throw new \Exception('登录失败');
+                }
                 $this->http->redirect('/Admin/Index/home/');
-                return;
-            }
-            else
-            {
-                echo "登录失败";
+
+            }catch (\Exception $e){
+                $error = $e->getMessage();
             }
         }
-        else
-        {
-            $this->display();
-        }
+        $this->assign('error', $error);
+        $this->display();
     }
 
     /**
@@ -54,7 +66,7 @@ class Login extends Base
     public function logout()
     {
         $this->session->start();
-        $this->admin->logout();
+        $this->user->logout();
     }
 
     /**

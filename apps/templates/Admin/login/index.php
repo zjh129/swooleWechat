@@ -31,39 +31,44 @@
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">登录开始您的会话</p>
-
-        <form action="/Admin/Login/index" method="post">
-            <?php echo $this->getContent(); ?>
+        <form action="/Admin/Login/index" method="POST">
+            <?php if($error){ ?>
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"></i>错误</h4>
+                <?php echo $error; ?>
+              </div>
+            <?php } ?>
             <div class="form-group has-feedback">
-                <input type="account" class="form-control" placeholder="账号">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <input type="text" name="username" class="form-control" placeholder="账号">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="password" name="password" class="form-control" placeholder="密码">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">
                 <div class="col-xs-6">
                     <div class="form-group has-feedback">
-                        <input type="captcha" class="form-control" placeholder="captcha">
+                        <input type="text" name="captcha" class="form-control" placeholder="验证码">
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                 </div>
                 <div class="col-xs-6">
-                    <img alt="点击换图" id="codeImg" style="cursor:pointer; width:100px;height: 40px;" src="/Admin/public/captcha" align="absmiddle">
+                    <img alt="点击换图" id="codeImg" style="cursor:pointer; width:100px;height: 40px;" src="/Admin/login/captcha" align="absmiddle">
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-8">
-                    <!-- <div class="checkbox icheck">
+                    <div class="checkbox icheck">
                       <label>
-                        <input type="checkbox"> 记住我
+                        <input type="checkbox" name="isRemember"> 记住我
                       </label>
-                    </div> -->
+                    </div>
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+                    <button type="submit" name="submit"  class="btn btn-primary btn-block btn-flat">登录</button>
                 </div>
                 <!-- /.col -->
             </div>
@@ -93,6 +98,11 @@
 <script src="//static.tudouyu.cn/iCheck/1.0.2/icheck.min.js"></script>
 <script>
     $(function () {
+        $('input').iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue',
+          increaseArea: '20%' // optional
+        });
         //切换验证码
         $("#codeImg").click(function () {
             $(this).attr('src', '/Admin/login/captcha?=' + Math.random(0,1));
