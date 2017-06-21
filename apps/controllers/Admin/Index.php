@@ -17,4 +17,8 @@ class Index extends Base
     {
         $this->display();
     }
+    public function index2()
+    {
+        return time();
+    }
 }

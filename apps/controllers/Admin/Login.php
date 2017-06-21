@@ -48,12 +48,12 @@ class Login extends Base
                 \Swoole\Auth::$lastip = 'loginIp';
                 //使用crypt密码
                 \Swoole\Auth::$password_hash = \Swoole\Auth::HASH_SHA1;
-
                 $r = $this->user->login(trim($_POST['username']), trim($_POST['password']));
                 if (!$r)
                 {
                     throw new \Exception('登录失败,账号或密码错误');
                 }
+                $this->user->updateStatus();
                 $redireUrl = isset($_GET['refer']) && $_GET['refer'] ? $_GET['refer'] : '/Admin/Index/index/';
                 $this->http->redirect($redireUrl);
 
