@@ -22,6 +22,23 @@
         <section class="content">
             <!-- Info boxes -->
             <div class="row">
+                <?php foreach ($systemInfo as $k => $v): ?>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box bg-green">
+                            <span class="info-box-icon">
+                            <?php if (isset($v['icon']) && $v['icon']): ?>
+                                <i class="<?php echo $v['icon'] ?>"></i>
+                            <?php endif ?>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text"><?php echo $v['name'] ?></span>
+                                <span class="info-box-number"><?php echo $v['value'] ?></span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                <?php endforeach ?>
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
