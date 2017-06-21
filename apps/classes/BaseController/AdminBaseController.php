@@ -15,8 +15,8 @@ class AdminBaseController extends BaseController
         $this->session->start();
         $requestPath = $this->request->meta['path'];
         //非登录界面都要验证是否登录
-        if (in_array(strtolower($requestPath), ['/admin/login/index', '/admin/login/captcha'])){
-            //\Swoole\Auth::loginRequire();
+        if (strpos(strtolower($_SERVER['REQUEST_URI']), '/admin/login/') === false){
+            \Swoole\Auth::loginRequire();
         }
     }
 }
