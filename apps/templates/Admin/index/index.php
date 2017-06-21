@@ -24,8 +24,8 @@
             <div class="row">
                 <?php foreach ($systemInfo as $k => $v): ?>
                     <div class="col-md-3 col-sm-6 col-xs-12">
-                        <div class="info-box bg-green">
-                            <span class="info-box-icon">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua-active">
                             <?php if (isset($v['icon']) && $v['icon']): ?>
                                 <i class="<?php echo $v['icon'] ?>"></i>
                             <?php endif ?>
