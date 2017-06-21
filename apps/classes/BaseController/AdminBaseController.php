@@ -1,6 +1,5 @@
 <?php
 namespace App\BaseController;
-use Swoole\Auth;
 
 /**
  * 管理后台基类控制器
@@ -14,7 +13,10 @@ class AdminBaseController extends BaseController
         $this->template_dir .= 'Admin/';
         //开启session
         $this->session->start();
-        //\Swoole\Auth::$login_url = '/Admin/Login/index';
-        //\Swoole\Auth::loginRequire();
+        $requestPath = $this->request->meta['path'];
+        //非登录界面都要验证是否登录
+        if (in_array(strtolower($requestPath), ['/admin/login/index', '/admin/login/captcha'])){
+            //\Swoole\Auth::loginRequire();
+        }
     }
 }

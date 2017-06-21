@@ -20,8 +20,6 @@ class Login extends Base
     public function index()
     {
         $error = '';
-        //使用crypt密码
-        \Swoole\Auth::$password_hash = \Swoole\Auth::HASH_CRYPT;
 
         $this->session->start();
         //已经登录了，跳转到
@@ -42,15 +40,22 @@ class Login extends Base
                 if (!$_POST['captcha']){
                     throw new \Exception('请输入验证码');
                 }
-                if ($_POST['captcha'] != $_SESSION['vcode']){
+                if (strtolower($_POST['captcha']) != strtolower($_SESSION['vcode'])){
                     throw new \Exception('验证码错误');
                 }
-                $r = $this->user->login(trim($_POST['username']), $_POST['password']);
+                \Swoole\Auth::$username = 'account';
+                \Swoole\Auth::$lastlogin = 'loginTime';
+                \Swoole\Auth::$lastip = 'loginIp';
+                //使用crypt密码
+                \Swoole\Auth::$password_hash = \Swoole\Auth::HASH_SHA1;
+
+                $r = $this->user->login(trim($_POST['username']), trim($_POST['password']));
                 if (!$r)
                 {
-                    throw new \Exception('登录失败');
+                    throw new \Exception('登录失败,账号或密码错误');
                 }
-                $this->http->redirect('/Admin/Index/home/');
+                $redireUrl = isset($_GET['refer']) && $_GET['refer'] ? $_GET['refer'] : '/Admin/Index/index/';
+                $this->http->redirect($redireUrl);
 
             }catch (\Exception $e){
                 $error = $e->getMessage();
@@ -65,8 +70,11 @@ class Login extends Base
      */
     public function logout()
     {
-        $this->session->start();
-        $this->user->logout();
+        if($this->user->logout()){
+            $this->http->redirect('/Admin/Login/index');
+        }else{
+            $this->http->redirect('/Admin/Index/index');
+        }
     }
 
     /**
@@ -74,8 +82,6 @@ class Login extends Base
      */
     public function captcha()
     {
-        //启动会话
-        $this->session->start();
         //输出格式为图片
         $this->http->header('Content-Type', 'image/png');
         //生成验证码

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
+Source Server         : local_swooleWechat
 Source Server Version : 80001
-Source Host           : 127.0.0.1:3306
+Source Host           : 192.168.174.128:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-06-20 23:42:05
+Date: 2017-06-21 12:01:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,7 +58,7 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `userId` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `groupId` int(10) NOT NULL DEFAULT '0' COMMENT '用户组ID',
   `userName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名称',
   `account` varchar(100) NOT NULL DEFAULT '' COMMENT '账号',
@@ -66,13 +66,15 @@ CREATE TABLE `sys_user` (
   `email` varchar(50) NOT NULL DEFAULT '' COMMENT '邮箱',
   `ruleIds` mediumtext NOT NULL COMMENT '访问规则ID列表,servlize字符串',
   `loginTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `loginIp` varchar(50) NOT NULL DEFAULT '' COMMENT '登录IP',
   `createTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
+INSERT INTO `sys_user` VALUES ('2', '0', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', ' ', '2017-06-21 02:45:34', '', '2017-06-21 02:45:34');
 
 -- ----------------------------
 -- Table structure for sys_user_group
@@ -395,4 +397,3 @@ CREATE TABLE `wx_user_subscribe_log` (
 -- ----------------------------
 -- Records of wx_user_subscribe_log
 -- ----------------------------
-SET FOREIGN_KEY_CHECKS=1;
