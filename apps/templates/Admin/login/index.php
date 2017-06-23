@@ -1,28 +1,12 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SwooleWechat | 后台登录</title>
-
-    <link href="//static.tudouyu.cn/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//static.tudouyu.cn/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/animate.css" rel="stylesheet">
-    <link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/style.css" rel="stylesheet">
-</head>
+<?php echo $this->fetch('common/header-start.php');?>
+<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/iCheck/custom.css" rel="stylesheet">
+<?php echo $this->fetch('common/header-end.php');?>
 
 <body class="gray-bg">
-
 <div class="middle-box text-center loginscreen animated fadeInDown">
     <div>
         <div>
-
             <h1 class="logo-name">SW+</h1>
-
         </div>
         <h3>欢迎来到SW+</h3>
         <p>使用swoole+easywechat搭建的php服务号管理后台.
@@ -69,9 +53,7 @@
     </div>
 </div>
 
-<!-- Mainly scripts -->
-<script src="//static.tudouyu.cn/jQuery/jquery-3.2.1.min.js"></script>
-<script src="//static.tudouyu.cn/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<?php echo $this->fetch('common/footer-start.php');?>
 <!-- iCheck -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/iCheck/icheck.min.js"></script>
 <script>
@@ -86,6 +68,4 @@
         });
     });
 </script>
-</body>
-
-</html>
+<?php echo $this->fetch('common/footer-end.php');?>

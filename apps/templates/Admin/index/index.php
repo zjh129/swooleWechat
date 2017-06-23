@@ -1,26 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<?php echo $this->fetch('common/header-start.php');?>
+<!-- Toastr style -->
+<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/toastr/toastr.min.css" rel="stylesheet">
 
-    <title>INSPINIA | Dashboard</title>
-
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <!-- Toastr style -->
-    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
-
-    <!-- Gritter -->
-    <link href="js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
-
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-
-</head>
-
+<!-- Gritter -->
+<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+<?php echo $this->fetch('common/header-end.php');?>
 <body>
 <div id="wrapper">
     <nav class="navbar-default navbar-static-side" role="navigation">
@@ -1281,42 +1265,38 @@
     </div>
 </div>
 
-<!-- Mainly scripts -->
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<?php echo $this->fetch('common/footer-start.php');?>
 
 <!-- Flot -->
-<script src="js/plugins/flot/jquery.flot.js"></script>
-<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="js/plugins/flot/jquery.flot.spline.js"></script>
-<script src="js/plugins/flot/jquery.flot.resize.js"></script>
-<script src="js/plugins/flot/jquery.flot.pie.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/flot/jquery.flot.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/flot/jquery.flot.spline.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/flot/jquery.flot.pie.js"></script>
 
 <!-- Peity -->
-<script src="js/plugins/peity/jquery.peity.min.js"></script>
-<script src="js/demo/peity-demo.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/peity/jquery.peity.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/demo/peity-demo.js"></script>
 
 <!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/inspinia.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pace/pace.min.js"></script>
 
 <!-- jQuery UI -->
-<script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
 <!-- GITTER -->
-<script src="js/plugins/gritter/jquery.gritter.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/gritter/jquery.gritter.min.js"></script>
 
 <!-- Sparkline -->
-<script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/sparkline/jquery.sparkline.min.js"></script>
 
 
 <!-- ChartJS-->
-<script src="js/plugins/chartJs/Chart.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/chartJs/Chart.min.js"></script>
 
 <!-- Toastr -->
-<script src="js/plugins/toastr/toastr.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/toastr/toastr.min.js"></script>
 
 
 <script>
@@ -1331,8 +1311,6 @@
             toastr.success('Responsive Admin Theme', 'Welcome to INSPINIA');
 
         }, 1300);
-
-
         var data1 = [
             [0,4],[1,8],[2,5],[3,10],[4,4],[5,16],[6,5],[7,11],[8,6],[9,11],[10,30],[11,10],[12,13],[13,4],[14,3],[15,3],[16,6]
         ];
@@ -1384,16 +1362,12 @@
                 backgroundColor: ["#a3e1d4","#dedede","#9CC3DA"]
             }]
         } ;
-
-
         var doughnutOptions = {
             responsive: false,
             legend: {
                 display: false
             }
         };
-
-
         var ctx4 = document.getElementById("doughnutChart").getContext("2d");
         new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
 
@@ -1403,21 +1377,16 @@
                 data: [70,27,85],
                 backgroundColor: ["#a3e1d4","#dedede","#9CC3DA"]
             }]
-        } ;
-
-
+        };
         var doughnutOptions = {
             responsive: false,
             legend: {
                 display: false
             }
         };
-
-
         var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
         new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
 
     });
 </script>
-</body>
-</html>
+<?php echo $this->fetch('common/footer-end.php');?>
