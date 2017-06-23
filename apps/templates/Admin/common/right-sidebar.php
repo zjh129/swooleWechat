@@ -2,10 +2,10 @@
     <div class="sidebar-container">
         <ul class="nav nav-tabs navs-3">
             <li class="active"><a data-toggle="tab" href="#tab-1">
-                    Notes
+                    通知
                 </a></li>
             <li><a data-toggle="tab" href="#tab-2">
-                    Projects
+                    项目
                 </a></li>
             <li class=""><a data-toggle="tab" href="#tab-3">
                     <i class="fa fa-gear"></i>
@@ -14,14 +14,14 @@
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
                 <div class="sidebar-title">
-                    <h3><i class="fa fa-comments-o"></i> Latest Notes</h3>
-                    <small><i class="fa fa-tim"></i> You have 10 new message.</small>
+                    <h3><i class="fa fa-comments-o"></i> 最新通知</h3>
+                    <small><i class="fa fa-tim"></i> 您有10条新的消息.</small>
                 </div>
                 <div>
                     <div class="sidebar-message">
                         <a href="#">
                             <div class="pull-left text-center">
-                                <img alt="image" class="img-circle message-avatar" src="img/a1.jpg">
+                                <img alt="image" class="img-circle message-avatar" src="//static.tudouyu.cn/AdminInspinia/2.7.1/img/a1.jpg">
 
                                 <div class="m-t-xs">
                                     <i class="fa fa-star text-warning"></i>
@@ -39,7 +39,7 @@
                     <div class="sidebar-message">
                         <a href="#">
                             <div class="pull-left text-center">
-                                <img alt="image" class="img-circle message-avatar" src="img/a2.jpg">
+                                <img alt="image" class="img-circle message-avatar" src="//static.tudouyu.cn/AdminInspinia/2.7.1/img/a2.jpg">
                             </div>
                             <div class="media-body">
                                 The point of using Lorem Ipsum is that it has a more-or-less normal.
@@ -51,7 +51,7 @@
                     <div class="sidebar-message">
                         <a href="#">
                             <div class="pull-left text-center">
-                                <img alt="image" class="img-circle message-avatar" src="img/a3.jpg">
+                                <img alt="image" class="img-circle message-avatar" src="//static.tudouyu.cn/AdminInspinia/2.7.1/img/a3.jpg">
 
                                 <div class="m-t-xs">
                                     <i class="fa fa-star text-warning"></i>
@@ -69,7 +69,7 @@
                     <div class="sidebar-message">
                         <a href="#">
                             <div class="pull-left text-center">
-                                <img alt="image" class="img-circle message-avatar" src="img/a4.jpg">
+                                <img alt="image" class="img-circle message-avatar" src="//static.tudouyu.cn/AdminInspinia/2.7.1/img/a4.jpg">
                             </div>
 
                             <div class="media-body">
@@ -82,7 +82,7 @@
                     <div class="sidebar-message">
                         <a href="#">
                             <div class="pull-left text-center">
-                                <img alt="image" class="img-circle message-avatar" src="img/a8.jpg">
+                                <img alt="image" class="img-circle message-avatar" src="//static.tudouyu.cn/AdminInspinia/2.7.1/img/a8.jpg">
                             </div>
                             <div class="media-body">
 
@@ -95,7 +95,7 @@
                     <div class="sidebar-message">
                         <a href="#">
                             <div class="pull-left text-center">
-                                <img alt="image" class="img-circle message-avatar" src="img/a7.jpg">
+                                <img alt="image" class="img-circle message-avatar" src="//static.tudouyu.cn/AdminInspinia/2.7.1/img/a7.jpg">
                             </div>
                             <div class="media-body">
                                 Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
@@ -107,7 +107,7 @@
                     <div class="sidebar-message">
                         <a href="#">
                             <div class="pull-left text-center">
-                                <img alt="image" class="img-circle message-avatar" src="img/a3.jpg">
+                                <img alt="image" class="img-circle message-avatar" src="//static.tudouyu.cn/AdminInspinia/2.7.1/img/a3.jpg">
 
                                 <div class="m-t-xs">
                                     <i class="fa fa-star text-warning"></i>
@@ -125,7 +125,7 @@
                     <div class="sidebar-message">
                         <a href="#">
                             <div class="pull-left text-center">
-                                <img alt="image" class="img-circle message-avatar" src="img/a4.jpg">
+                                <img alt="image" class="img-circle message-avatar" src="//static.tudouyu.cn/AdminInspinia/2.7.1/img/a4.jpg">
                             </div>
                             <div class="media-body">
                                 Uncover many web sites still in their infancy. Various versions have.
@@ -141,8 +141,8 @@
             <div id="tab-2" class="tab-pane">
 
                 <div class="sidebar-title">
-                    <h3><i class="fa fa-cube"></i> Latest projects</h3>
-                    <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
+                    <h3><i class="fa fa-cube"></i> 最新事项</h3>
+                    <small><i class="fa fa-tim"></i> 您还有14件项目还未处理.</small>
                 </div>
 
                 <ul class="sidebar-list">
@@ -247,13 +247,13 @@
             <div id="tab-3" class="tab-pane">
 
                 <div class="sidebar-title">
-                    <h3><i class="fa fa-gears"></i> Settings</h3>
-                    <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
+                    <h3><i class="fa fa-gears"></i> 设置</h3>
+                    <small><i class="fa fa-tim"></i> 你有14个项目. 10未完成.</small>
                 </div>
 
                 <div class="setings-item">
                     <span>
-                        Show notifications
+                        显示通知
                     </span>
                     <div class="switch">
                         <div class="onoffswitch">
@@ -267,7 +267,7 @@
                 </div>
                 <div class="setings-item">
                     <span>
-                        Disable Chat
+                        禁用聊天
                     </span>
                     <div class="switch">
                         <div class="onoffswitch">
@@ -281,7 +281,7 @@
                 </div>
                 <div class="setings-item">
                     <span>
-                        Enable history
+                        启用历史记录
                     </span>
                     <div class="switch">
                         <div class="onoffswitch">
@@ -295,7 +295,7 @@
                 </div>
                 <div class="setings-item">
                     <span>
-                        Show charts
+                        显示图表
                     </span>
                     <div class="switch">
                         <div class="onoffswitch">
@@ -309,7 +309,7 @@
                 </div>
                 <div class="setings-item">
                     <span>
-                        Offline users
+                        离线用户
                     </span>
                     <div class="switch">
                         <div class="onoffswitch">
@@ -323,7 +323,7 @@
                 </div>
                 <div class="setings-item">
                     <span>
-                        Global search
+                        全局搜索
                     </span>
                     <div class="switch">
                         <div class="onoffswitch">
@@ -337,7 +337,7 @@
                 </div>
                 <div class="setings-item">
                     <span>
-                        Update everyday
+                        每天更新
                     </span>
                     <div class="switch">
                         <div class="onoffswitch">
@@ -351,11 +351,11 @@
                 </div>
 
                 <div class="sidebar-content">
-                    <h4>Settings</h4>
+                    <h4>设置</h4>
                     <div class="small">
-                        I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        And typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                        Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                        我相信. Lorem Ipsum只是印刷和排版行业的虚拟文字.
+                        排版行业。 Lorem Ipsum自15世纪15年代以来一直是行业的标准虚拟文本。
+                        多年来，有时是偶然的，有时是故意的（注入幽默等）。
                     </div>
                 </div>
 

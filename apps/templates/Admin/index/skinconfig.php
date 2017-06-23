@@ -4,13 +4,13 @@
             <i class="fa fa-cogs fa-spin"></i>
         </div>
         <div class="skin-settings">
-            <div class="title">Configuration <br/>
+            <div class="title">配置<br/>
                 <small style="text-transform: none;font-weight: 400">
-                    Config box designed for demo purpose. All options available via code.
+                    为演示目的而设计的配置框。通过代码可获得的所有选项。
                 </small></div>
             <div class="setings-item">
                     <span>
-                        Collapse menu
+                        折叠菜单
                     </span>
 
                 <div class="switch">
@@ -25,7 +25,7 @@
             </div>
             <div class="setings-item">
                     <span>
-                        Fixed sidebar
+                        固定侧边栏
                     </span>
 
                 <div class="switch">
@@ -40,7 +40,7 @@
             </div>
             <div class="setings-item">
                     <span>
-                        Top navbar
+                        顶部导航栏
                     </span>
 
                 <div class="switch">
@@ -55,11 +55,8 @@
             </div>
             <div class="setings-item">
                     <span>
-                        Top navbar v.2
-                        <br/>
-                        <small>*Primary layout</small>
+                        二级顶部导航栏
                     </span>
-
                 <div class="switch">
                     <div class="onoffswitch">
                         <input type="checkbox" name="fixednavbar2" class="onoffswitch-checkbox" id="fixednavbar2">
@@ -72,7 +69,7 @@
             </div>
             <div class="setings-item">
                     <span>
-                        Boxed layout
+                        盒装布局
                     </span>
 
                 <div class="switch">
@@ -87,7 +84,7 @@
             </div>
             <div class="setings-item">
                     <span>
-                        Fixed footer
+                        固定页脚
                     </span>
 
                 <div class="switch">
@@ -101,32 +98,32 @@
                 </div>
             </div>
 
-            <div class="title">Skins</div>
+            <div class="title">皮肤</div>
             <div class="setings-item default-skin">
                     <span class="skin-name ">
                          <a href="#" class="s-skin-0">
-                             Default
+                             默认
                          </a>
                     </span>
             </div>
             <div class="setings-item blue-skin">
                     <span class="skin-name ">
                         <a href="#" class="s-skin-1">
-                            Blue light
+                            蓝光
                         </a>
                     </span>
             </div>
             <div class="setings-item yellow-skin">
                     <span class="skin-name ">
                         <a href="#" class="s-skin-3">
-                            Yellow/Purple
+                            黄紫
                         </a>
                     </span>
             </div>
             <div class="setings-item ultra-skin">
                     <span class="skin-name ">
-                        <a href="md-skin.html" class="md-skin">
-                            Material Design
+                        <a href="#" class="md-skin">
+                            Inspinia风格
                         </a>
                     </span>
             </div>
@@ -309,27 +306,31 @@
         $("body").removeClass("skin-1");
         $("body").removeClass("skin-2");
         $("body").removeClass("skin-3");
+        $("body").removeClass("md-skin");
     });
 
     // Blue skin
     $('.s-skin-1').click(function (){
         $("body").removeClass("skin-2");
         $("body").removeClass("skin-3");
+        $("body").removeClass("md-skin");
         $("body").addClass("skin-1");
-    });
-
-    // Inspinia ultra skin
-    $('.s-skin-2').click(function (){
-        $("body").removeClass("skin-1");
-        $("body").removeClass("skin-3");
-        $("body").addClass("skin-2");
     });
 
     // Yellow skin
     $('.s-skin-3').click(function (){
         $("body").removeClass("skin-1");
         $("body").removeClass("skin-2");
+        $("body").removeClass("md-skin");
         $("body").addClass("skin-3");
+    });
+
+    // Inspinia ultra skin
+    $('.md-skin').click(function (){
+        $("body").removeClass("skin-1");
+        $("body").removeClass("skin-3");
+        $("body").removeClass("skin-2");
+        $("body").addClass("md-skin");
     });
 
     if (localStorageSupport){

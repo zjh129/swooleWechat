@@ -13,7 +13,7 @@
                         <li><a href="contacts.html">Contacts</a></li>
                         <li><a href="mailbox.html">Mailbox</a></li>
                         <li class="divider"></li>
-                        <li><a href="login.html">Logout</a></li>
+                        <li><a href="/Admin/Login/logout">登出</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">
@@ -21,9 +21,9 @@
                 </div>
             </li>
             <li class="active">
-                <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
+                <a href="/Admin/Index/index"><i class="fa fa-th-large"></i> <span class="nav-label">仪表盘</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li class="active"><a href="index.html">Dashboard v.1</a></li>
+                    <li class="active"><a href="/Admin/Index/index">Dashboard v.1</a></li>
                     <li><a href="dashboard_2.html">Dashboard v.2</a></li>
                     <li><a href="dashboard_3.html">Dashboard v.3</a></li>
                     <li><a href="dashboard_4_1.html">Dashboard v.4</a></li>
