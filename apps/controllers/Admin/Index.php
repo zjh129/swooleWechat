@@ -15,12 +15,13 @@ class Index extends Base
      */
     public function index()
     {
+        $this->setSeoTitle('控制面板');
         $systemName = php_uname('s');
         $systemInfo = [
             [
                 'name'  => '操作系统名称',
                 'value' => $systemName,
-                'icon'  => strpos(strtolower($systemName), 'linux') !== false ? 'ion ion-social-tux' : 'ion ion-social-windows-outline',
+                'icon'  => strpos(strtolower($systemName), 'linux') !== false ? 'fa fa-linux fa-5x' : 'fa fa-windows fa-5x',
             ],
             [
                 'name'  => '系统版本信息',
@@ -102,8 +103,8 @@ class Index extends Base
         $this->assign('systemInfo', $systemInfo);
         $this->display();
     }
-    public function index2()
+    public function skinConfig()
     {
-        return time();
+        $this->display();
     }
 }

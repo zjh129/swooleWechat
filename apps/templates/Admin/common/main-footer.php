@@ -1,7 +1,12 @@
-<footer class="main-footer">
-    <div class="pull-right hidden-xs">
-        <b>Version</b> 2.3.8
+<div class="row">
+    <div class="col-lg-12">
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2017
+            </div>
+        </div>
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
-    reserved.
-</footer>
+</div>
