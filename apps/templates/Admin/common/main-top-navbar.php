@@ -126,7 +126,7 @@
 <!-- 主体面包屑 -->
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9">
-        <h2>Widgets</h2>
+        <h2><?php echo $this->seoData['title'] ?? ''?></h2>
         <ol class="breadcrumb">
             <li>
                 <a href="index.html">Home</a>
