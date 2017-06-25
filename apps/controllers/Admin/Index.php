@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\BaseController\AdminBaseController as Base;
+use App\Service\SysMenu;
 
 class Index extends Base
 {
@@ -11,11 +12,20 @@ class Index extends Base
     }
 
     /**
-     * 后台主页
+     * 仪表盘
      */
     public function index()
     {
         $this->setSeoTitle('控制面板');
+        $this->display();
+    }
+
+    /**
+     * 系统信息
+     */
+    public function sysinfo()
+    {
+        $this->setSeoTitle('系统信息');
         $systemName = php_uname('s');
         $systemInfo = [
             [
@@ -103,6 +113,10 @@ class Index extends Base
         $this->assign('systemInfo', $systemInfo);
         $this->display();
     }
+
+    /**
+     * 皮肤配置异步加载
+     */
     public function skinConfig()
     {
         $this->display();

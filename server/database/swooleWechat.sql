@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-06-24 23:06:12
+Date: 2017-06-25 22:57:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -53,9 +53,9 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '', '0', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('2', 'admin', '系统信息', '/Admin/Index/iindex', '1', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '', '0', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', '0', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('2', 'admin', '系统信息', '/Admin/Index/index', '1', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', '0', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', '3', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('5', 'admin', '用户组管理', '/Admin/SysUserGroup/index', '3', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('6', 'admin', '用户管理', '/Admin/SysUser/Index', '3', '0', '0', '0', '0');

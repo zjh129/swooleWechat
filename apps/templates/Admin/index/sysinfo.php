@@ -16,7 +16,21 @@
         <?php echo $this->fetch('common/main-top-navbar.php');?>
         <!-- 主体内容 -->
         <div class="wrapper wrapper-content">
-
+            <!-- Info boxes -->
+            <div class="row">
+                <?php foreach ($systemInfo as $k => $v): ?>
+                    <div class="col-lg-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5><?php echo $v['name'] ?></h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins"><?php echo $v['value'] ?></h1>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach ?>
+            </div>
         </div>
         <!-- 主体页脚 -->
         <?php echo $this->fetch('common/main-footer.php');?>
