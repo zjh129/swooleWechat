@@ -48,6 +48,8 @@ class Login extends Base
                 \Swoole\Auth::$lastip = 'loginIp';
                 //使用crypt密码
                 \Swoole\Auth::$password_hash = \Swoole\Auth::HASH_SHA1;
+                //设置查询数据库字段
+                $this->user->select = 'userId id,groupId,userName,account,password,email';
                 $r = $this->user->login(trim($_POST['username']), trim($_POST['password']));
                 if (!$r)
                 {

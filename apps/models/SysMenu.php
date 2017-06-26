@@ -25,6 +25,10 @@ class SysMenu extends \App\Component\BaseModel
             'where' => "`moduleType`='$moduleType' AND `isDel`=0",
             'order' => "orderNum ASC,menuId ASC",
         ]);
-        return $menuList;
+        $newMenuList = [];
+        foreach ($menuList as $v){
+            $newMenuList[(int)$v['menuId']] = $v;
+        }
+        return $newMenuList;
     }
 }

@@ -18,7 +18,20 @@ runkit扩展安装(热部署)，目前某些runkit方法报错，无法正常使
 git clone --depth=1 -v git@github.com:runkit7/runkit7.git /tmp/runkit-ext
 cd /tmp/runkit-ext && phpize && ./configure && sudo make && sudo make install
 ```
+为了方便开发，需要在开发环境手动增加一些声明，方便ide自动提示：
+如果添加自定义全局对象，也可以自行添加声明。
+```sh
+#1、vendor/matyhtf/swoole_framework/libs/Swoole/Swoole.php的
+ * @property \EasyWeChat\Foundation\Application $easywechat
+ * @property \App\Component\Event $myevent
+ * @property \App\Component\RabbitMQ $rabbitmq
+ * @property \App\Common\Strip $strip
+ * @property \App\Component\RBAC $rbac
 
+#2、vendor/matyhtf/swoole_framework/libs/lib_config.php的model方法的注释部分return参数改为如下
+@return \App\Component\BaseModel
+
+```
 
 框架目录介绍
 ----
