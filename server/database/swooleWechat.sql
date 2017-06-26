@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-06-25 22:57:19
+Date: 2017-06-26 23:14:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `sys_auth_rule` (
   `ruleName` varchar(50) NOT NULL DEFAULT '' COMMENT '规则名称',
   `title` varchar(20) NOT NULL DEFAULT '',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除）',
-  `condition` varchar(100) NOT NULL DEFAULT '',
+  `condition` varchar(100) NOT NULL DEFAULT '' COMMENT '条件',
   PRIMARY KEY (`ruleId`),
   UNIQUE KEY `name` (`ruleName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户认证规则表';
@@ -66,7 +66,7 @@ INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `userId` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `groupId` int(10) NOT NULL DEFAULT '0' COMMENT '用户组ID',
   `userName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名称',
   `account` varchar(100) NOT NULL DEFAULT '' COMMENT '账号',
@@ -76,7 +76,7 @@ CREATE TABLE `sys_user` (
   `loginTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `loginIp` varchar(50) NOT NULL DEFAULT '' COMMENT '登录IP',
   `createTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
 
 -- ----------------------------
