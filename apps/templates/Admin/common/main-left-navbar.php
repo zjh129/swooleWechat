@@ -20,6 +20,7 @@
                     SW+
                 </div>
             </li>
+            <?php echo $this->menuHtml; ?>
             <li class="active">
                 <a href="/Admin/Index/index"><i class="fa fa-th-large"></i> <span class="nav-label">仪表盘</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">

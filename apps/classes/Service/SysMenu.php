@@ -12,6 +12,11 @@ class SysMenu
     const MENU_TYPE_INDEX  = 'index';
     const MENU_TYPE_USER   = 'user';
     /**
+     * 菜单列表
+     * @var
+     */
+    private $menuList;
+    /**
      * 后台菜单图标类
      * @var array
      */
@@ -37,6 +42,11 @@ class SysMenu
      */
     private $sysAdminMenuList;
     /**
+     * 当前选中菜单ID集
+     * @var
+     */
+    private $sysAdminCurrentIds;
+    /**
      * 构造函数.
      */
     public function __construct()
@@ -53,15 +63,19 @@ class SysMenu
      */
     public function getTreeMenuList($moduleType)
     {
-        $menuList = $this->sysMenuModel->getMenuList($moduleType);
+        $this->menuList = $this->sysMenuModel->getMenuList($moduleType);
 
         $userId = \Swoole::$php->user->getUid();
-        foreach ($menuList as $v){
-            \Swoole::$php->rbac->check(strtolower($v['url']), $userId);
+        foreach ($this->menuList as $k => $v){
+            //无权限则删除
+            $isValid = \Swoole::$php->rbac->check(strtolower($v['url']), $userId);
+            if(!$isValid){
+                unset($this->menuList[$k]);
+            }
         }
 
         $tree     = new \App\Common\Tree('menuId', 'parentMenuId', 'child');
-        $tree->load($menuList);
+        $tree->load($this->menuList);
         $treelist = $tree->deepTree();
 
         return $treelist;
@@ -71,13 +85,32 @@ class SysMenu
      * 生成后台菜单
      * @return string
      */
-    public function buildAdminTreeMenu()
+    public function buildAdminTreeMenu($currentUrl = '')
     {
         $treeList = $this->getTreeMenuList('admin');
         //初始化标签列表
         $this->initAdminLableList();
+        //初始化当前菜单ID集
+        $currentMenuData = $this->sysMenuModel->getMenuDataByUrl($currentUrl);
+        if ($currentMenuData)
+        {
+            $this->initCurrentIds($currentMenuData['menuId']);
+        }
 
         return $this->compineAdminTreeMenu($treeList);
+    }
+    /**
+     * 获取当前菜单ID集
+     * @param $parentId
+     */
+    private function initCurrentIds($parentId)
+    {
+        if (isset($this->menuList[$parentId])){
+            $this->sysAdminCurrentIds[] = $parentId;
+            if ($this->menuList[$parentId]['menuId'] > 0){
+                $this->initCurrentIds($this->menuList[$parentId]['menuId']);
+            }
+        }
     }
     /**
      * 初始化菜单标签列表
@@ -100,12 +133,13 @@ class SysMenu
             }
             foreach ($menuList as $menuOne){
                 $menuUrl = strtolower($menuOne['url']);
-                $html .= '<li>';
+                //当前菜单选中状态
+                $html .= '<li '.(in_array($menuOne['menuId'], $this->sysAdminCurrentIds) ? 'class="active"' : '').'>';
                 //链接
                 $html .= '<a href="'.($menuOne['child'] ? '#' : $menuOne['url']).'">';
                 //菜单前面图标
-                if (isset($this->sysAdminMenuList[$menuUrl])){
-                    $html .= '<i class="'.$this->sysAdminMenuList[$menuUrl].'"></i>';
+                if (isset($this->adminMenuIconClass[$menuUrl]) && $this->adminMenuIconClass[$menuUrl]){
+                    $html .= '<i class="'.$this->adminMenuIconClass[$menuUrl].'"></i>';
                 }
                 $html .= '<span class="nav-label">'.$menuOne['menuName'].' </span>';
                 //标签

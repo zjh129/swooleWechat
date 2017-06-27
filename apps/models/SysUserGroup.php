@@ -21,10 +21,10 @@ class SysUserGroup extends \App\Component\BaseModel
     public function getUserGroupList($userId)
     {
         $groupList = $this->gets([
-            'select' => 'a.groupId,a.groupName,a.ruleIds',
-            'from' => $this->table.' a',
-            'join' => ['sys_user_to_group b', 'b.userId='.$userId.' AND a.groupId=b.groupId'],
-            'where' => "a.isDel=0"
+            'select' => 'sys_user_group.groupId,sys_user_group.groupName,sys_user_group.ruleIds',
+            'from' => $this->table,
+            'join' => ['sys_user_to_group', 'sys_user_to_group.userId='.$userId.' AND sys_user_group.groupId=sys_user_to_group.groupId'],
+            'where' => "sys_user_group.isDel=0"
         ]);
         return $groupList;
     }

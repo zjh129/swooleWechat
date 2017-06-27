@@ -171,13 +171,17 @@ class RBAC
         //保存用户所属用户组设置的所有权限规则id
         $ids    = [];
         foreach ($groups as $g) {
-            $ruleIds = unserialize($g['ruleIds']);
-            $ruleIds && $ids = array_merge($ids, $ruleIds);
+            if ($g['ruleIds']){
+                $ruleIds = unserialize($g['ruleIds']);
+                $ruleIds && $ids = array_merge($ids, $ruleIds);
+            }
         }
         //保存用户设置的权限规则ID
         $userData = $this->userModel->get($userId);
-        $ruleIds = unserialize($userData['ruleIds']);
-        $ruleIds && $ids = array_merge($ids, $ruleIds);
+        if ($userData['ruleIds']){
+            $ruleIds = unserialize($userData['ruleIds']);
+            $ruleIds && $ids = array_merge($ids, $ruleIds);
+        }
         //去重
         $ids = array_unique($ids);
         if (empty($ids)) {

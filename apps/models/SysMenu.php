@@ -14,6 +14,19 @@ class SysMenu extends \App\Component\BaseModel
     public $table = 'sys_menu';
 
     /**
+     * 通过url获取菜单数据
+     * @param $url
+     * @return array
+     */
+    public function getMenuDataByUrl($url)
+    {
+        $menuData = $this->getone([
+            'select' => 'menuId,menuName,url,parentMenuId',
+            'where' => "`url`='$url' AND `isDel`=0",
+        ]);
+        return $menuData;
+    }
+    /**
      * 显示菜单列表
      * @param string $moduleType
      * @return array
@@ -27,6 +40,7 @@ class SysMenu extends \App\Component\BaseModel
         ]);
         $newMenuList = [];
         foreach ($menuList as $v){
+            $v['url'] = strtolower($v['url']);
             $newMenuList[(int)$v['menuId']] = $v;
         }
         return $newMenuList;
