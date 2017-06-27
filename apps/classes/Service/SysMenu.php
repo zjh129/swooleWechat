@@ -105,10 +105,10 @@ class SysMenu
      */
     private function initCurrentIds($parentId)
     {
-        if (isset($this->menuList[$parentId])){
+        if ($parentId > 0 && isset($this->menuList[$parentId])){
             $this->sysAdminCurrentIds[] = $parentId;
             if ($this->menuList[$parentId]['menuId'] > 0){
-                $this->initCurrentIds($this->menuList[$parentId]['menuId']);
+                $this->initCurrentIds($this->menuList[$parentId]['parentMenuId']);
             }
         }
     }
@@ -136,24 +136,21 @@ class SysMenu
                 //当前菜单选中状态
                 $html .= '<li '.(in_array($menuOne['menuId'], $this->sysAdminCurrentIds) ? 'class="active"' : '').'>';
                 //链接
-                $html .= '<a href="'.($menuOne['child'] ? '#' : $menuOne['url']).'">';
+                $html .= '<a href="'.(isset($menuOne['child']) && $menuOne['child'] ? '#' : $menuOne['url']).'">';
                 //菜单前面图标
                 if (isset($this->adminMenuIconClass[$menuUrl]) && $this->adminMenuIconClass[$menuUrl]){
                     $html .= '<i class="'.$this->adminMenuIconClass[$menuUrl].'"></i>';
                 }
                 $html .= '<span class="nav-label">'.$menuOne['menuName'].' </span>';
                 //标签
-                if ($menuOne['child']){
-                    $html .= '';
-                }
                 if (isset($this->adminMenuLableList[$menuUrl])){
                     $html .= $this->adminMenuLableList[$menuUrl];
                 }elseif (isset($menuOne['child']) && $menuOne['child']){
                     $html .= '<span class="fa arrow"></span>';
                 }
                 $html .= '</a>';
-                if ($menuOne['child']){
-                    $html .= $this->compineAdminTreeMenu($menuList['child'], $menuLevel+1);
+                if (isset($menuOne['child']) && $menuOne['child']){
+                    $html .= $this->compineAdminTreeMenu($menuOne['child'], $menuLevel+1);
                 }
             }
             if ($menuLevel > 1){
