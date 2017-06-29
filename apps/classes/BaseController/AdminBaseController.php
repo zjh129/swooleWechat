@@ -58,6 +58,8 @@ class AdminBaseController extends BaseController
         }
         //初始化菜单html
         $this->menuHtml = (new \App\Service\SysMenu())->buildAdminTreeMenu($this->currentUrl);
+        //添加面包屑
+        $this->addBreadcrumb('首页','/admin/index/index');
     }
     /**
      * 设置网页seo标题.
@@ -74,9 +76,9 @@ class AdminBaseController extends BaseController
      *
      * @param array $navData
      */
-    public function addBreadcrumb($navData = [])
+    public function addBreadcrumb($title, $url)
     {
-        $this->breadcrumbData[] = $navData;
+        $this->breadcrumbData[] = ['title'=>$title, 'url'=>$url];
     }
 
     /**

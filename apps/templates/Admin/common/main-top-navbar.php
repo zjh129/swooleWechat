@@ -124,16 +124,24 @@
     </nav>
 </div>
 <!-- 主体面包屑 -->
+<?php if($this->breadcrumbData){?>
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9">
         <h2><?php echo $this->seoData['title'] ?? ''?></h2>
         <ol class="breadcrumb">
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-            <li class="active">
-                <strong>Widgets</strong>
-            </li>
+            <?php $countBreadcrumb = count($this->breadcrumbData);?>
+            <?php foreach ($this->breadcrumbData as $menuK => $menuV){?>
+                <?php if ($menuK < $countBreadcrumb){?>
+                    <li>
+                        <a href="<?php echo $menuV['url']?>"><?php echo $menuV['title']?></a>
+                    </li>
+                <?php }else{?>
+                    <li class="active">
+                        <strong><?php echo $menuV['title']?></strong>
+                    </li>
+                <?php }?>
+            <?php }?>
         </ol>
     </div>
 </div>
+<?php }?>

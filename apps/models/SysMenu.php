@@ -34,7 +34,7 @@ class SysMenu extends \App\Component\BaseModel
     public function getMenuList($moduleType = 'admin')
     {
         $menuList = $this->gets([
-            'select' => 'menuId,menuName,url,parentMenuId',
+            'select' => 'menuId,menuName,url,iconClass,parentMenuId',
             'where' => "`moduleType`='$moduleType' AND `isDel`=0",
             'order' => "orderNum ASC,menuId ASC",
         ]);

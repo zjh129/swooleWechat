@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-06-26 23:14:59
+Date: 2017-06-29 22:45:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,24 +42,26 @@ CREATE TABLE `sys_menu` (
   `moduleType` varchar(10) NOT NULL DEFAULT '' COMMENT '模块名称',
   `menuName` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单名称',
   `url` varchar(100) NOT NULL DEFAULT '' COMMENT '链接',
+  `iconClass` varchar(100) NOT NULL DEFAULT '' COMMENT '图标样式',
   `parentMenuId` int(10) NOT NULL DEFAULT '0' COMMENT '父级菜单ID',
   `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', '0', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('2', 'admin', '系统信息', '/Admin/Index/index', '1', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', '0', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('5', 'admin', '用户组管理', '/Admin/SysUserGroup/index', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('6', 'admin', '用户管理', '/Admin/SysUser/Index', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', '', '0', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', '', '1', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', '', '0', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', '', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('5', 'admin', '用户组管理', '/Admin/SysUserGroup/index', '', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('6', 'admin', '用户管理', '/Admin/SysUser/Index', '', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', '', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', '', '1', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for sys_user

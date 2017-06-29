@@ -2,13 +2,13 @@
 namespace App\Controller\Admin;
 
 use App\BaseController\AdminBaseController as Base;
-use App\Service\SysMenu;
 
 class Index extends Base
 {
     public function __construct($swoole)
     {
         parent::__construct($swoole);
+        $this->addBreadcrumb('仪表盘','/admin/index/index');
     }
 
     /**
@@ -17,6 +17,7 @@ class Index extends Base
     public function index()
     {
         $this->setSeoTitle('控制面板');
+        $this->addBreadcrumb('控制面板','/admin/index/index');
         $this->display();
     }
 
@@ -26,6 +27,7 @@ class Index extends Base
     public function sysinfo()
     {
         $this->setSeoTitle('系统信息');
+        $this->addBreadcrumb('系统信息','/admin/index/sysinfo');
         $systemName = php_uname('s');
         $systemInfo = [
             [

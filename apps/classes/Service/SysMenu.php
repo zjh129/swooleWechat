@@ -16,19 +16,6 @@ class SysMenu
      * @var
      */
     private $menuList;
-    /**
-     * 后台菜单图标类
-     * @var array
-     */
-    private $adminMenuIconClass = [
-        '/Admin/Index/index' => 'fa fa-th-large',//仪表盘
-        '/Admin/Index/sysinfo' => '',//系统信息
-        '/Admin/System/index' => '',//系统管理
-        '/Admin/SysMenu/index' => '',//菜单管理
-        '/Admin/SysUserGroup/index' => '',//用户组管理
-        '/Admin/SysUser/Index' => '',//用户管理
-        '/Admin/SysAuthRule/index' => '',//权限管理
-    ];
     //图标后缀标签
     private $adminMenuLableList = [];
 
@@ -37,15 +24,10 @@ class SysMenu
      */
     private $sysMenuModel;
     /**
-     * 后台管理菜单
-     * @var
-     */
-    private $sysAdminMenuList;
-    /**
      * 当前选中菜单ID集
      * @var
      */
-    private $sysAdminCurrentIds;
+    private $sysAdminCurrentIds = [];
     /**
      * 构造函数.
      */
@@ -138,8 +120,8 @@ class SysMenu
                 //链接
                 $html .= '<a href="'.(isset($menuOne['child']) && $menuOne['child'] ? '#' : $menuOne['url']).'">';
                 //菜单前面图标
-                if (isset($this->adminMenuIconClass[$menuUrl]) && $this->adminMenuIconClass[$menuUrl]){
-                    $html .= '<i class="'.$this->adminMenuIconClass[$menuUrl].'"></i>';
+                if (isset($menuOne['iconClass']) && $menuOne['iconClass']){
+                    $html .= '<i class="'.$menuOne['iconClass'].'"></i>';
                 }
                 $html .= '<span class="nav-label">'.$menuOne['menuName'].' </span>';
                 //标签
