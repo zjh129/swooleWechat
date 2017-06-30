@@ -19,8 +19,15 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
+                        <div class="col-md-4">
+                            <select class="form-control" name="moduleType" id="moduleType">
+                                <option value="admin" <?php echo $moduleType == 'admin'?'selected':''?>>后台模块</option>
+                                <option value="index" <?php echo $moduleType == 'index'?'selected':''?>>前台模块</option>
+                            </select>
+                        </div>
                         <button type="button" data-action="expand-all" class="btn btn-white btn-sm">全部展开</button>
                         <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">全部收缩</button>
+                        <button type="button" class="btn btn-white btn-sm" data-toggle="modal" data-target="#myModal" onclick="javascript:$('#form')[0].reset();">添加菜单</button>
                     </div>
                 </div>
             </div>
@@ -103,6 +110,47 @@
                 </div>
             </div>
         </div>
+        <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated fadeIn">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Modal title</h4>
+                        <small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" id="form">
+                            <input type="hidden" name="moduleType" id="moduleType" value="<?php echo $moduleType;?>">
+                            <div class="form-group">
+                                <label>菜单名称</label>
+                                <input type="text" placeholder="输入菜单名称" class="form-control" name="menuName" id="menuName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>父级菜单</label>
+                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="account">
+                                    <option>option 1</option>
+                                    <option>option 2</option>
+                                    <option>option 3</option>
+                                    <option>option 4</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>访问链接</label>
+                                <input type="text" placeholder="例如：/Admin/Index/index" class="form-control" name="url">
+                            </div>
+                            <div class="form-group">
+                                <label>菜单图标样式</label>
+                                <input type="text" placeholder="例如：fa fa-sitemap" class="form-control" name="iconClass" id="iconClass">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:$('#form').submit();">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 主体页脚 -->
         <?php echo $this->fetch('common/main-footer.php');?>
     </div>
@@ -115,9 +163,43 @@
 <?php echo $this->fetch('common/footer-start.php');?>
 <!-- Nestable List -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/nestable/jquery.nestable.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- Jquery Validate -->
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/validate/jquery.validate.min.js"></script>
+
 <script>
     $(document).ready(function(){
-
+        //模块选择
+        $("#moduleType").on('change', function () {
+            window.location.href = '<?php echo $this->currentUrl?>?moduleType='+$(this).val();
+        });
+        //表单验证
+        $("#form").validate({
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 3
+                },
+                url: {
+                    required: true,
+                    url: true
+                },
+                number: {
+                    required: true,
+                    number: true
+                },
+                min: {
+                    required: true,
+                    minlength: 6
+                },
+                max: {
+                    required: true,
+                    maxlength: 4
+                }
+            }
+        });
+        //可嵌套列表
         var updateOutput = function (e) {
             var list = e.length ? e : $(e.target),
                 output = list.data('output');

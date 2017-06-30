@@ -12,7 +12,7 @@ class Sysmenu extends Base
     public function __construct($swoole)
     {
         parent::__construct($swoole);
-        $this->addBreadcrumb('系统管理','/admin/System//index');
+        $this->addBreadcrumb('系统管理','/admin/System/index');
     }
 
     /**
@@ -21,8 +21,13 @@ class Sysmenu extends Base
     public function index()
     {
         $this->setSeoTitle('菜单管理');
-        $this->addBreadcrumb('菜单管理','/admin/sysmenu/index');
-
+        $this->addBreadcrumb('菜单管理',$this->currentUrl);
+        $moduleType = isset($_GET['moduleType']) && $_GET['moduleType'] ? $_GET['moduleType'] : 'admin';
+        $this->assign('moduleType', $moduleType);
         $this->display();
+    }
+    public function add()
+    {
+
     }
 }

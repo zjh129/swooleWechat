@@ -29,7 +29,7 @@ class AdminBaseController extends BaseController
      * 当前路径，关系到权限
      * @var string
      */
-    private $currentUrl = '';
+    public $currentUrl = '';
     /**
      * 菜单html
      * @var
