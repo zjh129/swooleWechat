@@ -22,8 +22,14 @@ class Sysmenu extends Base
     {
         $this->setSeoTitle('菜单管理');
         $this->addBreadcrumb('菜单管理',$this->currentUrl);
-        $moduleType = isset($_GET['moduleType']) && $_GET['moduleType'] ? $_GET['moduleType'] : 'admin';
+        //菜单模块类别
+        $sysMenu = new \App\Service\SysMenu();
+        $this->assign('moduleTypeList', $sysMenu->getModuleTypeList());
+        $moduleType = isset($_GET['moduleType']) && $_GET['moduleType'] ? $_GET['moduleType'] : $sysMenu::MENU_TYPE_ADMIN;
         $this->assign('moduleType', $moduleType);
+        //菜单选择列表
+        $menuTreeOptionHtml = (new \App\Service\SysMenu())->getTreeOptions($moduleType);
+        $this->assign('menuTreeOption', $menuTreeOptionHtml);
         $this->display();
     }
     public function add()

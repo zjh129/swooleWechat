@@ -21,8 +21,9 @@
                     <div id="nestable-menu">
                         <div class="col-md-4">
                             <select class="form-control" name="moduleType" id="moduleType">
-                                <option value="admin" <?php echo $moduleType == 'admin'?'selected':''?>>后台模块</option>
-                                <option value="index" <?php echo $moduleType == 'index'?'selected':''?>>前台模块</option>
+                                <?php foreach ($moduleTypeList as $moduleK => $moduleV){?>
+                                <option value="<?php echo $moduleK;?>" <?php echo $moduleType == $moduleK ? 'selected':''?>><?php echo $moduleV;?></option>
+                                <?php }?>
                             </select>
                         </div>
                         <button type="button" data-action="expand-all" class="btn btn-white btn-sm">全部展开</button>
@@ -128,10 +129,7 @@
                             <div class="form-group">
                                 <label>父级菜单</label>
                                 <select class="form-control m-b __web-inspector-hide-shortcut__" name="account">
-                                    <option>option 1</option>
-                                    <option>option 2</option>
-                                    <option>option 3</option>
-                                    <option>option 4</option>
+                                    <?php echo $menuTreeOption;?>
                                 </select>
                             </div>
                             <div class="form-group">
