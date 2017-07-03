@@ -12,6 +12,7 @@ class Tree
     public $childrenKey; //用来存储子分类的数组key名
     public $nameKey = ''; //名称key
     private $OriginalList;
+    private $treeList;
 
     public function __construct($pk='id', $parentKey='pid', $childrenKey='children')
     {
@@ -65,77 +66,71 @@ class Tree
                 }
             }
         }
-
-        return $tree;
+        $this->treeList = $tree;
+        return $this->treeList;
     }
 
     /**
-     * @param $arr
-     *
-     * @return array
+     * 添加前缀字符
+     * @param $treeList
+     * @param string $prestr
+     * @return bool
      */
-    public function make_tree($arr)
-    {
-        if (!function_exists('make_tree1')) {
-            function make_tree1($arr, $parent_id=0)
-            {
-                $new_arr = [];
-                foreach ($arr as $k=>$v) {
-                    if ($v->parent_id == $parent_id) {
-                        $new_arr[] = $v;
-                        unset($arr[$k]);
-                    }
-                }
-                foreach ($new_arr as &$a) {
-                    $a->children = make_tree1($arr, $a->id);
-                }
-
-                return $new_arr;
-            }
+    private function addNamePre($treeList, $prestr=''){
+        if (empty($treeList)){
+            return false;
         }
+        foreach ($treeList as $k => $v) {
+            if ($prestr) {
+                if ($v == end($this->treeList)) {
+                    $v[$this->nameKey] = $prestr . '└─ ' . $v[$this->nameKey];
+                } else {
+                    $v[$this->nameKey] = $prestr . '├─ ' . $v[$this->nameKey];
+                }
+            }
 
-        return make_tree1($arr);
+            if ($prestr == '') {
+                $prestrForChildren = '　 ';
+            } else {
+                if ($v == end($this->OriginalList)) {
+                    $prestrForChildren = $prestr . '　　 ';
+                } else {
+                    $prestrForChildren = $prestr . '│　 ';
+                }
+            }
+            if (isset($v[$this->childrenKey]) && $v[$this->childrenKey]) {
+                $v[$this->childrenKey] = $this->addNamePre($v[$this->childrenKey], $prestrForChildren);
+            }
+
+            $treeList[$k] = $v;
+        }
+        return $treeList;
     }
 
     /**
-     * 设置显示的前缀字符.
+     * 拼装select option代码
+     * @param $arr 树形数组
+     * @param $depth 显示深度
+     * @param int $recursionCount 递归次数
+     * @param string $ancestorIds 祖先ID集
+     * @return string
      */
-    public function makeTreeWithNamepre()
+    private function makeOptions($arr, $depth = 0, $recursionCount=0, $ancestorIds='')
     {
-        $this->deepTree();
-        if (!function_exists('addNamepre')) {
-            function addNamepre($prestr='')
-            {
-                foreach ($this->OriginalList as $k => $v) {
-                    if ($prestr) {
-                        if ($v == end($this->OriginalList)) {
-                            $v[$this->nameKey] = $prestr . '└─ ' . $v[$this->nameKey];
-                        } else {
-                            $v[$this->nameKey] = $prestr . '├─ ' . $v[$this->nameKey];
-                        }
-                    }
-
-                    if ($prestr == '') {
-                        $prestrForChildren = '　 ';
-                    } else {
-                        if ($v == end($this->OriginalList)) {
-                            $prestrForChildren = $prestr . '　　 ';
-                        } else {
-                            $prestrForChildren = $prestr . '│　 ';
-                        }
-                    }
-                    if (isset($v[$this->childrenKey]) && $v[$this->childrenKey]) {
-                        $v[$this->childrenKey] = addNamepre($v->children, $prestrForChildren);
-                    }
-
-                    $this->OriginalList[$k] = $v;
-                }
+        $recursionCount++;
+        $str = '';
+        foreach ($arr as $v) {
+            $str .= "<option value='" . $v[$this->parentKey] . "' data-depth='{$recursionCount}' data-ancestorIds='" . ltrim($ancestorIds, ',') . "'>" . $v[$this->nameKey] . "</option>\r\n";
+            if ($v[$this->parentKey] == 0) {
+                $recursionCount = 1;
+            }
+            if (isset($v[$this->childrenKey]) && $v[$this->childrenKey] && ($depth == 0 || $recursionCount < $depth )) {
+                $str .= $this->makeOptions($v[$this->childrenKey], $depth, $recursionCount, $ancestorIds . ',' . $v[$this->parentKey]);
             }
         }
 
-        return addNamepre();
+        return $str;
     }
-
     /**
      * @param $arr
      * @param int $depth，当$depth为0的时候表示不限制深度
@@ -144,26 +139,13 @@ class Tree
      */
     public function makeOptionTreeForSelect($depth=0)
     {
-        $this->makeTreeWithNamepre();
-        if (!function_exists('makeOptions')) {
-            function makeOptions($arr, $depth, $recursionCount=0, $ancestorIds='')
-            {
-                $recursionCount++;
-                $str = '';
-                foreach ($arr as $v) {
-                    $str .= "<option value='" . $v[$this->parentKey] . "' data-depth='{$recursionCount}' data-ancestorIds='" . ltrim($ancestorIds, ',') . "'>" . $v[$this->nameKey] . "</option>";
-                    if ($v[$this->parentKey] == 0) {
-                        $recursionCount = 1;
-                    }
-                    if ($depth == 0 || $recursionCount < $depth) {
-                        $str .= makeOptions($v[$this->childrenKey], $depth, $recursionCount, $ancestorIds . ',' . $v[$this->parentKey]);
-                    }
-                }
-
-                return $str;
-            }
-        }
-
-        return makeOptions($this->OriginalList, $depth);
+        //组装成
+        $this->deepTree();
+        //添加名称前缀
+        $this->treeList = $this->addNamePre($this->treeList);
+        //组装option字符
+        $optionHtml = $this->makeOptions($this->treeList, $depth);
+        //$optionHtml = '';
+        return $optionHtml;
     }
 }

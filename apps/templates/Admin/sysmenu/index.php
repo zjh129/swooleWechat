@@ -28,7 +28,7 @@
                         </div>
                         <button type="button" data-action="expand-all" class="btn btn-white btn-sm">全部展开</button>
                         <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">全部收缩</button>
-                        <button type="button" class="btn btn-white btn-sm" data-toggle="modal" data-target="#myModal" onclick="javascript:$('#form')[0].reset();">添加菜单</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm" data-toggle="modal" data-target="#myModal" onclick="javascript:$('#form')[0].reset();"><i class="fa fa-plus"></i>添加菜单</button>
                     </div>
                 </div>
             </div>
@@ -48,6 +48,10 @@
                                 <ol class="dd-list">
                                     <li class="dd-item" data-id="1">
                                         <div class="dd-handle">
+                                            <span class="pull-right">
+                                                <button type="button" class="btn btn-outline btn-primary btn-xs"><i class="fa fa-pencil"></i>编辑</button>
+                                                <button type="button" class="btn btn-outline btn-danger btn-xs"><i class="fa fa-trash-o"></i>删除</button>
+                                            </span>
                                             <span class="label label-info"><i class="fa fa-users"></i></span> Cras ornare tristique.
                                         </div>
                                         <ol class="dd-list">

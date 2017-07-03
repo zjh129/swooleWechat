@@ -123,16 +123,8 @@ class SysMenu
     {
         $this->menuList = $this->sysMenuModel->getMenuList($moduleType);
 
-        $userId = \Swoole::$php->user->getUid();
-        foreach ($this->menuList as $k => $v) {
-            //无权限则删除
-            $isValid = \Swoole::$php->rbac->check(strtolower($v['url']), $userId);
-            if (!$isValid) {
-                unset($this->menuList[$k]);
-            }
-        }
-
         $tree = new \App\Common\Tree('menuId', 'parentMenuId', 'child');
+        $tree->nameKey = 'menuName';
         $tree->load($this->menuList);
         $optionHtml = $tree->makeOptionTreeForSelect();
 
