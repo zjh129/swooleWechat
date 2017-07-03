@@ -27,9 +27,19 @@ class Sysmenu extends Base
         $this->assign('moduleTypeList', $sysMenu->getModuleTypeList());
         $moduleType = isset($_GET['moduleType']) && $_GET['moduleType'] ? $_GET['moduleType'] : $sysMenu::MENU_TYPE_ADMIN;
         $this->assign('moduleType', $moduleType);
+        //菜单模型
+        $sysMenuModel = model('SysMenu');
+        $menuList = $sysMenuModel->getMenuList($moduleType);
+        //树结构菜单列表
+        $tree = new \App\Common\Tree('menuId', 'parentMenuId', 'child');
+        $tree->nameKey = 'menuName';
+        $tree->load($menuList);
+        $optionHtml = $tree->buildOptions();
         //菜单选择列表
-        $menuTreeOptionHtml = (new \App\Service\SysMenu())->getTreeOptions($moduleType);
-        $this->assign('menuTreeOption', $menuTreeOptionHtml);
+        $this->assign('menuTreeOption', $optionHtml);
+        //可嵌套列表
+        $nestableHtml = $tree->buildNestableTree();
+        $this->assign('nestableHtml', $nestableHtml);
         $this->display();
     }
     public function add()

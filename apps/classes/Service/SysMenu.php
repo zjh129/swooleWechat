@@ -92,7 +92,7 @@ class SysMenu
     }
 
     /**
-     * 生成后台菜单.
+     * 生成后台左侧菜单.
      *
      * @param mixed $currentUrl
      *
@@ -110,25 +110,6 @@ class SysMenu
         }
 
         return $this->compineAdminTreeMenu($treeList);
-    }
-
-    /**
-     * 获取select的option html.
-     *
-     * @param string $moduleType
-     *
-     * @return array
-     */
-    public function getTreeOptions($moduleType = 'admin')
-    {
-        $this->menuList = $this->sysMenuModel->getMenuList($moduleType);
-
-        $tree = new \App\Common\Tree('menuId', 'parentMenuId', 'child');
-        $tree->nameKey = 'menuName';
-        $tree->load($this->menuList);
-        $optionHtml = $tree->makeOptionTreeForSelect();
-
-        return $optionHtml;
     }
 
     /**
@@ -195,6 +176,34 @@ class SysMenu
             }
         }
 
+        return $html;
+    }
+    /**
+     * 生成Nestable列表
+     * @param $treeList
+     * @return string
+     */
+    public function buildNestableTree($treeList)
+    {
+        $html = '<ol class="dd-list">';
+        if ($treeList) {
+            foreach ($treeList as $menuData) {
+                $html .= '<li class="dd-item dd-nodrag" data-id="' . $menuData['menuId'] . '">';
+                $html .= '<div class="dd-handle">';
+                $html .= '<span class="label label-info">';
+                if ($menuData['iconClass']) {
+                    $html .= '<i class="' . $menuData['iconClass'] . '"></i>';
+                }
+                $html .= '</span>' . $menuData['menuName'];
+                $html .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>编辑</button>';
+                $html .= '<button type="button" class="btn btn-outline btn-danger btn-xs pull-right"><i class="fa fa-trash-o"></i>删除</button>';
+                $html .= '</div>';
+                if (isset($menuData['child']) && $menuData['child']) {
+                    $html .= $this->makeNestableTree($menuData['child']);
+                }
+            }
+        }
+        $html .= '</ol>';
         return $html;
     }
 }

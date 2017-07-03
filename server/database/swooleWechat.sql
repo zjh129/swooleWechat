@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local_swooleWechat
+Source Server         : 本地数据库
 Source Server Version : 80001
-Source Host           : 192.168.35.130:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-03 12:19:50
+Date: 2017-07-03 22:59:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,14 +54,14 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', '', '0', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', '', '1', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', '', '0', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', '', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('5', 'admin', '用户组管理', '/Admin/SysUserGroup/index', '', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('6', 'admin', '用户管理', '/Admin/SysUser/Index', '', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', '', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', '', '1', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', 'fa fa-dashboard', '0', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', 'fa fa-desktop', '1', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', 'fa fa-sitemap', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('5', 'admin', '用户组管理', '/Admin/SysUserGroup/index', 'fa fa-group', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('6', 'admin', '用户管理', '/Admin/SysUser/Index', 'fa fa-user', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', 'fa fa-gavel', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', 'fa fa-linux', '1', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -84,7 +84,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('2', '0', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', ' ', '2017-07-03 04:19:41', '192.168.35.1', '2017-07-03 04:19:41');
+INSERT INTO `sys_user` VALUES ('2', '0', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', ' ', '2017-07-03 13:28:15', '127.0.0.1', '2017-07-03 13:28:15');
 
 -- ----------------------------
 -- Table structure for sys_user_group
@@ -407,3 +407,4 @@ CREATE TABLE `wx_user_subscribe_log` (
 -- ----------------------------
 -- Records of wx_user_subscribe_log
 -- ----------------------------
+SET FOREIGN_KEY_CHECKS=1;
