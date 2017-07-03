@@ -6,7 +6,7 @@ namespace App\Model;
  */
 class SysUser extends \App\Component\BaseModel
 {
-    public $primary = 'userId';
+    public $primary = 'id';
     /**
      * 表名
      * @var string

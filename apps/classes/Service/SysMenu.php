@@ -71,7 +71,11 @@ class SysMenu
     {
         $this->menuList = $this->sysMenuModel->getMenuList($moduleType);
 
-        $userId = \Swoole::$php->user->getUid();
+        if (\Swoole::$php->user->isLogin()){
+            $userId = \Swoole::$php->user->getUid();
+        }else{
+            $userId = 0;
+        }
         foreach ($this->menuList as $k => $v) {
             //无权限则删除
             $isValid = \Swoole::$php->rbac->check(strtolower($v['url']), $userId);
