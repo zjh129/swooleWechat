@@ -1,4 +1,5 @@
 <?php
+//TYPE_MYSQL:非永久连接；TYPE_MYSQLi:连接是永久连接;TYPE_PDO:pdo数据库链接方式；TYPE_CLMysql：swoole数据库连接
 $db['master'] = [
     'type'       => Swoole\Database::TYPE_MYSQLi,
     'host'       => '172.17.0.2',
