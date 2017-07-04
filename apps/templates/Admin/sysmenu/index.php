@@ -1,7 +1,5 @@
 <!-- 头部开始部分代码 -->
 <?php echo $this->fetch('common/header-start.php');?>
-<!-- jsTree style -->
-<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/jsTree/style.min.css" rel="stylesheet">
 <!-- Gritter -->
 <link href="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
 <!-- 头部结束部分代码 -->
@@ -60,25 +58,26 @@
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Modal title</h4>
-                        <small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+                        <h4 class="modal-title">添加菜单</h4>
                     </div>
                     <div class="modal-body">
                         <form role="form" id="form">
                             <input type="hidden" name="moduleType" id="moduleType" value="<?php echo $moduleType;?>">
+                            <input type="hidden" name="menuId" id="menuId" value="0">
                             <div class="form-group">
                                 <label>菜单名称</label>
                                 <input type="text" placeholder="输入菜单名称" class="form-control" name="menuName" id="menuName" required>
                             </div>
                             <div class="form-group">
                                 <label>父级菜单</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="account">
+                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentMenuId">
+                                    <option value="0">请选择</option>
                                     <?php echo $menuTreeOption;?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>访问链接</label>
-                                <input type="text" placeholder="例如：/Admin/Index/index" class="form-control" name="url">
+                                <input type="text" placeholder="例如：/Admin/Index/index" class="form-control" name="url" required>
                             </div>
                             <div class="form-group">
                                 <label>菜单图标样式</label>
@@ -87,8 +86,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="javascript:$('#form').submit();">Save changes</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:$('#form').submit();">保存</button>
                     </div>
                 </div>
             </div>
@@ -105,8 +104,6 @@
 <?php echo $this->fetch('common/footer-start.php');?>
 <!-- Nestable List -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/nestable/jquery.nestable.js"></script>
-<!-- Jquery Validate -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/validate/jquery.validate.min.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -146,26 +143,39 @@
         //表单验证
         $("#form").validate({
             rules: {
-                password: {
+                menuName:{
                     required: true,
-                    minlength: 3
                 },
                 url: {
                     required: true,
-                    url: true
                 },
-                number: {
-                    required: true,
-                    number: true
-                },
-                min: {
-                    required: true,
-                    minlength: 6
-                },
-                max: {
-                    required: true,
-                    maxlength: 4
-                }
+            },
+            submitHandler: function(form) {
+                form.ajaxSubmit({
+                    type:'post',
+                    dataType:'json',
+                    success:function(data) {
+                        switch (data.status){
+                            case 'success':
+                                toastr.success(data.message, data.title);
+                                if (data.redirectUrl){
+                                    setTimeout(function(){
+                                        window.location.href = data.redirectUrl;
+                                    }, 1000);
+                                }
+                                break;
+                            case 'error':
+                                toastr.error(data.message, data.title);
+                                break;
+                            case 'info':
+                                toastr.info(data.message, data.title);
+                                break;
+                            default:
+                                toastr.warning(data.message, data.title);
+                                break;
+                        }
+                    }
+                });
             }
         });
     });

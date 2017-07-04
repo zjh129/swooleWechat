@@ -97,7 +97,7 @@ class AdminBaseController extends BaseController
      * @param string $redirectUrl
      * @param array  $otherData
      */
-    public function showMsgPage($type = 'success', $msg = '', $otherData = [], $redirectUrl = '')
+    public function showMsg($type = 'success', $msg = '', $redirectUrl = '', $otherData = [])
     {
         $this->msgData['redirectUrl'] = $redirectUrl ? $redirectUrl : $_SERVER['HTTP_REFERER'];
         $this->msgData['message']     = $msg;
@@ -105,25 +105,15 @@ class AdminBaseController extends BaseController
         switch ($type) {
             case 'success':
                 $this->msgData['title'] = '操作成功';
-                $this->view->boxClass   = 'alert-success';
-                $this->view->iconClass  = 'icon-check-circle';
                 break;
             case 'error':
                 $this->msgData['title'] = '操作失败';
-                //提示div样式名
-                $this->view->boxClass = 'alert-danger';
-                //提示图标样式
-                $this->view->iconClass = 'icon-warning-sign';
                 break;
-            case 'notice':
+            case 'info':
                 $this->msgData['title'] = '消息提示';
-                $this->view->boxClass   = 'alert-info';
-                $this->view->iconClass  = 'icon-info-sign';
                 break;
             case 'warning':
                 $this->msgData['title'] = '错误警告';
-                $this->view->boxClass   = 'alert-warning';
-                $this->view->iconClass  = 'icon-exclamation-sign';
                 break;
             case '404':
                 $this->msgData['title'] = '页面没找到';
@@ -139,6 +129,7 @@ class AdminBaseController extends BaseController
                 $this->msgData['title']  = '未知信息';
         }
         $this->seoData['title'] = $this->msgData['title'];
+        $this->msgData['status'] = $type;
         $this->msgData['data']  = $otherData;
         if ($this->is_ajax) {
             $jsonStr = $this->json($this->msgData);

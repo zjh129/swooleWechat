@@ -28,8 +28,17 @@ class Login extends Base
             $this->http->redirect('/Admin/Index/index');
             return;
         }
+        $this->display();
+    }
+
+    /**
+     * 登录提交
+     */
+    public function loginpost()
+    {
         if ($_POST)
         {
+            $this->session->start();
             try{
                 if (!$_POST['username']){
                     throw new \Exception('请输入管理账号');
@@ -57,16 +66,15 @@ class Login extends Base
                 }
                 $this->user->updateStatus();
                 $redireUrl = isset($_GET['refer']) && $_GET['refer'] ? $_GET['refer'] : '/Admin/Index/index/';
-                $this->http->redirect($redireUrl);
-
+                //$this->http->redirect($redireUrl);
+                $this->showMsg('success', '登录成功', $redireUrl);
             }catch (\Exception $e){
-                $error = $e->getMessage();
+                $this->showMsg('error', $e->getMessage());
             }
+        }else{
+            $this->showMsg('error', '请勿非法操作');
         }
-        $this->assign('error', $error);
-        $this->display();
     }
-
     /**
      * 退出登录
      */

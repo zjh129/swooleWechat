@@ -8,3 +8,10 @@
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/inspinia.js"></script>
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pace/pace.min.js"></script>
 <?php }?>
+<!-- Toastr script -->
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/toastr/toastr.min.js"></script>
+<!-- Jquery Validate -->
+<script src="//static.tudouyu.cn/validate/1.16.0/jquery.validate.min.js"></script>
+<script src="//static.tudouyu.cn/validate/1.16.0/messages_zh.js"></script>
+<!-- Jquery Form -->
+<script src="//static.tudouyu.cn/jquery-form/3.51.0/jquery.form.min.js"></script>

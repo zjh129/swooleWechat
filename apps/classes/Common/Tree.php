@@ -94,12 +94,12 @@ class Tree
             }
 
             if ($prestr == '') {
-                $prestrForChildren = '　 ';
+                $prestrForChildren = '    ';
             } else {
                 if ($v == end($this->OriginalList)) {
-                    $prestrForChildren = $prestr . '　　 ';
+                    $prestrForChildren = $prestr . '    ';
                 } else {
-                    $prestrForChildren = $prestr . '│　 ';
+                    $prestrForChildren = $prestr . '|    ';
                 }
             }
             if (isset($v[$this->childrenKey]) && $v[$this->childrenKey]) {

@@ -42,7 +42,19 @@ class Sysmenu extends Base
         $this->assign('nestableHtml', $nestableHtml);
         $this->display();
     }
+
+    /**
+     * 保存菜单数据
+     */
     public function add()
+    {
+
+    }
+
+    /**
+     * 保存排序层级数据
+     */
+    public function saveSortData()
     {
 
     }

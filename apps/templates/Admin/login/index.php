@@ -13,13 +13,7 @@
             <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
         </p>
         <!--<p>Login in. To see it in action.</p>-->
-        <form class="m-t" role="form" action="/Admin/Login/index" method="post">
-            <?php if ($error) { ?>
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <?php echo $error; ?>
-                </div>
-            <?php } ?>
+        <form name="loginform" id="loginform" class="m-t" role="form" action="/Admin/Login/loginpost" method="post">
             <div class="form-group">
                 <input type="text" name="username" class="form-control" placeholder="账号" required="">
             </div>
@@ -42,7 +36,7 @@
                     <label> <input type="checkbox" name="isRemember"><i></i> 记住我</label>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary block full-width m-b">登录</button>
+            <button type="button" onclick="javascript:$('#loginform').submit();" class="btn btn-primary block full-width m-b">登录</button>
             <!--<a href="#"><small>忘记密码?</small></a>
             <p class="text-muted text-center"><small>还没有账号?</small></p>
             <a class="btn btn-sm btn-white btn-block" href="register.html">创建一个账号</a>-->
@@ -65,6 +59,47 @@
         //切换验证码
         $("#codeImg").click(function () {
             $(this).attr('src', '/Admin/login/captcha?=' + Math.random(0, 1));
+        });
+        //表单验证
+        $("#loginform").validate({
+            rules: {
+                username:{
+                    required: true,
+                },
+                password: {
+                    required: true,
+                },
+                captcha: {
+                    required: true,
+                }
+            },
+            submitHandler: function(form) {
+                form.ajaxSubmit({
+                    type:'post',
+                    dataType:'json',
+                    success:function(data) {
+                        switch (data.status){
+                            case 'success':
+                                toastr.success(data.message, data.title);
+                                if (data.redirectUrl){
+                                    setTimeout(function(){
+                                        window.location.href = data.redirectUrl;
+                                    }, 1000);
+                                }
+                                break;
+                            case 'error':
+                                toastr.error(data.message, data.title);
+                                break;
+                            case 'info':
+                                toastr.info(data.message, data.title);
+                                break;
+                            default:
+                                toastr.warning(data.message, data.title);
+                                break;
+                        }
+                    }
+                });
+            }
         });
     });
 </script>
