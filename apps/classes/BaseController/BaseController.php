@@ -19,5 +19,9 @@ class BaseController extends Swoole\Controller
     public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
+        //判断是否ajax请求
+        if(isset($this->request->server['HTTP_X_REQUESTED_WITH']) && strtolower($this->request->server['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+            $this->is_ajax = true;
+        }
     }
 }

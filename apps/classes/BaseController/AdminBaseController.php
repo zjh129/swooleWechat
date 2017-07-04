@@ -99,7 +99,7 @@ class AdminBaseController extends BaseController
      */
     public function showMsg($type = 'success', $msg = '', $redirectUrl = '', $otherData = [])
     {
-        $this->msgData['redirectUrl'] = $redirectUrl ? $redirectUrl : $_SERVER['HTTP_REFERER'];
+        $this->msgData['redirectUrl'] = $redirectUrl ? $redirectUrl : $this->request->server['HTTP_REFERER'];
         $this->msgData['message']     = $msg;
         $templateFile                 = 'common/showmsg.php';
         switch ($type) {
@@ -132,12 +132,14 @@ class AdminBaseController extends BaseController
         $this->msgData['status'] = $type;
         $this->msgData['data']  = $otherData;
         if ($this->is_ajax) {
-            $jsonStr = $this->json($this->msgData);
-            $this->http->response($jsonStr);
+            $otherData['redirectUrl'] = $this->msgData['redirectUrl'];
+            return $this->msgData;
+            //$this->http->finish($jsonStr);
         } else {
             $this->assignData = $this->msgData;
             $content          = $this->fetch($templateFile);
             $this->http->finish($content);
         }
+        return true;
     }
 }

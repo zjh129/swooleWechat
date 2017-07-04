@@ -1,3 +1,4 @@
+500错误
 <?php
 /**
  * Created by PhpStorm.

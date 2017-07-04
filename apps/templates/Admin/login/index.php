@@ -14,6 +14,7 @@
         </p>
         <!--<p>Login in. To see it in action.</p>-->
         <form name="loginform" id="loginform" class="m-t" role="form" action="/Admin/Login/loginpost" method="post">
+            <input type="hidden" name="refer" id="refer" value="<?php echo $_GET['refer'] ?? ''?>">
             <div class="form-group">
                 <input type="text" name="username" class="form-control" placeholder="账号" required="">
             </div>
@@ -74,13 +75,13 @@
                 }
             },
             submitHandler: function(form) {
-                form.ajaxSubmit({
+                $(form).ajaxSubmit({
                     type:'post',
                     dataType:'json',
                     success:function(data) {
                         switch (data.status){
                             case 'success':
-                                toastr.success(data.message, data.title);
+                                toastr.success(data.message);
                                 if (data.redirectUrl){
                                     setTimeout(function(){
                                         window.location.href = data.redirectUrl;
@@ -88,13 +89,13 @@
                                 }
                                 break;
                             case 'error':
-                                toastr.error(data.message, data.title);
+                                toastr.error(data.message);
                                 break;
                             case 'info':
-                                toastr.info(data.message, data.title);
+                                toastr.info(data.message);
                                 break;
                             default:
-                                toastr.warning(data.message, data.title);
+                                toastr.warning(data.message);
                                 break;
                         }
                     }

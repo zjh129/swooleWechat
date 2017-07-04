@@ -36,43 +36,42 @@ class Login extends Base
      */
     public function loginpost()
     {
-        if ($_POST)
+        if (!$_POST)
         {
-            $this->session->start();
-            try{
-                if (!$_POST['username']){
-                    throw new \Exception('请输入管理账号');
-                }
-                if (!$_POST['password']){
-                    throw new \Exception('请输入管理密码');
-                }
-                if (!$_POST['captcha']){
-                    throw new \Exception('请输入验证码');
-                }
-                if (strtolower($_POST['captcha']) != strtolower($_SESSION['vcode'])){
-                    throw new \Exception('验证码错误');
-                }
-                \Swoole\Auth::$username = 'account';
-                \Swoole\Auth::$lastlogin = 'loginTime';
-                \Swoole\Auth::$lastip = 'loginIp';
-                //使用crypt密码
-                \Swoole\Auth::$password_hash = \Swoole\Auth::HASH_SHA1;
-                //设置查询数据库字段
-                $this->user->select = 'id,groupId,userName,account,password,email';
-                $r = $this->user->login(trim($_POST['username']), trim($_POST['password']));
-                if (!$r)
-                {
-                    throw new \Exception('登录失败,账号或密码错误');
-                }
-                $this->user->updateStatus();
-                $redireUrl = isset($_GET['refer']) && $_GET['refer'] ? $_GET['refer'] : '/Admin/Index/index/';
-                //$this->http->redirect($redireUrl);
-                $this->showMsg('success', '登录成功', $redireUrl);
-            }catch (\Exception $e){
-                $this->showMsg('error', $e->getMessage());
-            }
-        }else{
             $this->showMsg('error', '请勿非法操作');
+        }
+        $this->session->start();
+        try{
+            if (!$_POST['username']){
+                throw new \Exception('请输入管理账号');
+            }
+            if (!$_POST['password']){
+                throw new \Exception('请输入管理密码');
+            }
+            if (!$_POST['captcha']){
+                throw new \Exception('请输入验证码');
+            }
+            if (strtolower($_POST['captcha']) != strtolower($_SESSION['vcode'])){
+                throw new \Exception('验证码错误');
+            }
+            \Swoole\Auth::$username = 'account';
+            \Swoole\Auth::$lastlogin = 'loginTime';
+            \Swoole\Auth::$lastip = 'loginIp';
+            //使用crypt密码
+            \Swoole\Auth::$password_hash = \Swoole\Auth::HASH_SHA1;
+            //设置查询数据库字段
+            $this->user->select = 'id,groupId,userName,account,password,email';
+            $r = $this->user->login(trim($_POST['username']), trim($_POST['password']));
+            if (!$r)
+            {
+                throw new \Exception('登录失败,账号或密码错误');
+            }
+            $this->user->updateStatus();
+
+            $redirectUrl = isset($_POST['refer']) && $_POST['refer'] ? $_POST['refer'] : '/Admin/Index/index/';
+            return $this->showMsg('success', '登录成功', $redirectUrl);
+        }catch (\Exception $e){
+            $this->showMsg('error', $e->getMessage());
         }
     }
     /**

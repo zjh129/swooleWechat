@@ -1,3 +1,4 @@
+404错误
 <?php
 /**
  * Created by PhpStorm.
