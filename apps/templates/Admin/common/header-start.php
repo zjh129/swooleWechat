@@ -9,3 +9,5 @@
     <link href="//static.tudouyu.cn/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Toastr style -->
     <link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <!-- jquery-confirm style -->
+    <link href="//static.tudouyu.cn/jquery-confirm/3.2.3/jquery-confirm.min.css" rel="stylesheet">

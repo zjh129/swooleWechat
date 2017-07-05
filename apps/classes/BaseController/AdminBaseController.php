@@ -99,7 +99,11 @@ class AdminBaseController extends BaseController
      */
     public function showMsg($type = 'success', $msg = '', $redirectUrl = '', $otherData = [])
     {
-        $this->msgData['redirectUrl'] = $redirectUrl ? $redirectUrl : $this->request->server['HTTP_REFERER'];
+        if ($redirectUrl){
+            $this->msgData['redirectUrl'] = $redirectUrl;
+        }else{
+            $this->msgData['redirectUrl'] = $this->request->server['HTTP_REFERER'] ?? '/admin/index/index';
+        }
         $this->msgData['message']     = $msg;
         $templateFile                 = 'common/showmsg.php';
         switch ($type) {

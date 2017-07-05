@@ -39,3 +39,5 @@
 <script src="//static.tudouyu.cn/validate/1.16.0/messages_zh.js"></script>
 <!-- Jquery Form -->
 <script src="//static.tudouyu.cn/jquery-form/3.51.0/jquery.form.min.js"></script>
+<!-- Jquery-confirm -->
+<script src="//static.tudouyu.cn/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>

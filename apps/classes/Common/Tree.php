@@ -123,13 +123,15 @@ class Tree
     {
         $recursionCount++;
         $str = '';
-        foreach ($arr as $v) {
-            $str .= "<option value='" . $v[$this->parentKey] . "' data-depth='{$recursionCount}' data-ancestorIds='" . ltrim($ancestorIds, ',') . "'>" . $v[$this->nameKey] . "</option>\r\n";
-            if ($v[$this->parentKey] == 0) {
-                $recursionCount = 1;
-            }
-            if (isset($v[$this->childrenKey]) && $v[$this->childrenKey] && ($depth == 0 || $recursionCount < $depth )) {
-                $str .= $this->makeOptions($v[$this->childrenKey], $depth, $recursionCount, $ancestorIds . ',' . $v[$this->parentKey]);
+        if ($arr){
+            foreach ($arr as $v) {
+                $str .= "<option value='" . $v[$this->pk] . "' data-depth='{$recursionCount}' data-ancestorIds='" . ltrim($ancestorIds, ',') . "'>" . $v[$this->nameKey] . "</option>\r\n";
+                if ($v[$this->parentKey] == 0) {
+                    $recursionCount = 1;
+                }
+                if (isset($v[$this->childrenKey]) && $v[$this->childrenKey] && ($depth == 0 || $recursionCount < $depth )) {
+                    $str .= $this->makeOptions($v[$this->childrenKey], $depth, $recursionCount, $ancestorIds . ',' . $v[$this->pk]);
+                }
             }
         }
 
@@ -159,7 +161,7 @@ class Tree
      * @param $treeList
      * @return string
      */
-    private function makeNestableTree($treeList){
+    private function makeNestableTree($treeList, $addhtml = ''){
         $html = '<ol class="dd-list">';
         if ($treeList) {
             foreach ($treeList as $menuData) {
@@ -170,11 +172,10 @@ class Tree
                     $html .= '<i class="' . $menuData[$this->iconClassKey] . '"></i>';
                 }
                 $html .= '</span>' . $menuData[$this->nameKey];
-                $html .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right"><i class="fa fa-pencil"></i>编辑</button>';
-                $html .= '<button type="button" class="btn btn-outline btn-danger btn-xs pull-right"><i class="fa fa-trash-o"></i>删除</button>';
+                $html .= $addhtml;
                 $html .= '</div>';
                 if (isset($menuData[$this->childrenKey]) && $menuData[$this->childrenKey]) {
-                    $html .= $this->makeNestableTree($menuData[$this->childrenKey]);
+                    $html .= $this->makeNestableTree($menuData[$this->childrenKey], $addhtml);
                 }
             }
         }
@@ -186,11 +187,11 @@ class Tree
      * @param $treeList
      * @return string
      */
-    public function buildNestableTree()
+    public function buildNestableTree($addHtml = '')
     {
         //组装成
         $this->deepTree();
-        $html = $this->makeNestableTree($this->treeList);
+        $html = $this->makeNestableTree($this->treeList, $addHtml);
         return $html;
     }
 }

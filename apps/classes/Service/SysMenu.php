@@ -179,35 +179,6 @@ class SysMenu
         return $html;
     }
     /**
-     * 生成Nestable列表
-     * @param $treeList
-     * @return string
-     */
-    public function buildNestableTree($treeList)
-    {
-        $html = '<ol class="dd-list">';
-        if ($treeList) {
-            foreach ($treeList as $menuData) {
-                $html .= '<li class="dd-item dd-nodrag" data-id="' . $menuData['menuId'] . '">';
-                $html .= '<div class="dd-handle">';
-                $html .= '<span class="label label-info">';
-                if ($menuData['iconClass']) {
-                    $html .= '<i class="' . $menuData['iconClass'] . '"></i>';
-                }
-                $html .= '</span>' . $menuData['menuName'];
-                $html .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>编辑</button>';
-                $html .= '<button type="button" class="btn btn-outline btn-danger btn-xs pull-right"><i class="fa fa-trash-o"></i>删除</button>';
-                $html .= '</div>';
-                if (isset($menuData['child']) && $menuData['child']) {
-                    $html .= $this->makeNestableTree($menuData['child']);
-                }
-            }
-        }
-        $html .= '</ol>';
-        return $html;
-    }
-
-    /**
      * 保存菜单排序数据
      * @param $sortData
      * @return bool
@@ -244,7 +215,6 @@ class SysMenu
             return true;
         }
     }
-
     /**
      * 保存菜单数据
      * @param $menuData
@@ -269,5 +239,30 @@ class SysMenu
             $saveData['addTime'] = time();
             return $this->sysMenuModel->put($saveData);
         }
+    }
+
+    /**
+     * 获取菜单数据
+     * @param $menuId
+     * @return \Swoole\Record
+     * @throws \Exception
+     */
+    public function getMenu($menuId)
+    {
+        $menuData = $this->sysMenuModel->getone(['menuId'=>$menuId]);
+        if (!$menuData){
+            throw new \Exception('菜单数据不存在');
+        }
+        return $menuData;
+    }
+
+    /**
+     * 标记菜单为删除状态
+     * @param $menuId
+     * @return bool
+     */
+    public function delMenu($menuId)
+    {
+        return $this->sysMenuModel->set($menuId, ['isDel'=>1]);
     }
 }
