@@ -206,9 +206,22 @@ class SysMenu
         $html .= '</ol>';
         return $html;
     }
+
+    /**
+     * 保存菜单排序数据
+     * @param $sortData
+     * @return bool
+     */
     public function saveSort($sortData)
     {
+        $this->sysMenuModel->start();
+        try{
 
-        return true;
+            $this->sysMenuModel->commit();
+            return true;
+        }catch (\Exception $e){
+            $this->sysMenuModel->rollback();
+            throw new \Exception($e->getMessage());
+        }
     }
 }
