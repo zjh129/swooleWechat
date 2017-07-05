@@ -43,10 +43,6 @@
                             <div class="dd" id="nestable">
                                 <?php echo $nestableHtml;?>
                             </div>
-                            <div class="m-t-md">
-                                <h5>Serialised Output</h5>
-                            </div>
-                            <textarea id="nestable-output" class="form-control"></textarea>
                         </div>
 
                     </div>
@@ -71,7 +67,7 @@
                             <div class="form-group">
                                 <label>父级菜单</label>
                                 <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentMenuId">
-                                    <option value="0">请选择</option>
+                                    <option value="0">顶级菜单</option>
                                     <?php echo $menuTreeOption;?>
                                 </select>
                             </div>
@@ -112,34 +108,24 @@
             window.location.href = '<?php echo $this->currentUrl?>?moduleType='+$(this).val();
         });
         //可嵌套列表
-        var updateOutput = function (e) {
-            var list = e.length ? e : $(e.target),
-                output = list.data('output');
-            if (window.JSON) {
-                //output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
-                $.ajax({
-                    type: "post",
-                    url: "",
-                    data: {
-                        'sortData' : list.nestable('serialize'),
-                    },
-                    datatype: "json",
-                    success: function (data) {
-                        showToastr(data);
-                    }
-                });
-            } else {
-                toastr.error('JSON browser support required for this demo.');
-            }
-        };
-
         // activate Nestable for list
         $('#nestable').nestable({
             group: 1
-        }).on('change', updateOutput);
-
-        // output initial serialised data
-        updateOutput($('#nestable').data('output', $('#nestable-output')));
+        }).on('change', function (e) {
+            var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            $.ajax({
+                type: "post",
+                url: "/admin/sysmenu/saveSort",
+                data: {
+                    'sortData' : list.nestable('serialize'),
+                },
+                datatype: "json",
+                success: function (data) {
+                    showToastr(data);
+                }
+            });
+        });
 
         $('#nestable-menu').on('click', function (e) {
             var target = $(e.target),

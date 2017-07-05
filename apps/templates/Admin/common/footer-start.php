@@ -12,14 +12,10 @@
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/toastr/toastr.min.js"></script>
 <script>
     function showToastr(data) {
+        isReload = arguments[1] ? arguments[1] : false;
         switch (data.status){
             case 'success':
                 toastr.success(data.message, data.title);
-                if (data.redirectUrl){
-                    setTimeout(function(){
-                        window.location.href = data.redirectUrl;
-                    }, 1000);
-                }
                 break;
             case 'error':
                 toastr.error(data.message, data.title);
@@ -30,6 +26,11 @@
             default:
                 toastr.warning(data.message, data.title);
                 break;
+        }
+        if (isReload && data.redirectUrl){
+            setTimeout(function(){
+                window.location.href = data.redirectUrl;
+            }, 1000);
         }
     }
 </script>

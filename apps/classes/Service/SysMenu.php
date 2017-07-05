@@ -216,12 +216,32 @@ class SysMenu
     {
         $this->sysMenuModel->start();
         try{
-
+            $this->saveSortData($sortData);
             $this->sysMenuModel->commit();
             return true;
         }catch (\Exception $e){
             $this->sysMenuModel->rollback();
             throw new \Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * 保存排序数据
+     * @param $list
+     * @param int $parentId
+     * @return bool
+     */
+    private function saveSortData($list, $parentId = 0)
+    {
+        if ($list){
+            foreach ($list as $k => $v){
+                $id = isset($v['id']) && $v['id'] ? (int) $v['id'] : 0;
+                $id && $this->sysMenuModel->set($id, ['orderNum'=>$k, 'parentMenuId'=>$parentId]);
+                if (isset($v['children']) && $v['children']){
+                    $this->saveSortData($v['children'], $id);
+                }
+            }
+            return true;
         }
     }
 }

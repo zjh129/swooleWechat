@@ -58,14 +58,13 @@ class Sysmenu extends Base
     {
         try{
             $sortData = $this->request->post['sortData'];
-            $sortData = unserialize($sortData);
             if (empty($sortData)){
                 throw new \Exception('排序数据有误');
             }
             $sysMenu = new \App\Service\SysMenu();
             $rs = $sysMenu->saveSort($sortData);
             if ($rs){
-                return $this->showMsg('sucess', '保存排序成功');
+                return $this->showMsg('success', '保存排序成功');
             }else{
                 throw new \Exception('保存排序失败');
             }

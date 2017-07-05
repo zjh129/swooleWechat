@@ -79,25 +79,7 @@
                     type:'post',
                     dataType:'json',
                     success:function(data) {
-                        switch (data.status){
-                            case 'success':
-                                toastr.success(data.message);
-                                if (data.redirectUrl){
-                                    setTimeout(function(){
-                                        window.location.href = data.redirectUrl;
-                                    }, 1000);
-                                }
-                                break;
-                            case 'error':
-                                toastr.error(data.message);
-                                break;
-                            case 'info':
-                                toastr.info(data.message);
-                                break;
-                            default:
-                                toastr.warning(data.message);
-                                break;
-                        }
+                        showToastr(data, true);
                     }
                 });
             }
