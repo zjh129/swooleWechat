@@ -264,9 +264,9 @@ class SysMenu
         }else{//添加
             //排序最大值
             $maxOrderNum = $this->sysMenuModel->getMax('orderNum', ['moduleType'=>$menuData['moduleType']]);
-            $menuData['orderNum'] = $maxOrderNum + 1;
-            $menuData['addUserId'] = $menuData['addUserId'];
-            $menuData['addTime'] = time();
+            $saveData['orderNum'] = $maxOrderNum + 1;
+            $saveData['addUserId'] = $menuData['addUserId'];
+            $saveData['addTime'] = time();
             return $this->sysMenuModel->put($saveData);
         }
     }
