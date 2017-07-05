@@ -46,7 +46,7 @@
                             <div class="m-t-md">
                                 <h5>Serialised Output</h5>
                             </div>
-                            <textarea id="nestable2-output" class="form-control"></textarea>
+                            <textarea id="nestable-output" class="form-control"></textarea>
                         </div>
 
                     </div>
@@ -116,9 +116,20 @@
             var list = e.length ? e : $(e.target),
                 output = list.data('output');
             if (window.JSON) {
-                output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                //output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                $.ajax({
+                    type: "post",
+                    url: "",
+                    data: {
+                        'sortData' : list.nestable('serialize'),
+                    },
+                    datatype: "json",
+                    success: function (data) {
+                        showToastr(data);
+                    }
+                });
             } else {
-                output.val('JSON browser support required for this demo.');
+                toastr.error('JSON browser support required for this demo.');
             }
         };
 
@@ -128,7 +139,7 @@
         }).on('change', updateOutput);
 
         // output initial serialised data
-        updateOutput($('#nestable').data('output', $('#nestable2-output')));
+        updateOutput($('#nestable').data('output', $('#nestable-output')));
 
         $('#nestable-menu').on('click', function (e) {
             var target = $(e.target),
@@ -155,25 +166,7 @@
                     type:'post',
                     dataType:'json',
                     success:function(data) {
-                        switch (data.status){
-                            case 'success':
-                                toastr.success(data.message, data.title);
-                                if (data.redirectUrl){
-                                    setTimeout(function(){
-                                        window.location.href = data.redirectUrl;
-                                    }, 1000);
-                                }
-                                break;
-                            case 'error':
-                                toastr.error(data.message, data.title);
-                                break;
-                            case 'info':
-                                toastr.info(data.message, data.title);
-                                break;
-                            default:
-                                toastr.warning(data.message, data.title);
-                                break;
-                        }
+                        showToastr(data);
                     }
                 });
             }

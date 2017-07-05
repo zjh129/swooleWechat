@@ -10,6 +10,29 @@
 <?php }?>
 <!-- Toastr script -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/toastr/toastr.min.js"></script>
+<script>
+    function showToastr(data) {
+        switch (data.status){
+            case 'success':
+                toastr.success(data.message, data.title);
+                if (data.redirectUrl){
+                    setTimeout(function(){
+                        window.location.href = data.redirectUrl;
+                    }, 1000);
+                }
+                break;
+            case 'error':
+                toastr.error(data.message, data.title);
+                break;
+            case 'info':
+                toastr.info(data.message, data.title);
+                break;
+            default:
+                toastr.warning(data.message, data.title);
+                break;
+        }
+    }
+</script>
 <!-- Jquery Validate -->
 <script src="//static.tudouyu.cn/validate/1.16.0/jquery.validate.min.js"></script>
 <script src="//static.tudouyu.cn/validate/1.16.0/messages_zh.js"></script>

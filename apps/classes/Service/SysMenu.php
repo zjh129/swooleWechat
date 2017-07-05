@@ -206,4 +206,9 @@ class SysMenu
         $html .= '</ol>';
         return $html;
     }
+    public function saveSort($sortData)
+    {
+
+        return true;
+    }
 }

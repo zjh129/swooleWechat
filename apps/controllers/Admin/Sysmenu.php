@@ -54,8 +54,23 @@ class Sysmenu extends Base
     /**
      * 保存排序层级数据
      */
-    public function saveSortData()
+    public function saveSort()
     {
-
+        try{
+            $sortData = $this->request->post['sortData'];
+            $sortData = unserialize($sortData);
+            if (empty($sortData)){
+                throw new \Exception('排序数据有误');
+            }
+            $sysMenu = new \App\Service\SysMenu();
+            $rs = $sysMenu->saveSort($sortData);
+            if ($rs){
+                return $this->showMsg('sucess', '保存排序成功');
+            }else{
+                throw new \Exception('保存排序失败');
+            }
+        }catch (\Exception $e){
+            return $this->showMsg('error', $e->getMessage());
+        }
     }
 }
