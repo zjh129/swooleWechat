@@ -233,15 +233,38 @@ class SysMenu
      */
     private function saveSortData($list, $parentId = 0)
     {
-        if ($list){
-            foreach ($list as $k => $v){
-                $id = isset($v['id']) && $v['id'] ? (int) $v['id'] : 0;
-                $id && $this->sysMenuModel->set($id, ['orderNum'=>$k, 'parentMenuId'=>$parentId]);
-                if (isset($v['children']) && $v['children']){
+        if ($list) {
+            foreach ($list as $k => $v) {
+                $id = isset($v['id']) && $v['id'] ? (int)$v['id'] : 0;
+                $id && $this->sysMenuModel->set($id, ['orderNum' => $k, 'parentMenuId' => $parentId]);
+                if (isset($v['children']) && $v['children']) {
                     $this->saveSortData($v['children'], $id);
                 }
             }
             return true;
+        }
+    }
+
+    /**
+     * 保存菜单数据
+     * @param $menuData
+     */
+    public function saveMenu($menuData)
+    {
+        $menuId = (int) $menuData['id'];
+        $saveData = [
+            'moduleType' => $menuData['moduleType'],
+            'menuName' => $menuData['menuName'],
+            'parentMenuId' => $menuData['parentMenuId'],
+            'url' => $menuData['url'],
+            'iconClass' => $menuData['iconClass'],
+        ];
+        if ($menuId){//修改
+            return $this->sysMenuModel->set($menuId, $saveData);
+        }else{//添加
+            $menuData['addUserId'] = $menuData['addUserId'];
+            $menuData['addTime'] = time();
+            return $this->sysMenuModel->put($saveData);
         }
     }
 }

@@ -48,7 +48,19 @@ class Sysmenu extends Base
      */
     public function add()
     {
-
+        try{
+            $menuData = $this->request->post;
+            $menuData['addUserId'] = $this->user->getUid();
+            $sysMenu = new \App\Service\SysMenu();
+            $rs = $sysMenu->saveMenu($menuData);
+            if ($rs){
+                return $this->showMsg('success', ($menuData['menuId'] ? '编辑':'添加').'成功');
+            }else{
+                throw new \Exception(($menuData['menuId'] ? '编辑':'添加').'菜单失败');
+            }
+        }catch (\Exception $e){
+            return $this->showMsg('error', $e->getMessage());
+        }
     }
 
     /**
