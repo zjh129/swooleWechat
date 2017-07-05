@@ -71,7 +71,7 @@ class Login extends Base
             $redirectUrl = isset($_POST['refer']) && $_POST['refer'] ? $_POST['refer'] : '/Admin/Index/index/';
             return $this->showMsg('success', '登录成功', $redirectUrl);
         }catch (\Exception $e){
-            $this->showMsg('error', $e->getMessage());
+            return $this->showMsg('error', $e->getMessage());
         }
     }
     /**
