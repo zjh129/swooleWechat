@@ -57,7 +57,7 @@
                         <h4 class="modal-title">添加菜单</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form">
+                        <form role="form" id="form" action="/admin/Sysmenu/saveData">
                             <input type="hidden" name="moduleType" id="moduleType" value="<?php echo $moduleType;?>">
                             <input type="hidden" name="menuId" id="menuId" value="0">
                             <div class="form-group">
@@ -148,11 +148,11 @@
                 },
             },
             submitHandler: function(form) {
-                form.ajaxSubmit({
+                $(form).ajaxSubmit({
                     type:'post',
                     dataType:'json',
                     success:function(data) {
-                        showToastr(data);
+                        showToastr(data, true);
                     }
                 });
             }

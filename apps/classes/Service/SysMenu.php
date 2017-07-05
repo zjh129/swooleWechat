@@ -251,7 +251,7 @@ class SysMenu
      */
     public function saveMenu($menuData)
     {
-        $menuId = (int) $menuData['id'];
+        $menuId = (int) $menuData['menuId'];
         $saveData = [
             'moduleType' => $menuData['moduleType'],
             'menuName' => $menuData['menuName'],
@@ -262,6 +262,9 @@ class SysMenu
         if ($menuId){//修改
             return $this->sysMenuModel->set($menuId, $saveData);
         }else{//添加
+            //排序最大值
+            $maxOrderNum = $this->sysMenuModel->getMax('orderNum', ['moduleType'=>$menuData['moduleType']]);
+            $menuData['orderNum'] = $maxOrderNum + 1;
             $menuData['addUserId'] = $menuData['addUserId'];
             $menuData['addTime'] = time();
             return $this->sysMenuModel->put($saveData);

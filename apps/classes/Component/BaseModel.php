@@ -57,4 +57,30 @@ class BaseModel extends \Swoole\Model
     {
         $this->db->rollback();
     }
+
+    /**
+     * 查询某个字段最大值
+     * @param $field
+     * @param array $params
+     * @return int
+     */
+    public function getMax($field, $params = [])
+    {
+        $params['select'] = 'max(`'.$field.'`) as num';
+        $maxData = $this->getone($params);
+        return isset($maxData['num']) ? (int)$maxData['num'] : 0;
+    }
+
+    /**
+     * 查询某个字段最小值
+     * @param $field
+     * @param array $params
+     * @return int
+     */
+    public function getMin($field, $params = [])
+    {
+        $params['select'] = 'min(`'.$field.'`) as num';
+        $maxData = $this->getone($params);
+        return isset($maxData['num']) ? (int)$maxData['num'] : 0;
+    }
 }

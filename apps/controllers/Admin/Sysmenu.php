@@ -46,7 +46,7 @@ class Sysmenu extends Base
     /**
      * 保存菜单数据
      */
-    public function add()
+    public function saveData()
     {
         try{
             $menuData = $this->request->post;
@@ -54,7 +54,7 @@ class Sysmenu extends Base
             $sysMenu = new \App\Service\SysMenu();
             $rs = $sysMenu->saveMenu($menuData);
             if ($rs){
-                return $this->showMsg('success', ($menuData['menuId'] ? '编辑':'添加').'成功');
+                return $this->showMsg('sccess', ($menuData['menuId'] ? '编辑':'添加').'成功', '/admin/sysmenu/index');
             }else{
                 throw new \Exception(($menuData['menuId'] ? '编辑':'添加').'菜单失败');
             }
