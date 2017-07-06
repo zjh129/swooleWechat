@@ -144,10 +144,9 @@ class SysMenu
     {
         $html = '';
         if ($menuList) {
-            if ($menuLevel == 2) {
-                $html .= '<ul class="nav nav-second-level collapse">';
-            } elseif ($menuLevel == 3) {
-                $html .= '<ul class="nav nav-third-level collapse">';
+            if ($menuLevel > 1) {
+                $levelList = [2 => 'nav-second-level', 3 =>'nav-third-level'];
+                $html .= '<ul class="nav '.(isset($levelList[$menuLevel]) ? $levelList[$menuLevel] : '').' collapse">';
             }
             foreach ($menuList as $menuOne) {
                 $menuUrl = strtolower($menuOne['url']);
