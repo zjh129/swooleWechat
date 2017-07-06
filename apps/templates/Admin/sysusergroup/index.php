@@ -59,8 +59,6 @@
                             <div class="form-group">
                                 <label>父级分组</label>
                                 <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentId">
-                                    <option value="0">顶级分组</option>
-                                    <?php echo $treeOption; ?>
                                 </select>
                             </div>
                         </form>
@@ -138,14 +136,30 @@
                 });
             }
         });
+        //载入树结构select的option的html
+        function loadOption() {
+            $.ajax({
+                type: "get",
+                url: "/Admin/SysUserGroup/getTreeOption",
+                data: {
+                },
+                success: function (data) {
+                    $("#form select[name='parentId']").html(data);
+                }
+            });
+        }
         //弹窗
         $(".add").on('click', function () {
+            $(".modal-title").html('添加用户组');
+            //加载选择项
+            loadOption();
             $("#form")[0].reset();
             $("#form input[name='groupId']").val(0);
-            $(".modal-title").html('添加用户组');
         });
         $(".edit").on('click', function () {
             $(".modal-title").html('编辑用户组');
+            //加载选择项
+            loadOption();
             $.ajax({
                 type: "get",
                 url: "/Admin/SysUserGroup/get",

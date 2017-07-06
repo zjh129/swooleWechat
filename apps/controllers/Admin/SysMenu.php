@@ -17,7 +17,7 @@ class SysMenu extends Base
     public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
-        $this->addBreadcrumb('系统管理', '/admin/System/index');
+        $this->addBreadcrumb('系统管理', '/Admin/System/index');
         $this->sysMenuModel = model('SysMenu');
     }
 
@@ -39,9 +39,6 @@ class SysMenu extends Base
         $tree          = new \App\Common\Tree('menuId', 'parentId', 'child');
         $tree->nameKey = 'menuName';
         $tree->load($menuList);
-        $optionHtml = $tree->buildOptions();
-        //菜单选择列表
-        $this->assign('menuTreeOption', $optionHtml);
         //可嵌套列表
         $addHtml  = '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right edit" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>编辑</button>';
         $addHtml .= '<button type="button" class="btn btn-outline btn-danger btn-xs pull-right del"><i class="fa fa-trash-o"></i>删除</button>';
@@ -50,6 +47,24 @@ class SysMenu extends Base
         $this->display();
     }
 
+    /**
+     * 生成树结构option文本
+     * @return string
+     */
+    public function getTreeOption()
+    {
+        $moduleType = isset($_GET['moduleType']) && $_GET['moduleType'] ? $_GET['moduleType'] : \App\Service\SysMenu::MENU_TYPE_ADMIN;
+        //菜单列表
+        $menuList     = $this->sysMenuModel->getMenuList($moduleType);
+        //树结构菜单列表
+        $tree          = new \App\Common\Tree('menuId', 'parentId', 'child');
+        $tree->nameKey = 'menuName';
+        $tree->load($menuList);
+        //菜单选择列表
+        $optionHtml = '<option value="0">顶级菜单</option>';
+        $optionHtml .= $tree->buildOptions();
+        $this->http->finish($optionHtml);
+    }
     /**
      * 保存菜单数据.
      */

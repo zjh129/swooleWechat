@@ -40,7 +40,7 @@ class SysMenu extends \App\Component\BaseModel
         ]);
         $newMenuList = [];
         foreach ($menuList as $v){
-            $v['url'] = strtolower($v['url']);
+            //$v['url'] = strtolower($v['url']);
             $newMenuList[(int)$v['menuId']] = $v;
         }
         return $newMenuList;

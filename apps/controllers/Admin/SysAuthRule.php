@@ -21,6 +21,17 @@ class SysAuthRule extends Base
     public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
+        $this->addBreadcrumb('系统管理', '/Admin/System/index');
         $this->sysAuthRuleModel = model('SysAuthRule');
+    }
+    /**
+     * 权限列表
+     */
+    public function index()
+    {
+        $this->setSeoTitle('权限管理');
+        $this->addBreadcrumb('权限管理', $this->currentUrl);
+
+        $this->display();
     }
 }

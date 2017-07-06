@@ -21,7 +21,18 @@ class SysUser extends Base
     public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
+        $this->addBreadcrumb('系统管理', '/Admin/System/index');
         $this->sysUserModel = model('SysUser');
     }
 
+    /**
+     * 用户列表
+     */
+    public function index()
+    {
+        $this->setSeoTitle('用户管理');
+        $this->addBreadcrumb('用户管理', $this->currentUrl);
+
+        $this->display();
+    }
 }

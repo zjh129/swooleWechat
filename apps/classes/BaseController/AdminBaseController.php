@@ -44,22 +44,22 @@ class AdminBaseController extends BaseController
         $this->session->start();
         //组合当前菜单值
         if (isset($this->swoole->env['mvc']['directory']) && $this->swoole->env['mvc']['directory']){
-            $this->currentUrl .= strtolower('/'.$this->swoole->env['mvc']['directory']);
+            $this->currentUrl .= '/'.$this->swoole->env['mvc']['directory'];
         }
         if (isset($this->swoole->env['mvc']['controller']) && $this->swoole->env['mvc']['controller']){
-            $this->currentUrl .= strtolower('/'.$this->swoole->env['mvc']['controller']);
+            $this->currentUrl .= '/'.$this->swoole->env['mvc']['controller'];
         }
         if (isset($this->swoole->env['mvc']['view']) && $this->swoole->env['mvc']['view']){
-            $this->currentUrl .= strtolower('/'.$this->swoole->env['mvc']['view']);
+            $this->currentUrl .= '/'.$this->swoole->env['mvc']['view'];
         }
         //非登录界面都要验证是否登录
-        if (strpos($this->currentUrl, '/admin/login') === false){
+        if (strpos($this->currentUrl, '/Admin/Login') === false){
             \Swoole\Auth::loginRequire();
         }
         //初始化菜单html
-        $this->menuHtml = (new \App\Service\SysMenu())->buildAdminTreeMenu($this->currentUrl);
+        $this->menuHtml = (new \App\Service\SysMenu())->buildAdminTreeMenu(strtolower($this->currentUrl));
         //添加面包屑
-        $this->addBreadcrumb('首页','/admin/index/index');
+        $this->addBreadcrumb('首页','/Admin/Index/index');
     }
     /**
      * 设置网页seo标题.

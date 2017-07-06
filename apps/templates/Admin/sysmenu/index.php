@@ -59,7 +59,7 @@
                         <h4 class="modal-title">添加菜单</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/admin/Sysmenu/save">
+                        <form role="form" id="form" action="/Admin/SysMenu/save">
                             <input type="hidden" name="moduleType" id="moduleType" value="<?php echo $moduleType; ?>">
                             <input type="hidden" name="menuId" id="menuId" value="0">
                             <div class="form-group">
@@ -69,8 +69,6 @@
                             <div class="form-group">
                                 <label>父级菜单</label>
                                 <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentId">
-                                    <option value="0">顶级菜单</option>
-                                    <?php echo $menuTreeOption; ?>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -139,17 +137,34 @@
                 $('.dd').nestable('collapseAll');
             }
         });
+        //载入树结构select的option的html
+        function loadOption() {
+            $.ajax({
+                type: "get",
+                url: "/Admin/SysMenu/getTreeOption",
+                data: {
+                    'moduleType' : $("#moduleType").val(),
+                },
+                success: function (data) {
+                    $("#form select[name='parentId']").html(data);
+                }
+            });
+        }
         //弹窗
         $(".add").on('click', function () {
+            //加载父级菜单选择项
+            loadOption();
             $("#form")[0].reset();
             $("#form input[name='menuId']").val(0);
             $(".modal-title").html('添加菜单');
         });
         $(".edit").on('click', function () {
+            //加载父级菜单选择项
+            loadOption();
             $(".modal-title").html('编辑菜单');
             $.ajax({
                 type: "get",
-                url: "/admin/sysmenu/get",
+                url: "/Admin/SysMenu/get",
                 data: {
                     'menuId' : $(this).parents("li").attr('data-id'),
                 },
@@ -172,7 +187,7 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/admin/sysmenu/del",
+                            url: "/Admin/SysMenu/Del",
                             data: {
                                 'menuId' : menuId,
                             },
