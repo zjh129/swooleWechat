@@ -16,18 +16,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <div class="col-md-4">
-                            <select class="form-control" name="moduleType" id="moduleType">
-                                <?php foreach ($moduleTypeList as $moduleK => $moduleV) {
-    ?>
-                                <option value="<?php echo $moduleK; ?>" <?php echo $moduleType == $moduleK ? 'selected' : ''?>><?php echo $moduleV; ?></option>
-                                <?php 
-}?>
-                            </select>
-                        </div>
                         <button type="button" data-action="expand-all" class="btn btn-white btn-sm">全部展开</button>
                         <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">全部收缩</button>
-                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>添加菜单</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>添加用户组</button>
                     </div>
                 </div>
             </div>
@@ -35,12 +26,12 @@
                 <div class="col-lg-12">
                     <div class="ibox ">
                         <div class="ibox-title">
-                            <h5>菜单列表</h5>
+                            <h5>用户组列表</h5>
                         </div>
                         <div class="ibox-content">
 
                             <p class="m-b-lg">
-                                你可以通过拖拽来调整菜单所属层级和菜单顺序。
+                                你可以通过拖拽来调整用户组所属层级及顺序。
                             </p>
                             <div class="dd" id="nestable">
                                 <?php echo $nestableHtml; ?>
@@ -56,21 +47,20 @@
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">添加菜单</h4>
+                        <h4 class="modal-title">添加用户组</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/admin/Sysmenu/saveData">
-                            <input type="hidden" name="moduleType" id="moduleType" value="<?php echo $moduleType; ?>">
-                            <input type="hidden" name="menuId" id="menuId" value="0">
+                        <form role="form" id="form" action="/admin/SysUserGroup/saveData">
+                            <input type="hidden" name="groupId" id="groupId" value="0">
                             <div class="form-group">
-                                <label>菜单名称</label>
-                                <input type="text" placeholder="输入菜单名称" class="form-control" name="menuName" id="menuName" required>
+                                <label>用户组名称</label>
+                                <input type="text" placeholder="输入用户组名称" class="form-control" name="groupName" id="groupName" required>
                             </div>
                             <div class="form-group">
                                 <label>父级菜单</label>
                                 <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentMenuId">
-                                    <option value="0">顶级菜单</option>
-                                    <?php echo $menuTreeOption; ?>
+                                    <option value="0">顶级分组</option>
+                                    <?php echo $treeOption; ?>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -118,7 +108,7 @@
                 output = list.data('output');
             $.ajax({
                 type: "post",
-                url: "/admin/sysmenu/saveSort",
+                url: "/Admin/SysUserGroup/saveSort",
                 data: {
                     'sortData' : list.nestable('serialize'),
                 },
@@ -142,29 +132,29 @@
         //弹窗
         $(".add").on('click', function () {
             $("#form")[0].reset();
-            $("#form input[name='menuId']").val(0);
-            $(".modal-title").html('添加菜单');
+            $("#form input[name='groupId']").val(0);
+            $(".modal-title").html('添加用户组');
         });
         $(".edit").on('click', function () {
-            $(".modal-title").html('编辑菜单');
+            $(".modal-title").html('编辑用户组');
             $.ajax({
                 type: "get",
-                url: "/admin/sysmenu/getData",
+                url: "/Admin/SysUserGroup/getData",
                 data: {
-                    'menuId' : $(this).parents("li").attr('data-id'),
+                    'groupId' : $(this).parents("li").attr('data-id'),
                 },
                 datatype: "json",
                 success: function (data) {
-                    $("#form input[name='menuId']").val(data.data.menuId);
-                    $("#form input[name='menuName']").val(data.data.menuName);
-                    $("#form select[name='parentMenuId']").val(data.data.parentMenuId);
+                    $("#form input[name='groupId']").val(data.data.menuId);
+                    $("#form input[name='groupName']").val(data.data.menuName);
+                    $("#form select[name='parentGroupId']").val(data.data.parentGroupId);
                     $("#form input[name='url']").val(data.data.url);
                     $("#form input[name='iconClass']").val(data.data.iconClass);
                 }
             });
         });
         $(".del").on('click', function () {
-            var menuId = $(this).parents("li").attr('data-id');
+            var id = $(this).parents("li").attr('data-id');
             $.confirm({
                 title: '你确定删除么？',
                 content: '删除后将无法恢复',
@@ -172,9 +162,9 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/admin/sysmenu/delMenu",
+                            url: "/Admin/SysUserGroup/delMenu",
                             data: {
-                                'menuId' : menuId,
+                                'groupId' : id,
                             },
                             datatype: "json",
                             success: function (data) {
@@ -190,10 +180,7 @@
         //表单验证
         $("#form").validate({
             rules: {
-                menuName:{
-                    required: true,
-                },
-                url: {
+                groupName:{
                     required: true,
                 },
             },

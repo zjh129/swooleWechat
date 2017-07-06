@@ -239,29 +239,4 @@ class SysMenu
             return $this->sysMenuModel->put($saveData);
         }
     }
-
-    /**
-     * 获取菜单数据
-     * @param $menuId
-     * @return \Swoole\Record
-     * @throws \Exception
-     */
-    public function getMenu($menuId)
-    {
-        $menuData = $this->sysMenuModel->getone(['menuId'=>$menuId]);
-        if (!$menuData){
-            throw new \Exception('菜单数据不存在');
-        }
-        return $menuData;
-    }
-
-    /**
-     * 标记菜单为删除状态
-     * @param $menuId
-     * @return bool
-     */
-    public function delMenu($menuId)
-    {
-        return $this->sysMenuModel->set($menuId, ['isDel'=>1]);
-    }
 }

@@ -145,7 +145,7 @@ class RBAC
      */
     public function getGroupList($userId)
     {
-        $userGroupList = $this->userGroupModel->getUserGroupList($userId);
+        $userGroupList = $this->userGroupModel->getUserGroupListByUid($userId);
         return $userGroupList;
     }
 

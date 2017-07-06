@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
+Source Server         : local_swooleWechat
 Source Server Version : 80001
-Source Host           : 127.0.0.1:3306
+Source Host           : 192.168.35.130:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-03 22:59:18
+Date: 2017-07-06 10:21:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -55,12 +55,12 @@ CREATE TABLE `sys_menu` (
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', 'fa fa-dashboard', '0', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', 'fa fa-desktop', '1', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', 'fa fa-desktop', '1', '1', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '1', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', 'fa fa-sitemap', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('5', 'admin', '用户组管理', '/Admin/SysUserGroup/index', 'fa fa-group', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('6', 'admin', '用户管理', '/Admin/SysUser/Index', 'fa fa-user', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', 'fa fa-gavel', '3', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('5', 'admin', '用户组管理', '/Admin/SysUserGroup/index', 'fa fa-group', '3', '1', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('6', 'admin', '用户管理', '/Admin/SysUser/Index', 'fa fa-user', '3', '2', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', 'fa fa-gavel', '3', '3', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', 'fa fa-linux', '1', '0', '0', '0', '0');
 
 -- ----------------------------
@@ -93,6 +93,8 @@ DROP TABLE IF EXISTS `sys_user_group`;
 CREATE TABLE `sys_user_group` (
   `groupId` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户组ID',
   `groupName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户组名称',
+  `parentGroupId` int(10) NOT NULL DEFAULT '0' COMMENT '上级用户组ID',
+  `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除)',
   `ruleIds` mediumtext NOT NULL COMMENT '访问规则ID列表,servlize字符串',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
@@ -407,4 +409,3 @@ CREATE TABLE `wx_user_subscribe_log` (
 -- ----------------------------
 -- Records of wx_user_subscribe_log
 -- ----------------------------
-SET FOREIGN_KEY_CHECKS=1;
