@@ -9,7 +9,7 @@ use Swoole;
  */
 class Login extends Base
 {
-    public function __construct($swoole)
+    public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
     }

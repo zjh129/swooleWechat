@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-06 11:41:01
+Date: 2017-07-06 15:53:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -100,12 +100,14 @@ CREATE TABLE `sys_user_group` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`groupId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
 
 -- ----------------------------
 -- Records of sys_user_group
 -- ----------------------------
-INSERT INTO `sys_user_group` VALUES ('1', '超级管理组', '0', '1', '0', '', '2', '1499311306');
+INSERT INTO `sys_user_group` VALUES ('1', '超级管理', '0', '0', '0', 'a:0:{}', '2', '1499311306');
+INSERT INTO `sys_user_group` VALUES ('2', '微信运营', '0', '1', '0', 'a:0:{}', '2', '1499327471');
+INSERT INTO `sys_user_group` VALUES ('3', '客服组', '0', '2', '0', 'a:0:{}', '2', '1499327554');
 
 -- ----------------------------
 -- Table structure for sys_user_to_group

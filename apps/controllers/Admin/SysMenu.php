@@ -14,7 +14,7 @@ class SysMenu extends Base
      * @var \App\Model\SysMenu
      */
     private $sysMenuModel;
-    public function __construct($swoole)
+    public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
         $this->addBreadcrumb('系统管理', '/admin/System/index');

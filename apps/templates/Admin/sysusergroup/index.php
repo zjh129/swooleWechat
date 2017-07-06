@@ -133,7 +133,7 @@
                     type:'post',
                     dataType:'json',
                     success:function(data) {
-                        showToastr(data);
+                        showToastr(data, true);
                     }
                 });
             }

@@ -1,6 +1,9 @@
 <?php
 namespace App\Service;
-
+/**
+ * 系统用户组服务类
+ * @package App\Service
+ */
 class SysUserGroup
 {
     /**

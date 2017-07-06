@@ -5,7 +5,7 @@ use App\BaseController\AdminBaseController as Base;
 
 class Index extends Base
 {
-    public function __construct($swoole)
+    public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
         $this->addBreadcrumb('仪表盘','/admin/index/index');
