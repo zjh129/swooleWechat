@@ -168,7 +168,7 @@ class Tree
                 $html .= '<li class="dd-item dd-nodrag" data-id="' . $menuData[$this->pk] . '">';
                 $html .= '<div class="dd-handle">';
                 $html .= '<span class="label label-info">';
-                if ($menuData[$this->iconClassKey]) {
+                if (isset($menuData[$this->iconClassKey]) && $menuData[$this->iconClassKey]) {
                     $html .= '<i class="' . $menuData[$this->iconClassKey] . '"></i>';
                 }
                 $html .= '</span>' . $menuData[$this->nameKey];

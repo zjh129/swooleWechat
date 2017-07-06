@@ -20,7 +20,7 @@ class SysUserGroup extends \App\Component\BaseModel
     public function getUserGroupList()
     {
         $groupList = $this->gets([
-            'select' => 'groupId,groupName,parentGroupId,orderNum,ruleIds',
+            'select' => 'groupId,groupName,parentId,orderNum,ruleIds',
             'from' => $this->table,
             'where' => "isDel=0",
             'order' => "orderNum ASC,groupId ASC",

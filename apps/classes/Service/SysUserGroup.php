@@ -59,12 +59,20 @@ class SysUserGroup
             'groupName' => $data['groupName'],
             'parentId' => $data['parentId'],
         ];
+        //判断是否重名
+        $existsWhere = ['parentId'=>$saveData['parentId'], 'groupName'=>$saveData['groupName']];
+        $id && $existsWhere['groupId !'] = $id;
+        $findExists = $this->sysUserGroupModel->exists($existsWhere);
+        if ($findExists){
+            throw new \Exception('该层级已存在同名分组');
+        }
         if ($id){//修改
             return $this->sysUserGroupModel->set($id, $saveData);
         }else{//添加
             //排序最大值
             $maxOrderNum = $this->sysUserGroupModel->getMax('orderNum');
             $saveData['orderNum'] = $maxOrderNum + 1;
+            $saveData['ruleIds'] = serialize([]);
             $saveData['addUserId'] =$data['addUserId'];
             $saveData['addTime'] = time();
             return $this->sysUserGroupModel->put($saveData);

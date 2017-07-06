@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-06 10:21:20
+Date: 2017-07-06 11:41:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,7 +43,7 @@ CREATE TABLE `sys_menu` (
   `menuName` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单名称',
   `url` varchar(100) NOT NULL DEFAULT '' COMMENT '链接',
   `iconClass` varchar(100) NOT NULL DEFAULT '' COMMENT '图标样式',
-  `parentMenuId` int(10) NOT NULL DEFAULT '0' COMMENT '父级菜单ID',
+  `parentId` int(10) NOT NULL DEFAULT '0' COMMENT '父级菜单ID',
   `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
@@ -93,18 +93,19 @@ DROP TABLE IF EXISTS `sys_user_group`;
 CREATE TABLE `sys_user_group` (
   `groupId` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户组ID',
   `groupName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户组名称',
-  `parentGroupId` int(10) NOT NULL DEFAULT '0' COMMENT '上级用户组ID',
+  `parentId` int(10) NOT NULL DEFAULT '0' COMMENT '上级用户组ID',
   `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除)',
   `ruleIds` mediumtext NOT NULL COMMENT '访问规则ID列表,servlize字符串',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
 
 -- ----------------------------
 -- Records of sys_user_group
 -- ----------------------------
+INSERT INTO `sys_user_group` VALUES ('1', '超级管理组', '0', '1', '0', '', '2', '1499311306');
 
 -- ----------------------------
 -- Table structure for sys_user_to_group

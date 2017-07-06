@@ -220,7 +220,7 @@ class SysMenu
      */
     public function saveMenu($menuData)
     {
-        $menuId = (int) $menuData['menuId'];
+        $id = (int) $menuData['menuId'];
         $saveData = [
             'moduleType' => $menuData['moduleType'],
             'menuName' => $menuData['menuName'],
@@ -228,8 +228,15 @@ class SysMenu
             'url' => $menuData['url'],
             'iconClass' => $menuData['iconClass'],
         ];
-        if ($menuId){//修改
-            return $this->sysMenuModel->set($menuId, $saveData);
+        //判断是否重名
+        $existsWhere = ['parentId'=>$saveData['parentId'], 'menuName'=>$saveData['menuName']];
+        $id && $existsWhere['menuId !'] = $id;
+        $findExists = $this->sysMenuModel->exists($existsWhere);
+        if ($findExists){
+            throw new \Exception('该层级已存在同名菜单');
+        }
+        if ($id){//修改
+            return $this->sysMenuModel->set($id, $saveData);
         }else{//添加
             //排序最大值
             $maxOrderNum = $this->sysMenuModel->getMax('orderNum', ['moduleType'=>$menuData['moduleType']]);

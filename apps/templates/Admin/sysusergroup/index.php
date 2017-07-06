@@ -50,7 +50,7 @@
                         <h4 class="modal-title">添加用户组</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/admin/SysUserGroup/saveData">
+                        <form role="form" id="form" action="/admin/SysUserGroup/save">
                             <input type="hidden" name="groupId" id="groupId" value="0">
                             <div class="form-group">
                                 <label>用户组名称</label>
@@ -121,54 +121,6 @@
                 $('.dd').nestable('collapseAll');
             }
         });
-        //弹窗
-        $(".add").on('click', function () {
-            $("#form")[0].reset();
-            $("#form input[name='groupId']").val(0);
-            $(".modal-title").html('添加用户组');
-        });
-        $(".edit").on('click', function () {
-            $(".modal-title").html('编辑用户组');
-            $.ajax({
-                type: "get",
-                url: "/Admin/SysUserGroup/getData",
-                data: {
-                    'groupId' : $(this).parents("li").attr('data-id'),
-                },
-                datatype: "json",
-                success: function (data) {
-                    $("#form input[name='groupId']").val(data.data.menuId);
-                    $("#form input[name='groupName']").val(data.data.menuName);
-                    $("#form select[name='parentGroupId']").val(data.data.parentGroupId);
-                    $("#form input[name='url']").val(data.data.url);
-                    $("#form input[name='iconClass']").val(data.data.iconClass);
-                }
-            });
-        });
-        $(".del").on('click', function () {
-            var id = $(this).parents("li").attr('data-id');
-            $.confirm({
-                title: '你确定删除么？',
-                content: '删除后将无法恢复',
-                buttons: {
-                    '确定': function () {
-                        $.ajax({
-                            type: "post",
-                            url: "/Admin/SysUserGroup/delData",
-                            data: {
-                                'groupId' : id,
-                            },
-                            datatype: "json",
-                            success: function (data) {
-                                showToastr(data, true);
-                            }
-                        });
-                    },
-                    '取消': function () {
-                    },
-                }
-            });
-        });
         //表单验证
         $("#form").validate({
             rules: {
@@ -181,10 +133,56 @@
                     type:'post',
                     dataType:'json',
                     success:function(data) {
-                        showToastr(data, true);
+                        showToastr(data);
                     }
                 });
             }
+        });
+        //弹窗
+        $(".add").on('click', function () {
+            $("#form")[0].reset();
+            $("#form input[name='groupId']").val(0);
+            $(".modal-title").html('添加用户组');
+        });
+        $(".edit").on('click', function () {
+            $(".modal-title").html('编辑用户组');
+            $.ajax({
+                type: "get",
+                url: "/Admin/SysUserGroup/get",
+                data: {
+                    'id' : $(this).parents("li").attr('data-id'),
+                },
+                datatype: "json",
+                success: function (data) {
+                    $("#form input[name='groupId']").val(data.data.groupId);
+                    $("#form input[name='groupName']").val(data.data.groupName);
+                    $("#form select[name='parentGroupId']").val(data.data.parentGroupId);
+                }
+            });
+        });
+        $(".del").on('click', function () {
+            var id = $(this).parents("li").attr('data-id');
+            $.confirm({
+                title: '你确定删除么？',
+                content: '删除后将无法恢复',
+                buttons: {
+                    '确定': function () {
+                        $.ajax({
+                            type: "post",
+                            url: "/Admin/SysUserGroup/del",
+                            data: {
+                                'id' : id,
+                            },
+                            datatype: "json",
+                            success: function (data) {
+                                showToastr(data, true);
+                            }
+                        });
+                    },
+                    '取消': function () {
+                    },
+                }
+            });
         });
     });
 </script>

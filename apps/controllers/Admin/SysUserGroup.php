@@ -107,7 +107,7 @@ class SysUserGroup extends Base
     public function del()
     {
         try {
-            $id   = $this->request->post['menuId'] ?? 0;
+            $id   = $this->request->post['id'] ?? 0;
             if (!$id){
                 throw new \Exception('请指定要删除的用户组');
             }
