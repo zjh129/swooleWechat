@@ -59,7 +59,7 @@
                         <h4 class="modal-title">添加菜单</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/admin/Sysmenu/saveData">
+                        <form role="form" id="form" action="/admin/Sysmenu/save">
                             <input type="hidden" name="moduleType" id="moduleType" value="<?php echo $moduleType; ?>">
                             <input type="hidden" name="menuId" id="menuId" value="0">
                             <div class="form-group">
@@ -68,7 +68,7 @@
                             </div>
                             <div class="form-group">
                                 <label>父级菜单</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentMenuId">
+                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentId">
                                     <option value="0">顶级菜单</option>
                                     <?php echo $menuTreeOption; ?>
                                 </select>
@@ -149,7 +149,7 @@
             $(".modal-title").html('编辑菜单');
             $.ajax({
                 type: "get",
-                url: "/admin/sysmenu/getData",
+                url: "/admin/sysmenu/get",
                 data: {
                     'menuId' : $(this).parents("li").attr('data-id'),
                 },
@@ -157,7 +157,7 @@
                 success: function (data) {
                     $("#form input[name='menuId']").val(data.data.menuId);
                     $("#form input[name='menuName']").val(data.data.menuName);
-                    $("#form select[name='parentMenuId']").val(data.data.parentMenuId);
+                    $("#form select[name='parentId']").val(data.data.parentId);
                     $("#form input[name='url']").val(data.data.url);
                     $("#form input[name='iconClass']").val(data.data.iconClass);
                 }
@@ -172,7 +172,7 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/admin/sysmenu/delMenu",
+                            url: "/admin/sysmenu/del",
                             data: {
                                 'menuId' : menuId,
                             },

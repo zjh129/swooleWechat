@@ -30,7 +30,7 @@ class SysUserGroup extends Base
         //用户组列表
         $groupList     = $this->sysUserGroupModel->getUserGroupList();
         //树结构用户组列表
-        $tree          = new \App\Common\Tree('groupId', 'parentGroupId', 'child');
+        $tree          = new \App\Common\Tree('groupId', 'parentId', 'child');
         $tree->nameKey = 'groupName';
         $tree->load($groupList);
         $optionHtml = $tree->buildOptions();
@@ -42,5 +42,82 @@ class SysUserGroup extends Base
         $nestableHtml = $tree->buildNestableTree($addHtml);
         $this->assign('nestableHtml', $nestableHtml);
         $this->display();
+    }
+    /**
+     * 保存用户组数据.
+     */
+    public function save()
+    {
+        try {
+            $postData              = $this->request->post;
+            $postData['addUserId'] = $this->user->getUid();
+            $sysUserGroup               = new \App\Service\SysUserGroup();
+            $rs                    = $sysUserGroup->saveData($postData);
+            if ($rs) {
+                return $this->showMsg('success', ($postData['groupId'] ? '编辑' : '添加') . '成功', '/Admin/SysUserGroup/index');
+            }
+            throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '用户组失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 获取用户组数据.
+     *
+     * @return bool
+     */
+    public function get()
+    {
+        try {
+            $id   = $this->request->get['id'] ?? 0;
+            $data = $this->sysUserGroupModel->getone(['groupId'=>$id]);
+
+            return $this->showMsg('success', '获取成功', '', $data);
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 保存排序层级数据.
+     */
+    public function saveSort()
+    {
+        try {
+            $sortData = $this->request->post['sortData'];
+            if (empty($sortData)) {
+                throw new \Exception('排序数据有误');
+            }
+            $sysUserGroup = new \App\Service\SysUserGroup();
+            $rs      = $sysUserGroup->saveSort($sortData);
+            if ($rs) {
+                return $this->showMsg('success', '保存排序成功');
+            }
+            throw new \Exception('保存排序失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 删除用户组
+     * @return bool
+     */
+    public function del()
+    {
+        try {
+            $id   = $this->request->post['menuId'] ?? 0;
+            if (!$id){
+                throw new \Exception('请指定要删除的用户组');
+            }
+            $rs = $this->sysUserGroupModel->set($id, ['isDel'=>1]);
+            if ($rs){
+                return $this->showMsg('success', '删除成功');
+            }
+            throw new \Exception('删除失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
     }
 }

@@ -36,7 +36,7 @@ class SysMenu extends Base
         //菜单列表
         $menuList     = $this->sysMenuModel->getMenuList($moduleType);
         //树结构菜单列表
-        $tree          = new \App\Common\Tree('menuId', 'parentMenuId', 'child');
+        $tree          = new \App\Common\Tree('menuId', 'parentId', 'child');
         $tree->nameKey = 'menuName';
         $tree->load($menuList);
         $optionHtml = $tree->buildOptions();
@@ -53,17 +53,17 @@ class SysMenu extends Base
     /**
      * 保存菜单数据.
      */
-    public function saveData()
+    public function save()
     {
         try {
-            $menuData              = $this->request->post;
-            $menuData['addUserId'] = $this->user->getUid();
+            $postData              = $this->request->post;
+            $postData['addUserId'] = $this->user->getUid();
             $sysMenu               = new \App\Service\SysMenu();
-            $rs                    = $sysMenu->saveMenu($menuData);
+            $rs                    = $sysMenu->saveMenu($postData);
             if ($rs) {
-                return $this->showMsg('success', ($menuData['menuId'] ? '编辑' : '添加') . '成功', '/admin/sysmenu/index');
+                return $this->showMsg('success', ($postData['menuId'] ? '编辑' : '添加') . '成功', '/admin/sysmenu/index');
             }
-            throw new \Exception(($menuData['menuId'] ? '编辑' : '添加') . '菜单失败');
+            throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '菜单失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }
@@ -74,13 +74,13 @@ class SysMenu extends Base
      *
      * @return bool
      */
-    public function getData()
+    public function get()
     {
         try {
-            $menuId   = $this->request->get['menuId'] ?? 0;
-            $menuData = $this->sysMenuModel->getone(['menuId'=>$menuId]);
+            $id   = $this->request->get['menuId'] ?? 0;
+            $postData = $this->sysMenuModel->getone(['menuId'=>$id]);
 
-            return $this->showMsg('success', '获取成功', '', $menuData);
+            return $this->showMsg('success', '获取成功', '', $postData);
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }
@@ -111,14 +111,14 @@ class SysMenu extends Base
      * 删除菜单
      * @return bool
      */
-    public function delMenu()
+    public function del()
     {
         try {
-            $menuId   = $this->request->post['menuId'] ?? 0;
-            if (!$menuId){
+            $id   = $this->request->post['menuId'] ?? 0;
+            if (!$id){
                 throw new \Exception('请指定要删除的菜单');
             }
-            $rs = $this->sysMenuModel->set($menuId, ['isDel'=>1]);
+            $rs = $this->sysMenuModel->set($id, ['isDel'=>1]);
             if ($rs){
                 return $this->showMsg('success', '删除成功');
             }

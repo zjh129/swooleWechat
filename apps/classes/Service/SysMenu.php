@@ -84,7 +84,7 @@ class SysMenu
             }
         }
 
-        $tree = new \App\Common\Tree('menuId', 'parentMenuId', 'child');
+        $tree = new \App\Common\Tree('menuId', 'parentId', 'child');
         $tree->load($this->menuList);
         $treelist = $tree->deepTree();
 
@@ -122,7 +122,7 @@ class SysMenu
         if ($parentId > 0 && isset($this->menuList[$parentId])) {
             $this->sysAdminCurrentIds[] = $parentId;
             if ($this->menuList[$parentId]['menuId'] > 0) {
-                $this->initCurrentIds($this->menuList[$parentId]['parentMenuId']);
+                $this->initCurrentIds($this->menuList[$parentId]['parentId']);
             }
         }
     }
@@ -206,7 +206,7 @@ class SysMenu
         if ($list) {
             foreach ($list as $k => $v) {
                 $id = isset($v['id']) && $v['id'] ? (int)$v['id'] : 0;
-                $id && $this->sysMenuModel->set($id, ['orderNum' => $k, 'parentMenuId' => $parentId]);
+                $id && $this->sysMenuModel->set($id, ['orderNum' => $k, 'parentId' => $parentId]);
                 if (isset($v['children']) && $v['children']) {
                     $this->saveSortData($v['children'], $id);
                 }
@@ -224,7 +224,7 @@ class SysMenu
         $saveData = [
             'moduleType' => $menuData['moduleType'],
             'menuName' => $menuData['menuName'],
-            'parentMenuId' => $menuData['parentMenuId'],
+            'parentId' => $menuData['parentId'],
             'url' => $menuData['url'],
             'iconClass' => $menuData['iconClass'],
         ];

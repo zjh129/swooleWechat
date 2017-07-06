@@ -57,19 +57,11 @@
                                 <input type="text" placeholder="输入用户组名称" class="form-control" name="groupName" id="groupName" required>
                             </div>
                             <div class="form-group">
-                                <label>父级菜单</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentMenuId">
+                                <label>父级分组</label>
+                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentId">
                                     <option value="0">顶级分组</option>
                                     <?php echo $treeOption; ?>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label>访问链接</label>
-                                <input type="text" placeholder="例如：/Admin/Index/index" class="form-control" name="url" required>
-                            </div>
-                            <div class="form-group">
-                                <label>菜单图标样式</label>
-                                <input type="text" placeholder="例如：fa fa-sitemap" class="form-control" name="iconClass" id="iconClass">
                             </div>
                         </form>
                     </div>
@@ -162,7 +154,7 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/Admin/SysUserGroup/delMenu",
+                            url: "/Admin/SysUserGroup/delData",
                             data: {
                                 'groupId' : id,
                             },

@@ -21,7 +21,7 @@ class SysMenu extends \App\Component\BaseModel
     public function getMenuDataByUrl($url)
     {
         $menuData = $this->getone([
-            'select' => 'menuId,menuName,url,parentMenuId',
+            'select' => 'menuId,menuName,url,parentId',
             'where' => "`url`='$url' AND `isDel`=0",
         ]);
         return $menuData;
@@ -34,7 +34,7 @@ class SysMenu extends \App\Component\BaseModel
     public function getMenuList($moduleType = 'admin')
     {
         $menuList = $this->gets([
-            'select' => 'menuId,menuName,url,iconClass,parentMenuId',
+            'select' => 'menuId,menuName,url,iconClass,parentId',
             'where' => "`moduleType`='$moduleType' AND `isDel`=0",
             'order' => "orderNum ASC,menuId ASC",
         ]);
