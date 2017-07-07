@@ -190,7 +190,7 @@ class RBAC
         }
         //读取用户组所有权限规则
         $ruleList = $this->authRuleModel->gets([
-            'select' => 'condition,name',
+            'select' => 'condition,url',
             'in' => ['ruleId', $ids],
         ]);
         //循环规则，判断结果。
@@ -203,11 +203,11 @@ class RBAC
                 //dump($command);//debug
                 @(eval('$condition=(' . $command . ');'));
                 if ($condition) {
-                    $authList[] = strtolower($rule['name']);
+                    $authList[] = strtolower($rule['url']);
                 }
             } else {
                 //只要存在就记录
-                $authList[] = strtolower($rule['name']);
+                $authList[] = strtolower($rule['url']);
             }
         }
         $_authList[$userId . $t] = $authList;

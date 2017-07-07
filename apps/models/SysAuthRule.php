@@ -12,4 +12,19 @@ class SysAuthRule extends \App\Component\BaseModel
      * @var string
      */
     public $table = 'sys_auth_rule';
+
+    /**
+     * 获取所有权限规则列表
+     * @return array
+     */
+    public function getAuthRuleList()
+    {
+        $groupList = $this->gets([
+            'select' => 'ruleId,ruleName,url,parentId,orderNum',
+            'from' => $this->table,
+            'where' => "isDel=0",
+            'order' => "orderNum ASC,ruleId ASC",
+        ]);
+        return $groupList;
+    }
 }

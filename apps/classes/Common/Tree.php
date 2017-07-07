@@ -11,7 +11,10 @@ class Tree
     public $parentKey; //上级id字段名
     public $childrenKey; //用来存储子分类的数组key名
     public $nameKey = 'menuName'; //名称key
-    public $iconClassKey = 'iconClass';
+    public $iconClassKey = 'iconClass';//样式
+    public $jsTreeDisabledIds = [];//jsTree禁用ID集
+    public $jsTreeLiAttrField = [];//jsTree li标签属性字段
+    public $jsTreeAAttrField = [];//jsTree a标签属性字段
     private $OriginalList;
     private $treeList;
 
@@ -193,5 +196,52 @@ class Tree
         $this->deepTree();
         $html = $this->makeNestableTree($this->treeList, $addHtml);
         return $html;
+    }
+
+    /**
+     * 格式化为jsTree需要json格式
+     * @param array $secIds
+     * @param bool $allOpen
+     * @param int $root
+     */
+    public function makeJsTreeFormat($secIds = [], $allOpen=true, $root = 0)
+    {
+        if ($this->OriginalList)
+        {
+            $newList = [];
+            foreach ($this->OriginalList as $value){
+                $id = $value[$this->pk] ?? 0;
+                $data = [
+                    'id' => $id,
+                    'text' => $value[$this->nameKey] ?? '',
+                    'icon' => $value[$this->iconClassKey] ?? '',
+                    'parentId' => $value[$this->parentKey] ?? 0,
+                    'state' => [
+                        'opened' => $allOpen,
+                        'disabled' => in_array($id, $this->jsTreeDisabledIds) ? true : false,
+                        'selected' => in_array($id, $secIds) ? true : false,
+                    ],
+                ];
+                //li标签属性字段
+                if ($this->jsTreeLiAttrField){
+                    foreach ($this->jsTreeLiAttrField as $attr){
+                        isset($value[$attr]) && $data['li_attr'][$attr] = $value[$attr];
+                    }
+                }
+                //a标签属性字段
+                if ($this->jsTreeAAttrField){
+                    foreach ($this->jsTreeAAttrField as $attr){
+                        isset($value[$attr]) && $data['a_attr'][$attr] = $value[$attr];
+                    }
+                }
+                $newList[] = $data;
+            }
+            $this->OriginalList = $newList;
+        }
+        $this->pk = 'id';
+        $this->parentKey = 'parentId';
+        $this->childrenKey = 'children';
+        $this->nameKey = 'text';
+        return $this->deepTree($root);
     }
 }

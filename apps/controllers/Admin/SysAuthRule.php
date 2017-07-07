@@ -34,4 +34,19 @@ class SysAuthRule extends Base
 
         $this->display();
     }
+
+    /**
+     * 返回jsTree格式数据格式
+     * @return array
+     */
+    public function getJsTreeData()
+    {
+        //权限规则列表
+        $ruleList     = $this->sysAuthRuleModel->getAuthRuleList();
+        //树结构用户组列表
+        $tree          = new \App\Common\Tree('ruleId', 'parentId', 'children');
+        $tree->nameKey = 'ruleName';
+        $tree->load($ruleList);
+        return $tree->makeJsTreeFormat();
+    }
 }
