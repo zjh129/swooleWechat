@@ -16,9 +16,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" data-action="expand-all" class="btn btn-white btn-sm">全部展开</button>
-                        <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">全部收缩</button>
-                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>添加用户组</button>
+                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-plus"></i>新增</button>
+                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-pencil"></i>编辑</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-trash-o"></i>删除</button>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,9 @@
                             <h5>用户组列表</h5>
                         </div>
                         <div class="ibox-content">
-
+                            <p class="m-b-lg">
+                                你可以通过拖拽来调整权限所属层级及顺序。
+                            </p>
                             <div id="jstree1">
                                 <ul>
                                     <li class="jstree-open">Admin theme
