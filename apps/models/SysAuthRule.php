@@ -27,4 +27,20 @@ class SysAuthRule extends \App\Component\BaseModel
         ]);
         return $groupList;
     }
+
+    /**
+     * 获取某一级分类下的列表
+     * @param $parentId
+     * @return array
+     */
+    public function getAuthRuleListByParentId($parentId)
+    {
+        $groupList = $this->gets([
+            'select' => 'ruleId,ruleName,url,parentId,orderNum',
+            'from' => $this->table,
+            'where' => "parentId= $parentId AND isDel=0",
+            'order' => "orderNum ASC,ruleId ASC",
+        ]);
+        return $groupList;
+    }
 }

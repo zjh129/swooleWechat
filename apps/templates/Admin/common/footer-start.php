@@ -11,6 +11,9 @@
 <!-- Toastr script -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/toastr/toastr.min.js"></script>
 <script>
+    toastr.options = {
+        "positionClass": "toast-top-center",
+    };
     function showToastr(data) {
         isReload = arguments[1] ? arguments[1] : false;
         switch (data.status){

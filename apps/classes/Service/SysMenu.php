@@ -229,7 +229,7 @@ class SysMenu
             'iconClass' => $menuData['iconClass'],
         ];
         //判断是否重名
-        $existsWhere = ['parentId'=>$saveData['parentId'], 'menuName'=>$saveData['menuName']];
+        $existsWhere = ['parentId'=>$saveData['parentId'], 'menuName'=>$saveData['menuName'],'isDel'=>0];
         $id && $existsWhere['menuId !'] = $id;
         $findExists = $this->sysMenuModel->exists($existsWhere);
         if ($findExists){

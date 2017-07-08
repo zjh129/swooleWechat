@@ -17,8 +17,8 @@
                 <div class="col-md-4">
                     <div id="nestable-menu">
                         <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-plus"></i>新增</button>
-                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-pencil"></i>编辑</button>
-                        <button type="button" class="btn btn-outline btn-danger btn-sm add"><i class="fa fa-trash-o"></i>删除</button>
+                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm edit"><i class="fa fa-pencil"></i>编辑</button>
+                        <button type="button" class="btn btn-outline btn-danger btn-sm del"><i class="fa fa-trash-o"></i>删除</button>
                     </div>
                 </div>
             </div>
@@ -48,18 +48,25 @@
                         <h4 class="modal-title">添加用户组</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/admin/SysUserGroup/save">
-                            <input type="hidden" name="groupId" id="groupId" value="0">
+                        <form role="form" id="form" action="/Admin/SysAuthRule/save">
+                            <input type="hidden" name="ruleId" id="ruleId" value="0">
                             <div class="form-group">
-                                <label>用户组名称</label>
-                                <input type="text" placeholder="输入用户组名称" class="form-control" name="groupName" id="groupName" required>
+                                <label>权限名称</label>
+                                <input type="text" placeholder="输入权限规则" class="form-control" name="ruleName" id="ruleName" required>
                             </div>
                             <div class="form-group">
-                                <label>父级分组</label>
+                                <label>父级权限</label>
                                 <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentId">
-                                    <option value="0">顶级分组</option>
-                                    <?php //echo $treeOption; ?>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>权限唯一标识</label>
+                                <input type="text" placeholder="例如：/Admin/Index/index" class="form-control" name="url" required>
+                            </div>
+                            <div class="form-group">
+                                <label>权限表达式</label>
+                                <input type="text" placeholder="例如：{score}>5  and {score}<100" class="form-control" name="condition">
+                                <span class="help-block m-b-none">如定义{score}>5  and {score}<100  表示用户的分数在5-100之间时这条规则才会通过</span>
                             </div>
                         </form>
                     </div>
@@ -84,8 +91,20 @@
 <script src="//static.tudouyu.cn/jsTree/3.3.4/jstree.min.js"></script>
 
 <script>
+    //载入树结构select的option的html
+    function loadOption() {
+        $.ajax({
+            type: "get",
+            url: "/Admin/SysAuthRule/getTreeOption",
+            data: {
+            },
+            success: function (data) {
+                $("#form select[name='parentId']").html(data);
+            }
+        });
+    }
     $(document).ready(function(){
-        $('#jstree').data('jstree', false).empty();
+        //加载树结构
         $('#jstree').jstree({
             'core' : {
                 'check_callback' : true,
@@ -109,6 +128,20 @@
             },
             "plugins" : [ 'types', 'dnd', "wholerow"]
         });
+        //移动事件
+        $('#jstree').on('move_node.jstree', function(e,data){
+            console.info(data);
+            $.post("/Admin/SysAuthRule/saveSort",
+                {
+                    id : data.node.id,
+                    parent : data.parent,
+                    position:data.position
+                },
+                function(data,status){
+                    showToastr(data);
+                }, 'json');
+
+        })
         //表单验证
         $("#form").validate({
             rules: {
@@ -121,35 +154,76 @@
                     type:'post',
                     dataType:'json',
                     success:function(data) {
-                        showToastr(data, true);
+                        showToastr(data);
+                        if (data.status == 'success'){
+                            $('#myModal').modal('hide');
+                            //重新加载树结构
+                            var tree = $.jstree.reference("#jstree");
+                            tree.refresh();
+                        }
                     }
                 });
             }
         });
         //弹窗
         $(".add").on('click', function () {
+            //加载父级菜单选择项
+            loadOption();
             $("#form")[0].reset();
-            $("#form input[name='groupId']").val(0);
-            $(".modal-title").html('添加用户组');
+            $("#form input[name='ruleId']").val(0);
+            $(".modal-title").html('添加权限');
         });
         $(".edit").on('click', function () {
-            $(".modal-title").html('编辑用户组');
+            var ref = $('#jstree').jstree(true),
+                sel = ref.get_selected();
+            if(!sel.length) {
+                toastr.error('请选中您想要编辑的权限', '错误');
+                toastr.options = {
+                    "positionClass": "toast-top-center",
+                };
+                return false;
+            }
+            if (sel.length > 1){
+                toastr.error('只能选中一条规则进行编辑', '错误');
+                toastr.options = {
+                    "positionClass": "toast-top-center",
+                };
+                return false;
+            }
+
+            //加载父级菜单选择项
+            loadOption();
+            $(".modal-title").html('编辑权限');
             $.ajax({
                 type: "get",
-                url: "/Admin/SysUserGroup/get",
+                url: "/Admin/SysAuthRule/get",
                 data: {
-                    'id' : $(this).parents("li").attr('data-id'),
+                    'id' : sel[0],
                 },
                 datatype: "json",
                 success: function (data) {
-                    $("#form input[name='groupId']").val(data.data.groupId);
-                    $("#form input[name='groupName']").val(data.data.groupName);
-                    $("#form select[name='parentGroupId']").val(data.data.parentGroupId);
+                    if (data.data == null){
+                        toastr.error('数据不存在', '错误');
+                        toastr.options = {
+                            "positionClass": "toast-top-center",
+                        };
+                        return false;
+                    }
+                    $("#form input[name='ruleId']").val(data.data.ruleId);
+                    $("#form input[name='ruleName']").val(data.data.ruleName);
+                    $("#form input[name='url']").val(data.data.url);
+                    $("#form input[name='condition']").val(data.data.condition);
+                    $("#form select[name='parentId']").val(data.data.parentId);
                 }
             });
         });
         $(".del").on('click', function () {
-            var id = $(this).parents("li").attr('data-id');
+            var ref = $('#jstree').jstree(true),
+                sel = ref.get_selected();
+            if(!sel.length) {
+                toastr.error('请选中您想要删除的权限', '错误');
+                return false;
+            }
             $.confirm({
                 title: '你确定删除么？',
                 content: '删除后将无法恢复',
@@ -157,13 +231,19 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/Admin/SysUserGroup/del",
+                            url: "/Admin/SysAuthRule/del",
                             data: {
-                                'id' : id,
+                                'ids' : sel,
                             },
                             datatype: "json",
                             success: function (data) {
-                                showToastr(data, true);
+                                showToastr(data);
+                                if (data.status == 'success'){
+                                    $('#myModal').modal('hide');
+                                    //重新加载树结构
+                                    var tree = $.jstree.reference("#jstree");
+                                    tree.refresh();
+                                }
                             }
                         });
                     },

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-07 23:27:27
+Date: 2017-07-08 22:16:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,23 +21,25 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `sys_auth_rule`;
 CREATE TABLE `sys_auth_rule` (
   `ruleId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ruleName` varchar(50) NOT NULL DEFAULT '' COMMENT '规则名称',
-  `url` varchar(20) NOT NULL DEFAULT '' COMMENT '规则URL',
+  `ruleName` varchar(50) NOT NULL DEFAULT '' COMMENT '规则中文名称',
+  `url` varchar(100) NOT NULL DEFAULT '' COMMENT '规则唯一标识',
   `parentId` int(10) NOT NULL DEFAULT '0' COMMENT '父级ID',
   `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
-  `condition` varchar(100) NOT NULL DEFAULT '' COMMENT '条件',
+  `condition` varchar(100) NOT NULL DEFAULT '' COMMENT '规则表达式，为空表示存在就验证，不为空表示按照条件验证',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除）',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`ruleId`),
   UNIQUE KEY `name` (`ruleName`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户认证规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户认证规则表';
 
 -- ----------------------------
 -- Records of sys_auth_rule
 -- ----------------------------
 INSERT INTO `sys_auth_rule` VALUES ('1', '后台模块', '/Admin/Index/index', '0', '0', '', '0', '0', '0');
 INSERT INTO `sys_auth_rule` VALUES ('2', '系统管理', '/Admin/System/index', '1', '0', '', '0', '0', '0');
+INSERT INTO `sys_auth_rule` VALUES ('3', '菜单管理', '/Admin/SysMenu/index', '2', '1', '', '0', '2', '1499521523');
+INSERT INTO `sys_auth_rule` VALUES ('4', '用户组管理', '/Admin/SysUserGroup/index', '2', '2', 'xx', '0', '2', '1499522110');
 
 -- ----------------------------
 -- Table structure for sys_menu

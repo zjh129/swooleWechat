@@ -63,7 +63,7 @@ class SysUserGroup
             'parentId' => $data['parentId'],
         ];
         //判断是否重名
-        $existsWhere = ['parentId'=>$saveData['parentId'], 'groupName'=>$saveData['groupName']];
+        $existsWhere = ['parentId'=>$saveData['parentId'], 'groupName'=>$saveData['groupName'],'isDel'=>0];
         $id && $existsWhere['groupId !'] = $id;
         $findExists = $this->sysUserGroupModel->exists($existsWhere);
         if ($findExists){
