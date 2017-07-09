@@ -34,8 +34,8 @@ class SysUserGroup extends Base
         $tree->nameKey = 'groupName';
         $tree->load($groupList);
         //可嵌套列表
-        $addHtml  = '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right edit" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>编辑</button>';
-        $addHtml .= '<button type="button" class="btn btn-outline btn-danger btn-xs pull-right del"><i class="fa fa-trash-o"></i>删除</button>';
+        $addHtml = '<button type="button" class="btn btn-outline btn-danger btn-xs pull-right del"><i class="fa fa-trash-o"></i>删除</button>';
+        $addHtml .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right edit" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>编辑</button>';
         $nestableHtml = $tree->buildNestableTree($addHtml);
         $this->assign('nestableHtml', $nestableHtml);
         //用户组选择列表
