@@ -154,9 +154,18 @@
         $(".add").on('click', function () {
             //加载父级菜单选择项
             loadOption();
+            $(".modal-title").html('添加菜单');
             $("#form")[0].reset();
             $("#form input[name='menuId']").val(0);
+        });
+        $(".addchild").on('click', function () {
+            //加载父级菜单选择项
+            loadOption();
             $(".modal-title").html('添加菜单');
+            $("#form")[0].reset();
+            $("#form input[name='menuId']").val(0);
+            var parentId = $(this).parents("li").attr('data-id');
+            $("#form select[name='parentId']").val(parentId);
         });
         $(".edit").on('click', function () {
             //加载父级菜单选择项
