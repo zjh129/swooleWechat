@@ -188,10 +188,13 @@ class RBAC
             $_authList[$userId . $t] = [];
             return [];
         }
+        $ruleWhere = '';
+        $ids && $ruleWhere = "`ruleId` in (".implode(',', $ids).")";
+        $ruleWhere .= ($ruleWhere ? ' AND ' : '') . " OR `isPublic`=1";
         //读取用户组所有权限规则
         $ruleList = $this->authRuleModel->gets([
             'select' => 'condition,url',
-            'in' => ['ruleId', $ids],
+            'where' => $ruleWhere,
         ]);
         //循环规则，判断结果。
         $authList = [];

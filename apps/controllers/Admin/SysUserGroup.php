@@ -36,6 +36,7 @@ class SysUserGroup extends Base
         //可嵌套列表
         $addHtml = '<button type="button" class="btn btn-outline btn-danger btn-xs pull-right del"><i class="fa fa-trash-o"></i>删除</button>';
         $addHtml .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right edit" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>编辑</button>';
+        $addHtml .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right addchild" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>添加子菜单</button>';
         $nestableHtml = $tree->buildNestableTree($addHtml);
         $this->assign('nestableHtml', $nestableHtml);
         //用户组选择列表
@@ -49,12 +50,14 @@ class SysUserGroup extends Base
      */
     public function getTreeOption()
     {
+        $secId = isset($_GET['secId']) ? $_GET['secId'] : 0;
         //用户组列表
         $groupList     = $this->sysUserGroupModel->getUserGroupList();
         //树结构用户组列表
         $tree          = new \App\Common\Tree('groupId', 'parentId', 'child');
         $tree->nameKey = 'groupName';
         $tree->load($groupList);
+        $secId && $tree->optionSelectId = $secId;
         //用户组选择列表
         $optionHtml = '<option value="0">顶级分组</option>';
         $optionHtml .= $tree->buildOptions();

@@ -12,6 +12,7 @@ class Tree
     public $childrenKey; //用来存储子分类的数组key名
     public $nameKey = 'menuName'; //名称key
     public $iconClassKey = 'iconClass';//样式
+    public $optionSelectId;//option设置选中值
     public $jsTreeDisabledIds = [];//jsTree禁用ID集
     public $jsTreeLiAttrField = [];//jsTree li标签属性字段
     public $jsTreeAAttrField = [];//jsTree a标签属性字段
@@ -128,7 +129,7 @@ class Tree
         $str = '';
         if ($arr){
             foreach ($arr as $v) {
-                $str .= "<option value='" . $v[$this->pk] . "' data-depth='{$recursionCount}' data-ancestorIds='" . ltrim($ancestorIds, ',') . "'>" . $v[$this->nameKey] . "</option>\r\n";
+                $str .= "<option value='" . $v[$this->pk] . "' data-depth='{$recursionCount}' data-ancestorIds='" . ltrim($ancestorIds, ',') . "'".($this->optionSelectId == $v[$this->pk] ? ' selected' : '').">" . $v[$this->nameKey] . "</option>\r\n";
                 if ($v[$this->parentKey] == 0) {
                     $recursionCount = 1;
                 }

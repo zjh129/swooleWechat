@@ -139,11 +139,13 @@
         });
         //载入树结构select的option的html
         function loadOption() {
+            var secId = arguments[0] ? arguments[0] : 0;
             $.ajax({
                 type: "get",
                 url: "/Admin/SysMenu/getTreeOption",
                 data: {
                     'moduleType' : $("#moduleType").val(),
+                    'secId' : secId,
                 },
                 success: function (data) {
                     $("#form select[name='parentId']").html(data);
@@ -157,6 +159,13 @@
             $(".modal-title").html('添加菜单');
             $("#form")[0].reset();
             $("#form input[name='menuId']").val(0);
+        });
+        $(".addchild").on('click', function () {
+            $(".modal-title").html('添加菜单');
+            $("#form")[0].reset();
+            $("#form input[name='menuId']").val(0);
+            //加载父级菜单选择项
+            loadOption($(this).parents("li").attr('data-id'));
         });
         $(".edit").on('click', function () {
             //加载父级菜单选择项

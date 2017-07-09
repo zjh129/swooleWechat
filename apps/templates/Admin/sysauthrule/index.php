@@ -2,6 +2,7 @@
 <?php echo $this->fetch('common/header-start.php'); ?>
 <!-- Gritter -->
 <link href="//static.tudouyu.cn/jsTree/3.3.4/themes/default/style.min.css" rel="stylesheet">
+<link href="//static.tudouyu.cn/iCheck/1.0.2/skins/square/green.css" rel="stylesheet">
 <!-- 头部结束部分代码 -->
 <?php echo $this->fetch('common/header-end.php'); ?>
 <body>
@@ -17,9 +18,11 @@
                 <div class="col-md-4">
                     <div id="nestable-menu">
                         <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-plus"></i>新增</button>
+                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm addchild"><i class="fa fa-plus"></i>添加子项</button>
                         <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm edit"><i class="fa fa-pencil"></i>编辑</button>
                         <button type="button" class="btn btn-outline btn-danger btn-sm del"><i class="fa fa-trash-o"></i>删除</button>
                     </div>
+
                 </div>
             </div>
             <div class="row">
@@ -34,8 +37,8 @@
                             </p>
                             <div id="jstree">
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,6 +71,12 @@
                                 <input type="text" placeholder="例如：{score}>5  and {score}<100" class="form-control" name="condition">
                                 <span class="help-block m-b-none">如定义{score}>5  and {score}<100  表示用户的分数在5-100之间时这条规则才会通过</span>
                             </div>
+                            <div class="form-group">
+                                <label>是否为公共权限</label>
+                                <label><input type="radio" name="isPublic" value="1"> <i></i>是</label>
+                                <label><input type="radio" name="isPublic" value="0" checked> <i></i> 否</label>
+                                <span class="help-block m-b-none">选择是表示该权限无需验证，全局可用</span>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -89,14 +98,17 @@
 <?php echo $this->fetch('common/footer-start.php'); ?>
 <!-- jsTree -->
 <script src="//static.tudouyu.cn/jsTree/3.3.4/jstree.min.js"></script>
-
+<!-- iCheck -->
+<script src="//static.tudouyu.cn/iCheck/1.0.2/icheck.min.js"></script>
 <script>
     //载入树结构select的option的html
     function loadOption() {
+        var secId = arguments[0] ? arguments[0] : 0;
         $.ajax({
             type: "get",
             url: "/Admin/SysAuthRule/getTreeOption",
             data: {
+                'secId' : secId,
             },
             success: function (data) {
                 $("#form select[name='parentId']").html(data);
@@ -107,6 +119,7 @@
         //加载树结构
         $('#jstree').jstree({
             'core' : {
+                "multiple": false,
                 'check_callback' : true,
                 "themes" : {
                     "variant" : "large"
@@ -126,11 +139,10 @@
             "checkbox" : {
                 "keep_selected_style" : false
             },
-            "plugins" : [ 'types', 'dnd', "wholerow"]
+            "plugins" : [ 'types', 'dnd', "wholerow"],
         });
         //移动事件
         $('#jstree').on('move_node.jstree', function(e,data){
-            console.info(data);
             $.post("/Admin/SysAuthRule/saveSort",
                 {
                     id : data.node.id,
@@ -142,7 +154,7 @@
                 }, 'json');
 
         })
-        //表单验证
+        //表单
         $("#form").validate({
             rules: {
                 groupName:{
@@ -171,7 +183,25 @@
             loadOption();
             $("#form")[0].reset();
             $("#form input[name='ruleId']").val(0);
+            $("#form input[name='isPublic']").val(0);
             $(".modal-title").html('添加权限');
+        });
+        $(".addchild").on('click', function () {
+            var ref = $('#jstree').jstree(true),
+                sel = ref.get_selected();
+            if(!sel.length) {
+                toastr.error('请选中您想要添加子项的权限', '错误');
+                toastr.options = {
+                    "positionClass": "toast-top-center",
+                };
+                return false;
+            }
+            //加载父级菜单选择项
+            loadOption(sel[0]);
+            $("#form")[0].reset();
+            $("#form input[name='ruleId']").val(0);
+            $("#form input[name='isPublic']").val(0);
+            $(".modal-title").html('添加子权限');
         });
         $(".edit").on('click', function () {
             var ref = $('#jstree').jstree(true),
@@ -183,14 +213,6 @@
                 };
                 return false;
             }
-            if (sel.length > 1){
-                toastr.error('只能选中一条规则进行编辑', '错误');
-                toastr.options = {
-                    "positionClass": "toast-top-center",
-                };
-                return false;
-            }
-
             //加载父级菜单选择项
             loadOption();
             $(".modal-title").html('编辑权限');
@@ -213,6 +235,7 @@
                     $("#form input[name='ruleName']").val(data.data.ruleName);
                     $("#form input[name='url']").val(data.data.url);
                     $("#form input[name='condition']").val(data.data.condition);
+                    $("#form input[name='isPublic']").val(data.data.isPublic);
                     $("#form select[name='parentId']").val(data.data.parentId);
                 }
             });

@@ -40,12 +40,14 @@ class SysAuthRule extends Base
      */
     public function getTreeOption()
     {
+        $secId = isset($_GET['secId']) ? $_GET['secId'] : 0;
         //菜单列表
         $authList     = $this->sysAuthRuleModel->getAuthRuleList();
         //树结构菜单列表
         $tree          = new \App\Common\Tree('ruleId', 'parentId', 'child');
         $tree->nameKey = 'ruleName';
         $tree->load($authList);
+        $secId && $tree->optionSelectId = $secId;
         //菜单选择列表
         $optionHtml = '<option value="0">顶级权限</option>';
         $optionHtml .= $tree->buildOptions();
