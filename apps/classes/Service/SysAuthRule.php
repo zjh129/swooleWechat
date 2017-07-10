@@ -30,7 +30,8 @@ class SysAuthRule
             'ruleName' => $data['ruleName'],
             'url' => $data['url'],
             'parentId' => $data['parentId'],
-            'condition' => $data['condition']
+            'condition' => $data['condition'],
+            'isPublic' => $data['isPublic'] ?? 0,
         ];
         //判断是否重名
         $existsWhere = ['parentId'=>$saveData['parentId'], 'ruleName'=>$saveData['ruleName'],'isDel'=>0];

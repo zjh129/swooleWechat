@@ -73,8 +73,8 @@
                             </div>
                             <div class="form-group">
                                 <label>是否为公共权限</label>
-                                <label><input type="radio" name="isPublic" value="1"> <i></i>是</label>
-                                <label><input type="radio" name="isPublic" value="0" checked> <i></i> 否</label>
+                                <div class="i-checks"><label><input type="radio" name="isPublic" value="1"> <i></i>是</label></div>
+                                <div class="i-checks"><label><input type="radio" name="isPublic" value="0" checked> <i></i> 否</label></div>
                                 <span class="help-block m-b-none">选择是表示该权限无需验证，全局可用</span>
                             </div>
                         </form>
@@ -155,6 +155,10 @@
 
         })
         //表单
+        /*$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });*/
         $("#form").validate({
             rules: {
                 groupName:{
@@ -183,7 +187,7 @@
             loadOption();
             $("#form")[0].reset();
             $("#form input[name='ruleId']").val(0);
-            $("#form input[name='isPublic']").val(0);
+            $("#form input[name='isPublic'][value=0]").attr('checked', true);
             $(".modal-title").html('添加权限');
         });
         $(".addchild").on('click', function () {
@@ -200,7 +204,7 @@
             loadOption(sel[0]);
             $("#form")[0].reset();
             $("#form input[name='ruleId']").val(0);
-            $("#form input[name='isPublic']").val(0);
+            $("#form input[name='isPublic'][value=0]").attr('checked', true);
             $(".modal-title").html('添加子权限');
         });
         $(".edit").on('click', function () {
@@ -235,7 +239,8 @@
                     $("#form input[name='ruleName']").val(data.data.ruleName);
                     $("#form input[name='url']").val(data.data.url);
                     $("#form input[name='condition']").val(data.data.condition);
-                    $("#form input[name='isPublic']").val(data.data.isPublic);
+                    var isPublic = data.data.isPublic;
+                    $("#form input[name='isPublic'][value=" + isPublic +"]").prop('checked', 'checked');
                     $("#form select[name='parentId']").val(data.data.parentId);
                 }
             });
