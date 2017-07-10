@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
+Source Server         : local_swooleWechat
 Source Server Version : 80001
-Source Host           : 127.0.0.1:3306
+Source Host           : 192.168.35.130:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-09 23:30:06
+Date: 2017-07-10 14:19:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,21 +30,21 @@ CREATE TABLE `sys_auth_rule` (
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除）',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
-  PRIMARY KEY (`ruleId`),
-  UNIQUE KEY `name` (`ruleName`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='用户认证规则表';
+  PRIMARY KEY (`ruleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='用户认证规则表';
 
 -- ----------------------------
 -- Records of sys_auth_rule
 -- ----------------------------
 INSERT INTO `sys_auth_rule` VALUES ('1', '后台模块', '/Admin/Index/index', '0', '0', '', '0', '0', '0', '0');
 INSERT INTO `sys_auth_rule` VALUES ('2', '系统管理', '/Admin/System/index', '1', '0', '', '0', '0', '0', '0');
-INSERT INTO `sys_auth_rule` VALUES ('3', '菜单管理', '/Admin/SysMenu/index', '2', '0', '', '0', '0', '2', '1499521523');
-INSERT INTO `sys_auth_rule` VALUES ('4', '用户组管理', '/Admin/SysUserGroup/index', '2', '1', 'xx', '0', '0', '2', '1499522110');
-INSERT INTO `sys_auth_rule` VALUES ('5', '用户管理', '/Admin /SysUser/Index', '2', '3', '', '0', '0', '2', '1499527060');
-INSERT INTO `sys_auth_rule` VALUES ('6', '权限管理', '/Admin/SysAuthRule/index', '2', '4', '', '0', '0', '2', '1499527114');
-INSERT INTO `sys_auth_rule` VALUES ('7', '新增', '/Admin/SysMenu/add', '3', '5', '', '0', '0', '2', '1499610132');
-INSERT INTO `sys_auth_rule` VALUES ('8', '编辑', '/Admin/SysMenu/edit', '3', '6', '', '0', '0', '2', '1499610151');
+INSERT INTO `sys_auth_rule` VALUES ('3', '菜单管理', '/Admin/SysMenu/index', '2', '2', '', '0', '0', '2', '1499521523');
+INSERT INTO `sys_auth_rule` VALUES ('4', '用户组管理', '/Admin/SysUserGroup/index', '2', '3', 'xx', '0', '0', '2', '1499522110');
+INSERT INTO `sys_auth_rule` VALUES ('5', '用户管理', '/Admin /SysUser/Index', '2', '4', '', '0', '0', '2', '1499527060');
+INSERT INTO `sys_auth_rule` VALUES ('6', '权限管理', '/Admin/SysAuthRule/index', '2', '5', '', '0', '0', '2', '1499527114');
+INSERT INTO `sys_auth_rule` VALUES ('7', '新增', '/Admin/SysMenu/add', '3', '2', '', '0', '0', '2', '1499610132');
+INSERT INTO `sys_auth_rule` VALUES ('8', '编辑', '/Admin/SysMenu/edit', '3', '1', '', '0', '0', '2', '1499610151');
+INSERT INTO `sys_auth_rule` VALUES ('12', '新增', '/Admin/SysUserGroup/add', '4', '0', '', '0', '0', '2', '1499667234');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -427,4 +427,3 @@ CREATE TABLE `wx_user_subscribe_log` (
 -- ----------------------------
 -- Records of wx_user_subscribe_log
 -- ----------------------------
-SET FOREIGN_KEY_CHECKS=1;

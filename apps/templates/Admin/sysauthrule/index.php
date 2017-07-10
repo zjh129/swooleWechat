@@ -139,7 +139,7 @@
             "checkbox" : {
                 "keep_selected_style" : false
             },
-            "plugins" : [ 'types', 'dnd', "wholerow"],
+            "plugins" : [ 'types', 'dnd', 'wholerow','unique'],
         });
         //移动事件
         $('#jstree').on('move_node.jstree', function(e,data){
