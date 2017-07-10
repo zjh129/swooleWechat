@@ -64,12 +64,12 @@ class SysAuthRule
     {
         $authRuleList = $this->sysAuthRuleModel->getAuthRuleListByParentId($parentId);
         $orderKeyList = [];
+        //第一个首先插入
+        if($position == 0){
+            $orderKeyList[] = $ruleId;
+        }
         if ($authRuleList){
             $countAuthRule = count($authRuleList);
-            //第一个首先插入
-            if($position == 0){
-                $orderKeyList[] = $ruleId;
-            }
             foreach ($authRuleList as $k => $v){
                 //如果插入之前顺序恰当，将当前规则id强制加入
                 if($k == $position){
@@ -89,7 +89,7 @@ class SysAuthRule
             $this->sysAuthRuleModel->start();
             try{
                 foreach ($orderKeyList as $orderNum => $ruleId){
-                    $this->sysAuthRuleModel->set($ruleId, ['orderNum' => $orderNum]);
+                    $this->sysAuthRuleModel->set($ruleId, ['orderNum' => $orderNum, 'parentId'=>$parentId]);
                 }
                 $this->sysAuthRuleModel->commit();
                 return true;
