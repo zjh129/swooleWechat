@@ -17,9 +17,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-plus"></i>新增</button>
-                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm addchild"><i class="fa fa-plus"></i>添加子项</button>
-                        <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline btn-primary btn-sm edit"><i class="fa fa-pencil"></i>编辑</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-plus"></i>新增</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm addchild"><i class="fa fa-plus"></i>添加子项</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm edit"><i class="fa fa-pencil"></i>编辑</button>
                         <button type="button" class="btn btn-outline btn-danger btn-sm del"><i class="fa fa-trash-o"></i>删除</button>
                     </div>
 
@@ -33,7 +33,7 @@
                         </div>
                         <div class="ibox-content">
                             <p class="m-b-lg">
-                                你可以通过拖拽来调整权限所属层级及顺序。
+                                你可以通过鼠标右键选择<b>增加子项、编辑、删除</b>操作，你还可以通过<b>拖拽</b>来调整权限所属层级及顺序。
                             </p>
                             <div id="jstree">
                             </div>
@@ -115,6 +115,80 @@
             }
         });
     }
+    //增加
+    function add(parentId)
+    {
+        //加载父级菜单选择项
+        loadOption(parentId);
+        $("#form")[0].reset();
+        $("#form input[name='ruleId']").val(0);
+        $("#form input[name='isPublic'][value=0]").attr('checked', true);
+        if (parentId){
+            $(".modal-title").html('添加子权限');
+        }else{
+            $(".modal-title").html('添加权限');
+        }
+        $('#myModal').modal('show');
+    }
+    //修改
+    function edit(id) {
+        //加载父级菜单选择项
+        loadOption();
+        $(".modal-title").html('编辑权限');
+        $.ajax({
+            type: "get",
+            url: "/Admin/SysAuthRule/get",
+            data: {
+                'id' : id,
+            },
+            datatype: "json",
+            success: function (data) {
+                if (data.data == null){
+                    toastr.error('数据不存在', '错误');
+                    return false;
+                }
+                $("#form input[name='ruleId']").val(data.data.ruleId);
+                $("#form input[name='ruleName']").val(data.data.ruleName);
+                $("#form input[name='url']").val(data.data.url);
+                $("#form input[name='condition']").val(data.data.condition);
+                var isPublic = data.data.isPublic;
+                $("#form input[name='isPublic'][value=" + isPublic +"]").prop('checked', 'checked');
+                $("#form select[name='parentId']").val(data.data.parentId);
+
+                $('#myModal').modal('show');
+            }
+        });
+    }
+    //删除
+    function del(id) {
+        $.confirm({
+            title: '你确定删除么？',
+            content: '删除后将无法恢复',
+            buttons: {
+                '确定': function () {
+                    $.ajax({
+                        type: "post",
+                        url: "/Admin/SysAuthRule/del",
+                        data: {
+                            'ids' : id,
+                        },
+                        datatype: "json",
+                        success: function (data) {
+                            showToastr(data);
+                            if (data.status == 'success'){
+                                $('#myModal').modal('hide');
+                                //重新加载树结构
+                                var tree = $.jstree.reference("#jstree");
+                                tree.refresh();
+                            }
+                        }
+                    });
+                },
+                '取消': function () {
+                },
+            }
+        });
+    }
     $(document).ready(function(){
         //加载树结构
         $('#jstree').jstree({
@@ -139,7 +213,39 @@
             "checkbox" : {
                 "keep_selected_style" : false
             },
-            "plugins" : [ 'types', 'dnd', 'wholerow','unique'],
+            "plugins" : [ 'types', 'dnd', 'wholerow','unique','contextmenu'],
+            "contextmenu": {
+                "items": {
+                    "create": null,
+                    "rename": null,
+                    "remove": null,
+                    "ccp": null,
+                    "add": {
+                        "label": "添加子项",
+                        "action": function (obj) {
+                            var inst = jQuery.jstree.reference(obj.reference);
+                            var clickedNode = inst.get_node(obj.reference);
+                            add(clickedNode.id);
+                        }
+                    },
+                    "edit": {
+                        "label": "编辑",
+                        "action": function (obj) {
+                            var inst = jQuery.jstree.reference(obj.reference);
+                            var clickedNode = inst.get_node(obj.reference);
+                            edit(clickedNode.id);
+                        }
+                    },
+                    "delete": {
+                        "label": "删除",
+                        "action": function (obj) {
+                            var inst = jQuery.jstree.reference(obj.reference);
+                            var clickedNode = inst.get_node(obj.reference);
+                            del(clickedNode.id);
+                        }
+                    }
+                }
+            }
         });
         //移动事件
         $('#jstree').on('move_node.jstree', function(e,data){
@@ -183,67 +289,25 @@
         });
         //弹窗
         $(".add").on('click', function () {
-            //加载父级菜单选择项
-            loadOption();
-            $("#form")[0].reset();
-            $("#form input[name='ruleId']").val(0);
-            $("#form input[name='isPublic'][value=0]").attr('checked', true);
-            $(".modal-title").html('添加权限');
+            add(0);
         });
         $(".addchild").on('click', function () {
             var ref = $('#jstree').jstree(true),
                 sel = ref.get_selected();
             if(!sel.length) {
                 toastr.error('请选中您想要添加子项的权限', '错误');
-                toastr.options = {
-                    "positionClass": "toast-top-center",
-                };
                 return false;
             }
-            //加载父级菜单选择项
-            loadOption(sel[0]);
-            $("#form")[0].reset();
-            $("#form input[name='ruleId']").val(0);
-            $("#form input[name='isPublic'][value=0]").attr('checked', true);
-            $(".modal-title").html('添加子权限');
+            add(sel[0]);
         });
         $(".edit").on('click', function () {
             var ref = $('#jstree').jstree(true),
                 sel = ref.get_selected();
             if(!sel.length) {
                 toastr.error('请选中您想要编辑的权限', '错误');
-                toastr.options = {
-                    "positionClass": "toast-top-center",
-                };
                 return false;
             }
-            //加载父级菜单选择项
-            loadOption();
-            $(".modal-title").html('编辑权限');
-            $.ajax({
-                type: "get",
-                url: "/Admin/SysAuthRule/get",
-                data: {
-                    'id' : sel[0],
-                },
-                datatype: "json",
-                success: function (data) {
-                    if (data.data == null){
-                        toastr.error('数据不存在', '错误');
-                        toastr.options = {
-                            "positionClass": "toast-top-center",
-                        };
-                        return false;
-                    }
-                    $("#form input[name='ruleId']").val(data.data.ruleId);
-                    $("#form input[name='ruleName']").val(data.data.ruleName);
-                    $("#form input[name='url']").val(data.data.url);
-                    $("#form input[name='condition']").val(data.data.condition);
-                    var isPublic = data.data.isPublic;
-                    $("#form input[name='isPublic'][value=" + isPublic +"]").prop('checked', 'checked');
-                    $("#form select[name='parentId']").val(data.data.parentId);
-                }
-            });
+            edit(sel[0]);
         });
         $(".del").on('click', function () {
             var ref = $('#jstree').jstree(true),
@@ -252,33 +316,7 @@
                 toastr.error('请选中您想要删除的权限', '错误');
                 return false;
             }
-            $.confirm({
-                title: '你确定删除么？',
-                content: '删除后将无法恢复',
-                buttons: {
-                    '确定': function () {
-                        $.ajax({
-                            type: "post",
-                            url: "/Admin/SysAuthRule/del",
-                            data: {
-                                'ids' : sel,
-                            },
-                            datatype: "json",
-                            success: function (data) {
-                                showToastr(data);
-                                if (data.status == 'success'){
-                                    $('#myModal').modal('hide');
-                                    //重新加载树结构
-                                    var tree = $.jstree.reference("#jstree");
-                                    tree.refresh();
-                                }
-                            }
-                        });
-                    },
-                    '取消': function () {
-                    },
-                }
-            });
+            del(sel);
         });
     });
 </script>
