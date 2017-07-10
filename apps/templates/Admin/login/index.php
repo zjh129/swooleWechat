@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="col-xs-6">
-                    <img alt="点击换图" id="codeImg" style="cursor:pointer; width:100px;height: 40px;" src="/Admin/login/captcha" align="absmiddle">
+                    <img alt="点击换图" id="codeImg" style="cursor:pointer; width:100px;height: 40px;" src="/Admin/Login/captcha" align="absmiddle">
                 </div>
             </div>
             <div class="form-group">
@@ -59,7 +59,7 @@
         });
         //切换验证码
         $("#codeImg").click(function () {
-            $(this).attr('src', '/Admin/login/captcha?=' + Math.random(0, 1));
+            $(this).attr('src', '/Admin/Login/captcha?=' + Math.random(0, 1));
         });
         //表单验证
         $("#loginform").validate({
