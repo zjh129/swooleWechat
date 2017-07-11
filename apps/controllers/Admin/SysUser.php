@@ -61,6 +61,8 @@ class SysUser extends Base
             'data' => [],
         ];
         $data['data'][] = [
+            'DT_RowId' => 1,
+            'id' => 1,
             'userName' => '超级管理员',
             'account' => 'admin',
             'groupName' => '超级用户组',
@@ -70,5 +72,40 @@ class SysUser extends Base
         ];
 
         return $data;
+    }
+    /**
+     * 保存用户组数据.
+     */
+    public function save()
+    {
+        try {
+            $postData              = $this->request->post;
+            $postData['addUserId'] = $this->user->getUid();
+            $sysUserGroup               = new \App\Service\SysUserGroup();
+            $rs                    = $sysUserGroup->saveData($postData);
+            if ($rs) {
+                return $this->showMsg('success', ($postData['groupId'] ? '编辑' : '添加') . '成功', '/Admin/SysUserGroup/index');
+            }
+            throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '用户组失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 获取用户组数据.
+     *
+     * @return bool
+     */
+    public function get()
+    {
+        try {
+            $id   = $this->request->get['id'] ?? 0;
+            $data = $this->sysUserModel->getone(['id'=>$id]);
+
+            return $this->showMsg('success', '获取成功', '', $data);
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
     }
 }

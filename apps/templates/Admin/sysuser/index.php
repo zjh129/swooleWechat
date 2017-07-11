@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>添加用户</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#userModal"><i class="fa fa-plus"></i>添加用户</button>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal inmodal" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
@@ -45,24 +45,61 @@
                         <h4 class="modal-title">添加用户组</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/admin/SysUserGroup/save">
-                            <input type="hidden" name="groupId" id="groupId" value="0">
+                        <form role="form" id="form" action="/Admin/SysUser/save">
+                            <input type="hidden" name="id" id="id" value="0">
                             <div class="form-group">
-                                <label>用户组名称</label>
-                                <input type="text" placeholder="输入用户组名称" class="form-control" name="groupName" id="groupName" required>
+                                <label>用户账号</label>
+                                <input type="text" class="form-control" name="account" id="account">
                             </div>
                             <div class="form-group">
-                                <label>父级分组</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentId">
-                                    <option value="0">顶级分组</option>
-                                    <?php //echo $treeOption; ?>
+                                <label for="password">密码</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" value="">
+                                <span class="help-block m-b-none help-password">如不设置则留空</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="pwstrength_viewport_progress"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>用户名称</label>
+                                <input type="text" placeholder="输入用户名称" class="form-control" name="userName" id="userName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>所属用户组</label>
+                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="groupId" id="groupId">
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>邮箱</label>
+                                <input type="email" placeholder="输入邮箱" class="form-control" name="email" id="email" required>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
                         <button type="button" class="btn btn-primary" onclick="javascript:$('#form').submit();">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal inmodal" id="ruleModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated fadeIn">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">权限控制</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" id="ruleform" action="/Admin/SysUser/saveRule">
+                            <input type="hidden" name="id" id="id" value="0">
+                            <div class="form-group">
+                                <label>邮箱</label>
+                                <input type="email" placeholder="输入邮箱" class="form-control" name="email" id="email" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:$('#ruleform').submit();">保存</button>
                     </div>
                 </div>
             </div>
@@ -81,15 +118,46 @@
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/nestable/jquery.nestable.js" type="text/javascript"></script>
 <!-- dataTables -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
-
+<!-- Password meter -->
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pwstrength/pwstrength-bootstrap.min.js"></script>
+<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pwstrength/zxcvbn.js"></script>
 <script>
+    //载入树结构select的option的html
+    function loadGroupIdOption() {
+        var secId = arguments[0] ? arguments[0] : 0;
+        $.ajax({
+            type: "get",
+            url: "/Admin/SysUserGroup/getTreeOption",
+            data: {
+                'secId' : secId,
+            },
+            success: function (data) {
+                $("#form select[name='groupId']").html(data);
+            }
+        });
+    }
     $(document).ready(function(){
+        //密码强度
+        var options1 = {};
+        options1.ui = {
+            container: "#form",
+            showVerdictsInsideProgressBar: true,
+            viewports: {
+                progress: ".pwstrength_viewport_progress"
+            }
+        };
+        options1.common = {
+            debug: false
+        };
+        $('#password').pwstrength(options1);
+        //列表
         $('#tableBox').DataTable({
             language: {
                 url: '//static.tudouyu.cn/datatables/language/zh-CN.json'
             },
             pageLength: 10,
             responsive: true,
+            sClass:'text-center',
             dom: '<"html5buttons"B>lTfgtip',
             buttons: [
                 { extend: 'copy'},
@@ -108,6 +176,7 @@
                     }
                 }
             ],
+            processing: true,
             //开启服务器模式
             serverSide: true,
             //数据来源（包括处理分页，排序，过滤） ，即url，action，接口，等等
@@ -152,9 +221,11 @@
                 {
                     targets: 6,
                     title: "操作",
+                    cellsAlign:'center',
                     render: function (data, type, row, meta) {
                         var html = '';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>编辑</button>';
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-pencil"></i>编辑</button>';
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs rule" data-toggle="modal" data-target="#ruleModal"><i class="fa fa-pencil"></i>用户授权</button>';
                         html += '<button type="button" class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-trash-o"></i>删除</button>';
                         return html;
                     }
@@ -180,28 +251,36 @@
         });
         //弹窗
         $(".add").on('click', function () {
+            //载入用户组选项
+            loadGroupIdOption();
             $("#form")[0].reset();
             $("#form input[name='groupId']").val(0);
-            $(".modal-title").html('添加用户组');
+            $("#form input[name='account']").attr('readonly', false);
+            $(".help-password").css("display","block");
+            $(".modal-title").html('添加用户');
         });
-        $(".edit").on('click', function () {
-            $(".modal-title").html('编辑用户组');
+        $("#tableBox").on('click', '.edit', function () {
+            $(".help-password").css("display","none");
+            $("#form input[name='account']").attr('readonly', true);
+            $(".modal-title").html('编辑用户');
             $.ajax({
                 type: "get",
-                url: "/Admin/SysUserGroup/get",
+                url: "/Admin/SysUser/get",
                 data: {
-                    'id' : $(this).parents("li").attr('data-id'),
+                    'id' : $(this).parents("tr").attr('id'),
                 },
                 datatype: "json",
                 success: function (data) {
-                    $("#form input[name='groupId']").val(data.data.groupId);
-                    $("#form input[name='groupName']").val(data.data.groupName);
-                    $("#form select[name='parentGroupId']").val(data.data.parentGroupId);
+                    $("#form input[name='userName']").val(data.data.userName);
+                    $("#form input[name='account']").val(data.data.account);
+                    $("#form input[name='email']").val(data.data.email);
+                    //载入用户组选项
+                    loadGroupIdOption(data.data.groupId);
                 }
             });
         });
-        $(".del").on('click', function () {
-            var id = $(this).parents("li").attr('data-id');
+        $("#tableBox").on('click', '.del', function () {
+            var id = $(this).parents("tr").attr('id');
             $.confirm({
                 title: '你确定删除么？',
                 content: '删除后将无法恢复',
@@ -209,7 +288,7 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/Admin/SysUserGroup/del",
+                            url: "/Admin/SysUser/del",
                             data: {
                                 'id' : id,
                             },
@@ -223,6 +302,9 @@
                     },
                 }
             });
+        });
+        $("#tableBox").on('click', '.rule', function () {
+
         });
     });
 </script>
