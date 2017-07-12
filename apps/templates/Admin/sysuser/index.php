@@ -42,7 +42,7 @@
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">添加用户组</h4>
+                        <h4 class="modal-title">添加用户</h4>
                     </div>
                     <div class="modal-body">
                         <form role="form" id="form" action="/Admin/SysUser/save">
@@ -70,7 +70,7 @@
                             </div>
                             <div class="form-group">
                                 <label>邮箱</label>
-                                <input type="email" placeholder="输入邮箱" class="form-control" name="email" id="email" required>
+                                <input type="email" placeholder="输入邮箱" class="form-control" name="email" id="email">
                             </div>
                         </form>
                     </div>

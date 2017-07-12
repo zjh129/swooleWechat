@@ -81,12 +81,12 @@ class SysUser extends Base
         try {
             $postData              = $this->request->post;
             $postData['addUserId'] = $this->user->getUid();
-            $sysUserGroup               = new \App\Service\SysUserGroup();
-            $rs                    = $sysUserGroup->saveData($postData);
+            $sysUserSer               = new \App\Service\SysUser();
+            $rs                    = $sysUserSer->saveData($postData);
             if ($rs) {
-                return $this->showMsg('success', ($postData['groupId'] ? '编辑' : '添加') . '成功', '/Admin/SysUserGroup/index');
+                return $this->showMsg('success', ($postData['id'] ? '编辑' : '添加') . '成功', '/Admin/SysUser/index');
             }
-            throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '用户组失败');
+            throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '用户失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }

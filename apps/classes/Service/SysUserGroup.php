@@ -55,7 +55,7 @@ class SysUserGroup
      * 保存菜单数据
      * @param $data
      */
-    public function saveData($data)
+    public function saveData($data = [])
     {
         $id = (int) $data['groupId'];
         $saveData = [
