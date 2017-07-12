@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-11 23:13:07
+Date: 2017-07-13 00:04:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -88,17 +88,21 @@ CREATE TABLE `sys_user` (
   `password` varchar(200) NOT NULL DEFAULT '' COMMENT '密码',
   `email` varchar(50) NOT NULL DEFAULT '' COMMENT '邮箱',
   `ruleIds` mediumtext NOT NULL COMMENT '访问规则ID列表,servlize字符串',
-  `loginTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `loginTime` varchar(20) NOT NULL DEFAULT '' COMMENT '登录时间',
   `loginIp` varchar(50) NOT NULL DEFAULT '' COMMENT '登录IP',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
+  PRIMARY KEY (`id`),
+  KEY `index1` (`userName`),
+  KEY `index2` (`account`),
+  KEY `index3` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '0', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', ' ', '2017-07-11 15:10:35', '127.0.0.1', '0', '0');
+INSERT INTO `sys_user` VALUES ('1', '1', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', ' ', '', '127.0.0.1', '0', '0');
+INSERT INTO `sys_user` VALUES ('2', '1', '千寻', 'admin', 'cd5ea73cd58f827fa78eef7197b8ee606c99b2e6', '', 'a:0:{}', '', '', '2', '1499872453');
 
 -- ----------------------------
 -- Table structure for sys_user_group

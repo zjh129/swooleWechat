@@ -45,31 +45,47 @@ class SysUser extends Base
     {
         //绘制计数器。
         $draw = (int) ($this->request->request['draw'] ?? 0);
+        $where = [
+            'select' => 'id,userName,account,email,loginTime,loginIp,groupName',
+        ];
         //开始位置
         $start = (int) ($this->request->request['start'] ?? 0);
         //长度
         $length = (int) ($this->request->request['length'] ?? 10);
+        $where['limit'] = $start . ',' . $length;
         //搜索关键字
-        $keyword = $this->request->request['search'] ?? '';
+        $keyword = $this->request->request['search']['value'] ?? '';
+        if ($keyword){
+            $where['where'] = (isset($where['where']) && $where['where'] ? ' AND ' : '') . "`userName` like '$keyword%' OR `account` like '$keyword%' OR `email` like '$keyword%'";
+        }
         //排序字段
         $order = $this->request->request['order'] ?? [];
+        if ($order){
+            switch ($order[0]['column']){
+                case 1:
+                    $where['order'] = 'account '.$order[0]['dir'];
+                    break;
+                default:
+                    $where['order'] = 'addTime desc';
+            }
+        }
 
         $data  = [
             'draw' => $draw,
-            'recordsTotal' => 20,
-            'recordsFiltered' => 10,
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0,
             'data' => [],
         ];
-        $data['data'][] = [
-            'DT_RowId' => 1,
-            'id' => 1,
-            'userName' => '超级管理员',
-            'account' => 'admin',
-            'groupName' => '超级用户组',
-            'email' => 'zhaojianhui129@163.com',
-            'loginTime' => date('Y-m-d H:i:s'),
-            'loginIp' => '127.0.0.1',
-        ];
+        $data['recordsTotal'] = $this->sysUserModel->count($where);
+        $list = $this->sysUserModel->getUserList($where);
+        if ($list){
+            foreach ($list as $k => $v){
+                $v['DT_RowId'] = $v['id'];
+                $list[$k] = $v;
+            }
+        }
+        $data['data'] = $list;
+        $data['recordsFiltered'] = count($list);
 
         return $data;
     }
@@ -101,7 +117,10 @@ class SysUser extends Base
     {
         try {
             $id   = $this->request->get['id'] ?? 0;
-            $data = $this->sysUserModel->getone(['id'=>$id]);
+            $data = $this->sysUserModel->getone([
+                'select' => "id,groupId,userName,account,email",
+                'where'=>"`id`=$id",
+            ]);
 
             return $this->showMsg('success', '获取成功', '', $data);
         } catch (\Exception $e) {

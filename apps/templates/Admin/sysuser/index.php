@@ -49,7 +49,7 @@
                             <input type="hidden" name="id" id="id" value="0">
                             <div class="form-group">
                                 <label>用户账号</label>
-                                <input type="text" class="form-control" name="account" id="account">
+                                <input type="text" class="form-control" name="account" id="account" required>
                             </div>
                             <div class="form-group">
                                 <label for="password">密码</label>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="form-group">
                                 <label>所属用户组</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="groupId" id="groupId">
+                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="groupId" id="groupId" required>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -151,7 +151,7 @@
         };
         $('#password').pwstrength(options1);
         //列表
-        $('#tableBox').DataTable({
+        var table = $('#tableBox').DataTable({
             language: {
                 url: '//static.tudouyu.cn/datatables/language/zh-CN.json'
             },
@@ -176,6 +176,7 @@
                     }
                 }
             ],
+            bStateSave: true,
             processing: true,
             //开启服务器模式
             serverSide: true,
@@ -184,67 +185,37 @@
                 url : '/Admin/SysUser/getPageList',
                 type : 'POST',
             },
-            columnDefs:[
+            columns:[
+                {data: "userName",title: "用户名称",orderable:false, searchable:true,},
+                {data: "account",title: "账号",orderable:true, "orderDataType": "dom-text", searchable:true,},
+                {data: "groupName",title: "所属用户组",orderable:false, searchable:false,},
+                {data: "email",title: "邮箱",orderable:false, searchable:true,},
+                {data: "loginTime",title: "最后登录时间",searchable : false,orderable:false, searchable:false,},
+                {data: "loginIp",title: "最后登录IP",orderable:false, searchable:false,},
                 {
-                    targets: 0,
-                    data: "userName",
-                    title: "用户名称",
-                },
-                {
-                    targets: 1,
-                    data: "account",
-                    title: "账号",
-                },
-                {
-                    targets: 2,
-                    data: "groupName",
-                    title: "所属用户组",
-                },
-                {
-                    targets: 3,
-                    data: "email",
-                    title: "邮箱",
-                },
-                {
-                    targets: 4,
-                    data: "loginTime",
-                    title: "最后登录时间",
-                    searchable : false,
-                },
-                {
-                    targets: 5,
-                    data: "loginIp",
-                    name:'loginIp',
-                    title: "最后登录IP",
-                    searchable : false,
-                },
-                {
-                    targets: 6,
-                    title: "操作",
-                    cellsAlign:'center',
-                    render: function (data, type, row, meta) {
+                    data:null, title: "操作", orderable:false, searchable:false,
+                    createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-pencil"></i>编辑</button>';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs rule" data-toggle="modal" data-target="#ruleModal"><i class="fa fa-pencil"></i>用户授权</button>';
                         html += '<button type="button" class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-trash-o"></i>删除</button>';
-                        return html;
+                        $(td).html(html);
                     }
                 },
             ],
         });
         //表单验证
-        $("#form").validate({
-            rules: {
-                groupName:{
-                    required: true,
-                },
-            },
+        var validator = $("#form").validate({
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     type:'post',
                     dataType:'json',
                     success:function(data) {
-                        showToastr(data, true);
+                        showToastr(data);
+                        if (data.status == 'success'){
+                            $('#userModal').modal('hide');
+                            table.ajax.reload();
+                        }
                     }
                 });
             }
@@ -253,15 +224,22 @@
         $(".add").on('click', function () {
             //载入用户组选项
             loadGroupIdOption();
+            //清除错误提示
+            validator.resetForm();
+
             $("#form")[0].reset();
-            $("#form input[name='groupId']").val(0);
+            $("#form input[name='id']").val(0);
             $("#form input[name='account']").attr('readonly', false);
             $(".help-password").css("display","block");
+            $("#form input[name='password']").attr('required', true);
             $(".modal-title").html('添加用户');
         });
         $("#tableBox").on('click', '.edit', function () {
+            //清除错误提示
+            validator.resetForm();
             $(".help-password").css("display","none");
             $("#form input[name='account']").attr('readonly', true);
+            $("#form input[name='password']").attr('required', false);
             $(".modal-title").html('编辑用户');
             $.ajax({
                 type: "get",
@@ -271,6 +249,7 @@
                 },
                 datatype: "json",
                 success: function (data) {
+                    $("#form input[name='id']").val(data.data.id);
                     $("#form input[name='userName']").val(data.data.userName);
                     $("#form input[name='account']").val(data.data.account);
                     $("#form input[name='email']").val(data.data.email);
@@ -294,7 +273,8 @@
                             },
                             datatype: "json",
                             success: function (data) {
-                                showToastr(data, true);
+                                showToastr(data);
+                                table.ajax.reload();
                             }
                         });
                     },

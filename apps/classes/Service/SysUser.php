@@ -37,27 +37,34 @@ class SysUser
             throw new \Exception('请填写新用户密码');
         }
         if ($data['password']){
-            if (\Swoole\Validate::check('password', $saveData['password'])){
+            /*if (\Swoole\Validate::check('password', $data['password']) == false){
                 throw new \Exception('密码格式不合法');
-            }
-            $saveData['password'] = \Swoole\Auth::makePasswordHash($saveData['account'], $data['password']);
+            }*/
+            $saveData['password'] = \Swoole\Auth::makePasswordHash($data['account'], $data['password']);
         }
         if (empty($saveData['userName'])){
             throw new \Exception('请填写用户名称');
         }
-        if (\Swoole\Validate::check('nickname', $saveData['userName'])){
+        if (\Swoole\Validate::check('nickname', $saveData['userName']) == false){
             throw new \Exception('用户名称不合法');
         }
         if (empty($saveData['groupId'])){
             throw new \Exception('请选择用户所属用户组');
         }
-        if ($saveData['email'] && \Swoole\Validate::check('email', $saveData['email'])){
+        if ($saveData['email'] && \Swoole\Validate::check('email', $saveData['email']) == false){
             throw new \Exception('请填写正确的邮箱格式');
         }
         if ($id){//编辑
-
+            return $this->sysUserModel->set($id, $saveData);
         }else{
-
+            $exists = $this->sysUserModel->exists(['account' => $saveData['account']]);
+            if ($exists){
+                throw new \Exception('该账号已存在，请输入其他账号');
+            }
+            $saveData['addUserId'] = $data['addUserId'];
+            $saveData['addTime'] = time();
+            $saveData['ruleIds'] = serialize([]);
+            return $this->sysUserModel->put($saveData);
         }
     }
 }

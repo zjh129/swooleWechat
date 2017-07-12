@@ -59,7 +59,12 @@ class SysUserGroup extends Base
         $tree->load($groupList);
         $secId && $tree->optionSelectId = $secId;
         //用户组选择列表
-        $optionHtml = '<option value="0">顶级分组</option>';
+        $optionHtml = '';
+        if (isset($this->request->header['Referer']) && strpos(strtolower($this->request->header['Referer']), '/admin/sysusergroup/index') !== false){
+            $optionHtml .= '<option value="0">顶级分组</option>';
+        }else{
+            $optionHtml .= '<option value="0">请选择</option>';
+        }
         $optionHtml .= $tree->buildOptions();
         $this->http->finish($optionHtml);
     }
