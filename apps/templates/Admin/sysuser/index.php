@@ -141,9 +141,6 @@
         $('#jstree').jstree({
             'core' : {
                 'check_callback' : true,
-                "themes" : {
-                    "variant" : "large"
-                },
                 'data' : {
                     'url' : '/Admin/SysAuthRule/getJsTreeData',
                     'data' : function (node) {
@@ -159,7 +156,7 @@
             "checkbox" : {
                 "keep_selected_style" : false
             },
-            "plugins" : [ 'types', 'wholerow','checkbox'],
+            "plugins" : [ 'types', 'checkbox'],
         });
     }
     $(document).ready(function(){
