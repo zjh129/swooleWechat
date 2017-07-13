@@ -63,10 +63,10 @@ class SysUser extends Base
         if ($order){
             switch ($order[0]['column']){
                 case 1:
-                    $where['order'] = 'account '.$order[0]['dir'];
+                    $where['order'] = 'sys_user.account '.$order[0]['dir'];
                     break;
                 default:
-                    $where['order'] = 'addTime desc';
+                    $where['order'] = 'sys_user.addTime desc';
             }
         }
 
