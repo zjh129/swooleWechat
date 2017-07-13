@@ -2,6 +2,8 @@
 <?php echo $this->fetch('common/header-start.php'); ?>
 <!-- Gritter -->
 <link href="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+<!-- jsTree -->
+<link href="//static.tudouyu.cn/jsTree/3.3.4/themes/default/style.min.css" rel="stylesheet">
 <!-- dataTables-->
 <link rel="stylesheet" type="text/css" href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/dataTables/datatables.min.css">
 <!-- 头部结束部分代码 -->
@@ -91,9 +93,7 @@
                     <div class="modal-body">
                         <form role="form" id="ruleform" action="/Admin/SysUser/saveRule">
                             <input type="hidden" name="id" id="id" value="0">
-                            <div class="form-group">
-                                <label>邮箱</label>
-                                <input type="email" placeholder="输入邮箱" class="form-control" name="email" id="email" required>
+                            <div id="jstree">
                             </div>
                         </form>
                     </div>
@@ -114,8 +114,8 @@
 </div>
 <!-- 文档页脚代码开始 -->
 <?php echo $this->fetch('common/footer-start.php'); ?>
-<!-- Nestable List -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/nestable/jquery.nestable.js" type="text/javascript"></script>
+<!-- jsTree -->
+<script src="//static.tudouyu.cn/jsTree/3.3.4/jstree.min.js"></script>
 <!-- dataTables -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
 <!-- Password meter -->
@@ -134,6 +134,32 @@
             success: function (data) {
                 $("#form select[name='groupId']").html(data);
             }
+        });
+    }
+    function loadJsTree() {
+        //加载树结构
+        $('#jstree').jstree({
+            'core' : {
+                'check_callback' : true,
+                "themes" : {
+                    "variant" : "large"
+                },
+                'data' : {
+                    'url' : '/Admin/SysAuthRule/getJsTreeData',
+                    'data' : function (node) {
+                        //return {'id' : node.id};
+                    }
+                }
+            },
+            'types' : {
+                'default' : {
+                    'icon' : 'fa fa-folder'
+                },
+            },
+            "checkbox" : {
+                "keep_selected_style" : false
+            },
+            "plugins" : [ 'types', 'wholerow','checkbox'],
         });
     }
     $(document).ready(function(){
@@ -190,6 +216,18 @@
                 {data: "account",title: "账号",orderable:true, "orderDataType": "dom-text", searchable:true,},
                 {data: "groupName",title: "所属用户组",orderable:false, searchable:false,},
                 {data: "email",title: "邮箱",orderable:false, searchable:true,},
+                {
+                    data: null,title: "状态",orderable:false, searchable:true,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        var html = '';
+                        if (cellData.isDel == 1){
+                            html = '<span class="label label-warning">禁用</span>';
+                        }else{
+                            html = '<span class="label label-primary">正常</span>';
+                        }
+                        $(td).html(html);
+                    }
+                },
                 {data: "loginTime",title: "最后登录时间",searchable : false,orderable:false, searchable:false,},
                 {data: "loginIp",title: "最后登录IP",orderable:false, searchable:false,},
                 {
@@ -198,7 +236,11 @@
                         var html = '';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-pencil"></i>编辑</button>';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs rule" data-toggle="modal" data-target="#ruleModal"><i class="fa fa-pencil"></i>用户授权</button>';
-                        html += '<button type="button" class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-trash-o"></i>删除</button>';
+                        if (cellData.isDel == 1){
+                            html += '<button type="button" setStatus=0 class="btn btn-outline btn-success btn-xs del"><i class="fa fa-unlock"></i>开启</button>';
+                        }else{
+                            html += '<button type="button" setStatus=1 class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-lock"></i>禁用</button>';
+                        }
                         $(td).html(html);
                     }
                 },
@@ -260,21 +302,33 @@
         });
         $("#tableBox").on('click', '.del', function () {
             var id = $(this).parents("tr").attr('id');
+            var setStatus = $(this).attr('setStatus');
+            if (setStatus == 1){
+                var title = '你确定禁用该账号么？';
+                var content = '禁用后该账号将无法正常登录';
+            }else{
+                var title = '你确定开启该账号么？';
+                var content = '开启后该账号可以正常访问';
+            }
+
             $.confirm({
-                title: '你确定删除么？',
-                content: '删除后将无法恢复',
+                title: title,
+                content: content,
                 buttons: {
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/Admin/SysUser/del",
+                            url: "/Admin/SysUser/setStatus",
                             data: {
                                 'id' : id,
+                                'status' : setStatus
                             },
                             datatype: "json",
                             success: function (data) {
                                 showToastr(data);
-                                table.ajax.reload();
+                                if (data.status == 'success'){
+                                    table.ajax.reload();
+                                }
                             }
                         });
                     },
@@ -284,7 +338,8 @@
             });
         });
         $("#tableBox").on('click', '.rule', function () {
-
+            //载入权限选择列表
+            loadJsTree();
         });
     });
 </script>

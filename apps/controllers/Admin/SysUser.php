@@ -46,7 +46,7 @@ class SysUser extends Base
         //绘制计数器。
         $draw = (int) ($this->request->request['draw'] ?? 0);
         $where = [
-            'select' => 'id,userName,account,email,loginTime,loginIp,groupName',
+            'select' => 'id,userName,account,email,loginTime,loginIp,groupName,sys_user.isDel',
         ];
         //开始位置
         $start = (int) ($this->request->request['start'] ?? 0);
@@ -123,6 +123,28 @@ class SysUser extends Base
             ]);
 
             return $this->showMsg('success', '获取成功', '', $data);
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+    /**
+     * 删除用户组
+     * @return bool
+     */
+    public function setStatus()
+    {
+        try {
+            $id   = $this->request->post['id'] ?? 0;
+            $status = (int) $this->request->post['status'] ?? 0;
+            $actName = $status == 1 ? '禁用' : '开启';
+            if (!$id){
+                throw new \Exception('请指定要删除的用户');
+            }
+            $rs = $this->sysUserModel->set($id, ['isDel'=>$status]);
+            if ($rs){
+                return $this->showMsg('success', $actName . '成功');
+            }
+            throw new \Exception($actName . '失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }

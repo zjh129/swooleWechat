@@ -60,11 +60,16 @@ class Login extends Base
             //使用crypt密码
             \Swoole\Auth::$password_hash = \Swoole\Auth::HASH_SHA1;
             //设置查询数据库字段
-            $this->user->select = 'id,groupId,userName,account,password,email';
+            $this->user->select = 'id,groupId,userName,account,password,email,isDel';
             $r = $this->user->login(trim($_POST['username']), trim($_POST['password']));
             if (!$r)
             {
                 throw new \Exception('登录失败,账号或密码错误');
+            }
+            $userinfo = $this->user->getUserInfo();
+            if ($userinfo['isDel']){
+                $this->user->logout();
+                throw new \Exception('您的账号已被禁用，请联系管理员');
             }
             $this->user->updateStatus();
 

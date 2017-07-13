@@ -20,7 +20,7 @@ class SysAuthRule extends \App\Component\BaseModel
     public function getAuthRuleList()
     {
         $groupList = $this->gets([
-            'select' => 'ruleId,ruleName,url,parentId,orderNum',
+            'select' => 'ruleId,ruleName,url,parentId,orderNum,isPublic',
             'from' => $this->table,
             'where' => "isDel=0",
             'order' => "orderNum ASC,ruleId ASC",
@@ -28,6 +28,20 @@ class SysAuthRule extends \App\Component\BaseModel
         return $groupList;
     }
 
+    /**
+     * 获取权限选择时的权限列表
+     * @return array
+     */
+    public function getAuthRuleListByChoice()
+    {
+        $groupList = $this->gets([
+            'select' => 'ruleId,ruleName,url,parentId,orderNum,isPublic',
+            'from' => $this->table,
+            'where' => "isDel=0 AND isPublic=0",
+            'order' => "orderNum ASC,ruleId ASC",
+        ]);
+        return $groupList;
+    }
     /**
      * 获取某一级分类下的列表
      * @param $parentId

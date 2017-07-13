@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-13 00:04:20
+Date: 2017-07-13 23:39:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,8 +42,8 @@ INSERT INTO `sys_auth_rule` VALUES ('3', '菜单管理', '/Admin/SysMenu/index',
 INSERT INTO `sys_auth_rule` VALUES ('4', '用户组管理', '/Admin/SysUserGroup/index', '2', '3', 'xx', '0', '0', '2', '1499522110');
 INSERT INTO `sys_auth_rule` VALUES ('5', '用户管理', '/Admin /SysUser/Index', '2', '4', '', '0', '0', '2', '1499527060');
 INSERT INTO `sys_auth_rule` VALUES ('6', '权限管理', '/Admin/SysAuthRule/index', '2', '5', '', '0', '0', '2', '1499527114');
-INSERT INTO `sys_auth_rule` VALUES ('7', '新增', '/Admin/SysMenu/add', '3', '2', '', '0', '0', '2', '1499610132');
-INSERT INTO `sys_auth_rule` VALUES ('8', '编辑', '/Admin/SysMenu/edit', '3', '1', '', '0', '0', '2', '1499610151');
+INSERT INTO `sys_auth_rule` VALUES ('7', '新增', '/Admin/SysMenu/add', '3', '1', '', '0', '0', '2', '1499610132');
+INSERT INTO `sys_auth_rule` VALUES ('8', '编辑', '/Admin/SysMenu/edit', '3', '2', '', '1', '0', '2', '1499610151');
 INSERT INTO `sys_auth_rule` VALUES ('12', '新增', '/Admin/SysUserGroup/add', '4', '0', '', '0', '0', '2', '1499667234');
 
 -- ----------------------------
@@ -90,6 +90,7 @@ CREATE TABLE `sys_user` (
   `ruleIds` mediumtext NOT NULL COMMENT '访问规则ID列表,servlize字符串',
   `loginTime` varchar(20) NOT NULL DEFAULT '' COMMENT '登录时间',
   `loginIp` varchar(50) NOT NULL DEFAULT '' COMMENT '登录IP',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`),
@@ -101,8 +102,8 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', ' ', '', '127.0.0.1', '0', '0');
-INSERT INTO `sys_user` VALUES ('2', '1', '千寻', 'admin', 'cd5ea73cd58f827fa78eef7197b8ee606c99b2e6', '', 'a:0:{}', '', '', '2', '1499872453');
+INSERT INTO `sys_user` VALUES ('1', '1', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', ' ', '', '127.0.0.1', '0', '0', '0');
+INSERT INTO `sys_user` VALUES ('2', '1', '千寻', 'admin', 'cd5ea73cd58f827fa78eef7197b8ee606c99b2e6', 'zhaojianhui@163.com', 'a:0:{}', '', '', '1', '2', '1499872453');
 
 -- ----------------------------
 -- Table structure for sys_user_group

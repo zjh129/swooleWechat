@@ -1,7 +1,8 @@
 <!-- 头部开始部分代码 -->
 <?php echo $this->fetch('common/header-start.php'); ?>
-<!-- Gritter -->
+<!-- jsTree -->
 <link href="//static.tudouyu.cn/jsTree/3.3.4/themes/default/style.min.css" rel="stylesheet">
+<!-- Gritter -->
 <link href="//static.tudouyu.cn/iCheck/1.0.2/skins/square/green.css" rel="stylesheet">
 <!-- 头部结束部分代码 -->
 <?php echo $this->fetch('common/header-end.php'); ?>
