@@ -60,18 +60,14 @@ class SysAuthRule extends Base
     public function getJsTreeData()
     {
         //权限规则列表
-        if (isset($this->request->header['Referer']) && strpos(strtolower($this->request->header['Referer']), '/admin/sysauthrule/index') !== false){
-            $ruleList     = $this->sysAuthRuleModel->getAuthRuleList();
-            if ($ruleList){
-                foreach ($ruleList as $k => $v){
-                    if (isset($v['isPublic']) && $v['isPublic'] == 1){
-                        $v['ruleName'] .= '    <font color="#006400">(公共)</font>';
-                    }
-                    $ruleList[$k] = $v;
+        $ruleList     = $this->sysAuthRuleModel->getAuthRuleList();
+        if ($ruleList){
+            foreach ($ruleList as $k => $v){
+                if (isset($v['isPublic']) && $v['isPublic'] == 1){
+                    $v['ruleName'] .= '    <font color="#006400">(公共)</font>';
                 }
+                $ruleList[$k] = $v;
             }
-        }else{
-            $ruleList     = $this->sysAuthRuleModel->getAuthRuleListByChoice();
         }
         //树结构用户组列表
         $tree          = new \App\Common\Tree('ruleId', 'parentId', 'children');

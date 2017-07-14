@@ -93,6 +93,7 @@
                     <div class="modal-body">
                         <form role="form" id="ruleform" action="/Admin/SysUser/saveRule">
                             <input type="hidden" name="id" id="id" value="0">
+                            <input type="hidden" name="ruleIds" id="ruleIds" value="">
                             <div id="jstree">
                             </div>
                         </form>
@@ -334,9 +335,50 @@
                 }
             });
         });
+        $('#jstree').on("changed.jstree", function (e, data) {
+            //console.log(data.selected);
+            $("#ruleform input[name='ruleIds']").val(data.selected);
+        });
         $("#tableBox").on('click', '.rule', function () {
-            //载入权限选择列表
-            loadJsTree();
+            var id = $(this).parents("tr").attr('id');
+            $("#ruleform input[name='id']").val(id);
+            //加载树结构
+            $('#jstree').jstree({
+                'core' : {
+                    'check_callback' : true,
+                    'data' : {
+                        'url' : '/Admin/SysUser/getRuleJsTreeData',
+                        'data' : function (node) {
+                            return {'id' : id};
+                        },
+                    }
+                },
+                'types' : {
+                    'default' : {
+                        'icon' : 'fa fa-folder'
+                    },
+                },
+                "checkbox" : {
+                    "keep_selected_style" : false
+                },
+                "plugins" : [ 'types', 'checkbox'],
+            });
+        });
+        //用户授权表单验证
+        $("#ruleform").validate({
+            submitHandler: function(form) {
+                $(form).ajaxSubmit({
+                    type:'post',
+                    dataType:'json',
+                    success:function(data) {
+                        showToastr(data);
+                        if (data.status == 'success'){
+                            $('#ruleModal').modal('hide');
+                            table.ajax.reload();
+                        }
+                    }
+                });
+            }
         });
     });
 </script>

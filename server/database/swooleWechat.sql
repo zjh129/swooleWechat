@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-13 23:39:10
+Date: 2017-07-14 23:14:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -102,8 +102,8 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', ' ', '', '127.0.0.1', '0', '0', '0');
-INSERT INTO `sys_user` VALUES ('2', '1', '千寻', 'admin', 'cd5ea73cd58f827fa78eef7197b8ee606c99b2e6', 'zhaojianhui@163.com', 'a:0:{}', '', '', '1', '2', '1499872453');
+INSERT INTO `sys_user` VALUES ('1', '1', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', 'a:4:{i:0;s:1:\"3\";i:1;s:1:\"4\";i:2;s:1:\"7\";i:3;s:2:\"12\";}', '', '127.0.0.1', '0', '0', '0');
+INSERT INTO `sys_user` VALUES ('2', '1', '千寻', 'admin', 'cd5ea73cd58f827fa78eef7197b8ee606c99b2e6', 'zhaojianhui@163.com', 'a:4:{i:0;s:1:\"7\";i:1;s:1:\"3\";i:2;s:2:\"12\";i:3;s:1:\"4\";}', '', '', '1', '2', '1499872453');
 
 -- ----------------------------
 -- Table structure for sys_user_group

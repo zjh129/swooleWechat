@@ -13,6 +13,10 @@ class SysUser extends Base
      * @var \App\Model\SysUser
      */
     private $sysUserModel;
+    /**
+     * @var \App\Model\SysAuthRule
+     */
+    private $sysAuthRuleModel;
 
     /**
      * 构造函数.
@@ -145,6 +149,61 @@ class SysUser extends Base
                 return $this->showMsg('success', $actName . '成功');
             }
             throw new \Exception($actName . '失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 获取权限树结构json
+     * @return array
+     */
+    public function getRuleJsTreeData()
+    {
+        $userId = $this->request->request['id'];
+        $secIds = [];
+        if ($userId){
+            $userData = $this->sysUserModel->get($userId);
+            if(isset($userData['ruleIds']) && $userData['ruleIds']){
+                $secIds = unserialize($userData['ruleIds']);
+                $secIds = (array)$secIds;
+            }
+        }
+        $this->sysAuthRuleModel = model('SysAuthRule');
+        $ruleList     = $this->sysAuthRuleModel->getAuthRuleListByChoice();
+        //树结构用户组列表
+        $tree          = new \App\Common\Tree('ruleId', 'parentId', 'children');
+        $tree->nameKey = 'ruleName';
+        $tree->load($ruleList);
+        return $tree->makeJsTreeFormat($secIds);
+    }
+
+    /**
+     * 保存权限
+     * @return bool
+     */
+    public function saveRule()
+    {
+        try {
+            $userId = (int) $this->request->post['id'];
+            if (!$userId){
+                throw new \Exception('请选择要设置权限的用户');
+            }
+            $ruleIds              = $this->request->post['ruleIds'];
+            if ($ruleIds){
+                if (strpos($ruleIds, ',') !== false){
+                    $ruleIds = explode(',', $ruleIds);
+                }else{
+                    $ruleIds = (array)$ruleIds;
+                }
+            }else{
+                $ruleIds = [];
+            }
+            $rs                    = $this->sysUserModel->set($userId, ['ruleIds' => serialize($ruleIds)]);
+            if ($rs) {
+                return $this->showMsg('success', '设置用户权限成功');
+            }
+            throw new \Exception('设置用户权限失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }
