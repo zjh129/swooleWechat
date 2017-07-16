@@ -13,6 +13,10 @@ class SysUserGroup extends Base
      * @var \App\Model\SysUserGroup
      */
     private $sysUserGroupModel;
+    /**
+     * @var \App\Model\SysAuthRule
+     */
+    private $sysAuthRuleModel;
     public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
@@ -36,6 +40,7 @@ class SysUserGroup extends Base
         //可嵌套列表
         $addHtml = '<button type="button" class="btn btn-outline btn-danger btn-xs pull-right del"><i class="fa fa-trash-o"></i>删除</button>';
         $addHtml .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right edit" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>编辑</button>';
+        $addHtml .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right editrule"><i class="fa fa-pencil"></i>分组权限</button>';
         $addHtml .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right addchild" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>添加子菜单</button>';
         $nestableHtml = $tree->buildNestableTree($addHtml);
         $this->assign('nestableHtml', $nestableHtml);
@@ -141,6 +146,60 @@ class SysUserGroup extends Base
                 return $this->showMsg('success', '删除成功');
             }
             throw new \Exception('删除失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+    /**
+     * 获取权限树结构json
+     * @return array
+     */
+    public function getRuleJsTreeData()
+    {
+        $userId = $this->request->request['id'];
+        $secIds = [];
+        if ($userId){
+            $userGroupData = $this->sysUserGroupModel->get($userId);
+            if(isset($userGroupData['ruleIds']) && $userGroupData['ruleIds']){
+                $secIds = unserialize($userGroupData['ruleIds']);
+                $secIds = (array)$secIds;
+            }
+        }
+        $this->sysAuthRuleModel = model('SysAuthRule');
+        $ruleList     = $this->sysAuthRuleModel->getAuthRuleListByChoice();
+        //树结构用户组列表
+        $tree          = new \App\Common\Tree('ruleId', 'parentId', 'children');
+        $tree->nameKey = 'ruleName';
+        $tree->load($ruleList);
+        return $tree->makeJsTreeFormat($secIds);
+    }
+
+    /**
+     * 保存权限
+     * @return bool
+     */
+    public function saveRule()
+    {
+        try {
+            $userId = (int) $this->request->post['id'];
+            if (!$userId){
+                throw new \Exception('请选择要设置权限的用户组');
+            }
+            $ruleIds              = $this->request->post['ruleIds'];
+            if ($ruleIds){
+                if (strpos($ruleIds, ',') !== false){
+                    $ruleIds = explode(',', $ruleIds);
+                }else{
+                    $ruleIds = (array)$ruleIds;
+                }
+            }else{
+                $ruleIds = [];
+            }
+            $rs                    = $this->sysUserGroupModel->set($userId, ['ruleIds' => serialize($ruleIds)]);
+            if ($rs) {
+                return $this->showMsg('success', '设置用户组权限成功');
+            }
+            throw new \Exception('设置用户组权限失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }

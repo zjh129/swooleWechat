@@ -39,6 +39,7 @@
                 </div>
             </div>
         </div>
+        <!-- 用户编辑model -->
         <div class="modal inmodal" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
@@ -83,6 +84,7 @@
                 </div>
             </div>
         </div>
+        <!-- 权限编辑 -->
         <div class="modal inmodal" id="ruleModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
@@ -135,29 +137,6 @@
             success: function (data) {
                 $("#form select[name='groupId']").html(data);
             }
-        });
-    }
-    function loadJsTree() {
-        //加载树结构
-        $('#jstree').jstree({
-            'core' : {
-                'check_callback' : true,
-                'data' : {
-                    'url' : '/Admin/SysAuthRule/getJsTreeData',
-                    'data' : function (node) {
-                        //return {'id' : node.id};
-                    }
-                }
-            },
-            'types' : {
-                'default' : {
-                    'icon' : 'fa fa-folder'
-                },
-            },
-            "checkbox" : {
-                "keep_selected_style" : false
-            },
-            "plugins" : [ 'types', 'checkbox'],
         });
     }
     $(document).ready(function(){
@@ -335,14 +314,13 @@
                 }
             });
         });
-        $('#jstree').on("changed.jstree", function (e, data) {
-            //console.log(data.selected);
-            $("#ruleform input[name='ruleIds']").val(data.selected);
-        });
+        //编辑权限
         $("#tableBox").on('click', '.rule', function () {
+            $('#ruleModal').modal('show');
             var id = $(this).parents("tr").attr('id');
             $("#ruleform input[name='id']").val(id);
             //加载树结构
+            $('#jstree').data('jstree', false).empty();
             $('#jstree').jstree({
                 'core' : {
                     'check_callback' : true,
@@ -362,6 +340,10 @@
                     "keep_selected_style" : false
                 },
                 "plugins" : [ 'types', 'checkbox'],
+            });
+            $('#jstree').on("changed.jstree", function (e, data) {
+                //console.log(data.selected);
+                $("#ruleform input[name='ruleIds']").val(data.selected);
             });
         });
         //用户授权表单验证

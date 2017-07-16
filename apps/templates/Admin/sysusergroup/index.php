@@ -2,6 +2,8 @@
 <?php echo $this->fetch('common/header-start.php'); ?>
 <!-- Gritter -->
 <link href="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+<!-- jsTree -->
+<link href="//static.tudouyu.cn/jsTree/3.3.4/themes/default/style.min.css" rel="stylesheet">
 <!-- 头部结束部分代码 -->
 <?php echo $this->fetch('common/header-end.php'); ?>
 <body>
@@ -42,6 +44,7 @@
                 </div>
             </div>
         </div>
+        <!-- 分组编辑model -->
         <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
@@ -70,6 +73,29 @@
                 </div>
             </div>
         </div>
+        <!-- 权限编辑model -->
+        <div class="modal inmodal" id="ruleModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated fadeIn">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">权限控制</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" id="ruleform" action="/Admin/SysUserGroup/saveRule">
+                            <input type="hidden" name="id" id="id" value="0">
+                            <input type="hidden" name="ruleIds" id="ruleIds" value="">
+                            <div id="jstree">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:$('#ruleform').submit();">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 主体页脚 -->
         <?php echo $this->fetch('common/main-footer.php'); ?>
     </div>
@@ -82,7 +108,8 @@
 <?php echo $this->fetch('common/footer-start.php'); ?>
 <!-- Nestable List -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/nestable/jquery.nestable.js"></script>
-
+<!-- jsTree -->
+<script src="//static.tudouyu.cn/jsTree/3.3.4/jstree.min.js"></script>
 <script>
     $(document).ready(function(){
         //模块选择
@@ -206,6 +233,52 @@
                     },
                 }
             });
+        });
+        //编辑权限
+        $('.editrule').on('click', function () {
+            $('#ruleModal').modal('show');
+            var id = $(this).parents("li").attr('data-id');
+            $("#ruleform input[name='id']").val(id);
+            //加载树结构
+            $('#jstree').data('jstree', false).empty();
+            $('#jstree').jstree({
+                'core' : {
+                    'data' : {
+                        'url' : '/Admin/SysUserGroup/getRuleJsTreeData',
+                        'data' : function (node) {
+                            return {'id' : id};
+                        },
+                    }
+                },
+                'types' : {
+                    'default' : {
+                        'icon' : 'fa fa-folder'
+                    },
+                },
+                "checkbox" : {
+                    "keep_selected_style" : false
+                },
+                "plugins" : [ 'types', 'checkbox'],
+            });
+            $('#jstree').on("changed.jstree", function (e, data) {
+                //console.log(data.selected);
+                $("#ruleform input[name='ruleIds']").val(data.selected);
+            });
+        });
+        //用户授权表单验证
+        $("#ruleform").validate({
+            submitHandler: function(form) {
+                $(form).ajaxSubmit({
+                    type:'post',
+                    dataType:'json',
+                    success:function(data) {
+                        showToastr(data);
+                        if (data.status == 'success'){
+                            $('#ruleModal').modal('hide');
+                        }
+                    }
+                });
+            }
         });
     });
 </script>
