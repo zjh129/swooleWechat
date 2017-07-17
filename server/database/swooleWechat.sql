@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-14 23:14:21
+Date: 2017-07-17 23:51:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,24 +27,57 @@ CREATE TABLE `sys_auth_rule` (
   `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
   `condition` varchar(100) NOT NULL DEFAULT '' COMMENT '规则表达式，为空表示存在就验证，不为空表示按照条件验证',
   `isPublic` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否公共权限',
+  `isOpen` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否展开(0：不展开,1:展开)',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除）',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`ruleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='用户认证规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='用户认证规则表';
 
 -- ----------------------------
 -- Records of sys_auth_rule
 -- ----------------------------
-INSERT INTO `sys_auth_rule` VALUES ('1', '后台模块', '/Admin/Index/index', '0', '0', '', '0', '0', '0', '0');
-INSERT INTO `sys_auth_rule` VALUES ('2', '系统管理', '/Admin/System/index', '1', '0', '', '0', '0', '0', '0');
-INSERT INTO `sys_auth_rule` VALUES ('3', '菜单管理', '/Admin/SysMenu/index', '2', '2', '', '0', '0', '2', '1499521523');
-INSERT INTO `sys_auth_rule` VALUES ('4', '用户组管理', '/Admin/SysUserGroup/index', '2', '3', 'xx', '0', '0', '2', '1499522110');
-INSERT INTO `sys_auth_rule` VALUES ('5', '用户管理', '/Admin /SysUser/Index', '2', '4', '', '0', '0', '2', '1499527060');
-INSERT INTO `sys_auth_rule` VALUES ('6', '权限管理', '/Admin/SysAuthRule/index', '2', '5', '', '0', '0', '2', '1499527114');
-INSERT INTO `sys_auth_rule` VALUES ('7', '新增', '/Admin/SysMenu/add', '3', '1', '', '0', '0', '2', '1499610132');
-INSERT INTO `sys_auth_rule` VALUES ('8', '编辑', '/Admin/SysMenu/edit', '3', '2', '', '1', '0', '2', '1499610151');
-INSERT INTO `sys_auth_rule` VALUES ('12', '新增', '/Admin/SysUserGroup/add', '4', '0', '', '0', '0', '2', '1499667234');
+INSERT INTO `sys_auth_rule` VALUES ('1', '后台模块', '/Admin/Index/index', '0', '0', '', '0', '1', '0', '0', '0');
+INSERT INTO `sys_auth_rule` VALUES ('2', '系统管理', '/Admin/System/index', '1', '3', '', '0', '1', '0', '0', '0');
+INSERT INTO `sys_auth_rule` VALUES ('3', '菜单管理', '/Admin/SysMenu/index', '2', '0', '', '0', '0', '0', '2', '1499521523');
+INSERT INTO `sys_auth_rule` VALUES ('4', '用户组管理', '/Admin/SysUserGroup/index', '2', '1', '', '0', '0', '0', '2', '1499522110');
+INSERT INTO `sys_auth_rule` VALUES ('5', '用户管理', '/Admin /SysUser/Index', '2', '3', '', '0', '0', '0', '2', '1499527060');
+INSERT INTO `sys_auth_rule` VALUES ('6', '权限管理', '/Admin/SysAuthRule/index', '2', '4', '', '0', '0', '0', '2', '1499527114');
+INSERT INTO `sys_auth_rule` VALUES ('7', '树结构Select Option', '/Admin/SysMenu/getTreeOption', '4', '5', '', '1', '1', '0', '2', '1499610132');
+INSERT INTO `sys_auth_rule` VALUES ('8', '新增/编辑', '/Admin/SysMenu/save', '3', '2', '', '0', '1', '0', '2', '1499610151');
+INSERT INTO `sys_auth_rule` VALUES ('12', '新增/编辑', '/Admin/SysUserGroup/save', '4', '1', '', '0', '1', '0', '2', '1499667234');
+INSERT INTO `sys_auth_rule` VALUES ('13', '仪表盘', '/Admin/Index/index', '1', '2', '', '1', '0', '0', '2', '1500302417');
+INSERT INTO `sys_auth_rule` VALUES ('14', '控制面板', '/Admin/Index/Index', '13', '6', '', '1', '1', '0', '2', '1500302487');
+INSERT INTO `sys_auth_rule` VALUES ('15', '系统信息', '/Admin/Index/sysinfo', '13', '7', '', '1', '1', '0', '2', '1500302508');
+INSERT INTO `sys_auth_rule` VALUES ('16', '异步载入皮肤配置', '/Admin/Index/skinConfig', '13', '8', '', '1', '1', '0', '2', '1500302552');
+INSERT INTO `sys_auth_rule` VALUES ('17', '登录部分', '/Admin/Login/index', '1', '1', '', '1', '0', '0', '2', '1500302611');
+INSERT INTO `sys_auth_rule` VALUES ('18', '登录界面', '/Admin/Login/index', '17', '9', '', '1', '1', '0', '2', '1500302653');
+INSERT INTO `sys_auth_rule` VALUES ('19', '登录提交', '/Admin/Login/loginpost', '17', '10', '', '1', '1', '0', '2', '1500302678');
+INSERT INTO `sys_auth_rule` VALUES ('20', '退出登录', '/Admin/Login/logout', '17', '11', '', '1', '1', '0', '2', '1500302705');
+INSERT INTO `sys_auth_rule` VALUES ('21', '验证码展示', '/Admin/Login/captcha', '17', '12', '', '1', '1', '0', '2', '1500302738');
+INSERT INTO `sys_auth_rule` VALUES ('22', '菜单首页', '/Admin/SysMenu/index', '3', '0', '', '0', '1', '0', '2', '1500303632');
+INSERT INTO `sys_auth_rule` VALUES ('23', '树结构Select Option', '/Admin/SysMenu/getTreeOption', '3', '5', '', '1', '1', '0', '2', '1500303748');
+INSERT INTO `sys_auth_rule` VALUES ('24', '获取菜单json结构数据', '/Admin/SysMenu/get', '3', '6', '', '1', '1', '0', '2', '1500303866');
+INSERT INTO `sys_auth_rule` VALUES ('25', '保存排序和层级关系', '/Admin/SysMenu/saveSort', '3', '4', '', '0', '1', '0', '2', '1500303942');
+INSERT INTO `sys_auth_rule` VALUES ('26', '删除', '/Admin/SysMenu/del', '3', '3', '', '0', '1', '0', '2', '1500303986');
+INSERT INTO `sys_auth_rule` VALUES ('27', '用户组首页', '/Admin/SysUserGroup/index', '4', '0', '', '0', '1', '0', '2', '1500304045');
+INSERT INTO `sys_auth_rule` VALUES ('28', '获取用户组json结构数据', '/Admin/SysUserGroup/get', '4', '6', '', '1', '1', '0', '2', '1500304336');
+INSERT INTO `sys_auth_rule` VALUES ('29', '保存排序及层级关系', '/Admin/SysUserGroup/saveSort', '4', '4', '', '0', '1', '0', '2', '1500304378');
+INSERT INTO `sys_auth_rule` VALUES ('30', '删除', '/Admin/SysUserGroup/del', '4', '2', '', '0', '1', '0', '2', '1500304402');
+INSERT INTO `sys_auth_rule` VALUES ('31', '权限编辑', '/Admin/SysUserGroup/saveRule', '4', '3', '', '0', '1', '0', '2', '1500304466');
+INSERT INTO `sys_auth_rule` VALUES ('32', '用户管理首页', '/Admin/SysUser/index', '5', '0', '', '0', '1', '0', '2', '1500304595');
+INSERT INTO `sys_auth_rule` VALUES ('33', '用户列表json结构数据', '/Admin /SysUser/getPageList', '5', '4', '', '1', '1', '0', '2', '1500304646');
+INSERT INTO `sys_auth_rule` VALUES ('34', '新增/编辑', '/Admin /SysUser/save', '5', '1', '', '0', '1', '0', '2', '1500304996');
+INSERT INTO `sys_auth_rule` VALUES ('35', '获取用户json结构数据', '/Admin /SysUser/get', '5', '5', '', '1', '1', '0', '2', '1500305167');
+INSERT INTO `sys_auth_rule` VALUES ('36', '设置用户状态', '/Admin/SysUser/setStatus', '5', '2', '', '0', '1', '0', '2', '1500305248');
+INSERT INTO `sys_auth_rule` VALUES ('37', '权限编辑', '/Admin/SysUser/saveRule', '5', '3', '', '0', '1', '0', '2', '1500305283');
+INSERT INTO `sys_auth_rule` VALUES ('38', '权限管理首页', '/Admin/SysAuthRule/index', '6', '0', '', '0', '1', '0', '2', '1500305352');
+INSERT INTO `sys_auth_rule` VALUES ('39', '树结构Select Option', '/Admin/SysAuthRule/getTreeOption', '6', '4', '', '1', '1', '0', '2', '1500306156');
+INSERT INTO `sys_auth_rule` VALUES ('40', '权限列表json结构数据', '/Admin/SysAuthRule/getJsTreeData', '6', '5', '', '1', '1', '0', '2', '1500306256');
+INSERT INTO `sys_auth_rule` VALUES ('41', '新增/编辑', '/Admin/SysAuthRule/save', '6', '1', '', '0', '1', '0', '2', '1500306299');
+INSERT INTO `sys_auth_rule` VALUES ('42', '获取权限json结构数据', '/Admin/SysAuthRule/get', '6', '6', '', '1', '1', '0', '2', '1500306331');
+INSERT INTO `sys_auth_rule` VALUES ('43', '保存排序及层级关系', '/Admin/SysAuthRule/saveSort', '6', '3', '', '0', '1', '0', '2', '1500306392');
+INSERT INTO `sys_auth_rule` VALUES ('44', '删除', '/Admin/SysAuthRule/del', '6', '2', '', '0', '1', '0', '2', '1500306442');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -102,8 +135,8 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', 'a:4:{i:0;s:1:\"3\";i:1;s:1:\"4\";i:2;s:1:\"7\";i:3;s:2:\"12\";}', '', '127.0.0.1', '0', '0', '0');
-INSERT INTO `sys_user` VALUES ('2', '1', '千寻', 'admin', 'cd5ea73cd58f827fa78eef7197b8ee606c99b2e6', 'zhaojianhui@163.com', 'a:4:{i:0;s:1:\"7\";i:1;s:1:\"3\";i:2;s:2:\"12\";i:3;s:1:\"4\";}', '', '', '1', '2', '1499872453');
+INSERT INTO `sys_user` VALUES ('1', '1', '超级管理员', 'qianxun', 'c8396d9aeb430d0828d248c79f8788194c9b3b6b', 'zhaojianhui129@163.com', 'a:3:{i:0;s:1:\"3\";i:1;s:1:\"5\";i:2;s:1:\"7\";}', '', '127.0.0.1', '0', '0', '0');
+INSERT INTO `sys_user` VALUES ('2', '1', '千寻', 'admin', 'cd5ea73cd58f827fa78eef7197b8ee606c99b2e6', 'zhaojianhui@163.com', 'a:2:{i:0;s:1:\"4\";i:1;s:2:\"12\";}', '', '', '1', '2', '1499872453');
 
 -- ----------------------------
 -- Table structure for sys_user_group
@@ -124,11 +157,11 @@ CREATE TABLE `sys_user_group` (
 -- ----------------------------
 -- Records of sys_user_group
 -- ----------------------------
-INSERT INTO `sys_user_group` VALUES ('1', '超级管理', '0', '0', '0', 'a:0:{}', '2', '1499311306');
+INSERT INTO `sys_user_group` VALUES ('1', '超级管理', '0', '0', '0', 'a:8:{i:0;s:1:\"1\";i:1;s:1:\"2\";i:2;s:1:\"3\";i:3;s:1:\"4\";i:4;s:1:\"5\";i:5;s:1:\"6\";i:6;s:1:\"7\";i:7;s:2:\"12\";}', '2', '1499311306');
 INSERT INTO `sys_user_group` VALUES ('2', '微信运营', '0', '1', '0', 'a:0:{}', '2', '1499327471');
-INSERT INTO `sys_user_group` VALUES ('3', '客服组', '0', '2', '0', 'a:0:{}', '2', '1499327554');
-INSERT INTO `sys_user_group` VALUES ('4', '客服组长', '3', '3', '0', 'a:0:{}', '2', '1499609131');
-INSERT INTO `sys_user_group` VALUES ('5', '客服专员', '3', '4', '0', 'a:0:{}', '2', '1499609143');
+INSERT INTO `sys_user_group` VALUES ('3', '客服组', '0', '2', '0', 'a:4:{i:0;s:1:\"7\";i:1;s:1:\"3\";i:2;s:2:\"12\";i:3;s:1:\"4\";}', '2', '1499327554');
+INSERT INTO `sys_user_group` VALUES ('4', '客服组长', '3', '0', '0', 'a:4:{i:0;s:1:\"3\";i:1;s:1:\"4\";i:2;s:1:\"7\";i:3;s:2:\"12\";}', '2', '1499609131');
+INSERT INTO `sys_user_group` VALUES ('5', '客服专员', '3', '1', '0', 'a:2:{i:0;s:1:\"4\";i:1;s:2:\"12\";}', '2', '1499609143');
 
 -- ----------------------------
 -- Table structure for sys_user_to_group

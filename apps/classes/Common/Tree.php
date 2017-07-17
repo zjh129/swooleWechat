@@ -16,6 +16,7 @@ class Tree
     public $jsTreeDisabledIds = [];//jsTree禁用ID集
     public $jsTreeLiAttrField = [];//jsTree li标签属性字段
     public $jsTreeAAttrField = [];//jsTree a标签属性字段
+    public $jsTreeIsOpenField = 'isOpen';//jsTree 设置节点是否展开的字段
     private $OriginalList;
     private $treeList;
 
@@ -205,7 +206,7 @@ class Tree
      * @param bool $allOpen
      * @param int $root
      */
-    public function makeJsTreeFormat($secIds = [], $allOpen=true, $root = 0)
+    public function makeJsTreeFormat($secIds = [], $root = 0)
     {
         if ($this->OriginalList)
         {
@@ -218,7 +219,7 @@ class Tree
                     'icon' => $value[$this->iconClassKey] ?? '',
                     'parentId' => $value[$this->parentKey] ?? 0,
                     'state' => [
-                        'opened' => $allOpen,
+                        'opened' => (bool)($value[$this->jsTreeIsOpenField] ?? 1),
                         'disabled' => in_array($id, $this->jsTreeDisabledIds) ? true : false,
                         'selected' => in_array($id, $secIds) ? true : false,
                     ],

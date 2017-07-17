@@ -78,6 +78,12 @@
                                 <div class="i-checks"><label><input type="radio" name="isPublic" value="0" checked> <i></i> 否</label></div>
                                 <span class="help-block m-b-none">选择是表示该权限无需验证，全局可用</span>
                             </div>
+                            <div class="form-group">
+                                <label>是否展开</label>
+                                <div class="i-checks"><label><input type="radio" name="isOpen" value="1" checked> <i></i>是</label></div>
+                                <div class="i-checks"><label><input type="radio" name="isOpen" value="0"> <i></i> 否</label></div>
+                                <span class="help-block m-b-none">设置是否展开子节点</span>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -124,6 +130,7 @@
         $("#form")[0].reset();
         $("#form input[name='ruleId']").val(0);
         $("#form input[name='isPublic'][value=0]").attr('checked', true);
+        $("#form input[name='isOpen'][value=1]").attr('checked', true);
         if (parentId){
             $(".modal-title").html('添加子权限');
         }else{
@@ -154,6 +161,8 @@
                 $("#form input[name='condition']").val(data.data.condition);
                 var isPublic = data.data.isPublic;
                 $("#form input[name='isPublic'][value=" + isPublic +"]").prop('checked', 'checked');
+                var isOpen = data.data.isOpen;
+                $("#form input[name='isOpen'][value=" + isOpen +"]").prop('checked', 'checked');
                 $("#form select[name='parentId']").val(data.data.parentId);
 
                 $('#myModal').modal('show');

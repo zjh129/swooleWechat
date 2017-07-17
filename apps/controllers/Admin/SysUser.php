@@ -136,7 +136,7 @@ class SysUser extends Base
         }
     }
     /**
-     * 删除用户组
+     * 设置用户状态
      * @return bool
      */
     public function setStatus()

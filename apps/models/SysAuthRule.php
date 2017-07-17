@@ -20,7 +20,7 @@ class SysAuthRule extends \App\Component\BaseModel
     public function getAuthRuleList()
     {
         $groupList = $this->gets([
-            'select' => 'ruleId,ruleName,url,parentId,orderNum,isPublic',
+            'select' => 'ruleId,ruleName,url,parentId,orderNum,isPublic,isOpen',
             'from' => $this->table,
             'where' => "isDel=0",
             'order' => "orderNum ASC,ruleId ASC",
@@ -35,7 +35,7 @@ class SysAuthRule extends \App\Component\BaseModel
     public function getAuthRuleListByChoice()
     {
         $groupList = $this->gets([
-            'select' => 'ruleId,ruleName,url,parentId,orderNum,isPublic',
+            'select' => 'ruleId,ruleName,url,parentId,orderNum,isPublic,isOpen',
             'from' => $this->table,
             'where' => "isDel=0 AND isPublic=0",
             'order' => "orderNum ASC,ruleId ASC",

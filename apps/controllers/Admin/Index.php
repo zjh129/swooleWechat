@@ -3,6 +3,10 @@ namespace App\Controller\Admin;
 
 use App\BaseController\AdminBaseController as Base;
 
+/**
+ * 后台主页相关
+ * @package App\Controller\Admin
+ */
 class Index extends Base
 {
     public function __construct(\Swoole $swoole)
@@ -12,7 +16,7 @@ class Index extends Base
     }
 
     /**
-     * 仪表盘
+     * 控制面板
      */
     public function index()
     {
