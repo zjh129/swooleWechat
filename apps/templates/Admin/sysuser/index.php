@@ -95,7 +95,6 @@
                     <div class="modal-body">
                         <form role="form" id="ruleform" action="/Admin/SysUser/saveRule">
                             <input type="hidden" name="id" id="id" value="0">
-                            <input type="hidden" name="ruleIds" id="ruleIds" value="">
                             <div id="jstree">
                             </div>
                         </form>
@@ -316,18 +315,15 @@
         });
         //编辑权限
         $("#tableBox").on('click', '.rule', function () {
-            $('#ruleModal').modal('show');
             var id = $(this).parents("tr").attr('id');
             $("#ruleform input[name='id']").val(id);
             //加载树结构
-            $('#jstree').data('jstree', false).empty();
             $('#jstree').jstree({
                 'core' : {
-                    'check_callback' : true,
                     'data' : {
-                        'url' : '/Admin/SysUser/getRuleJsTreeData',
+                        'url' : '/Admin/SysAuthRule/getJsTreeData',
                         'data' : function (node) {
-                            return {'id' : id};
+                            //return {'id' : id};
                         },
                     }
                 },
@@ -341,17 +337,30 @@
                 },
                 "plugins" : [ 'types', 'checkbox'],
             });
-            $('#jstree').on("changed.jstree", function (e, data) {
-                //console.log(data.selected);
-                $("#ruleform input[name='ruleIds']").val(data.selected);
+            $("#jstree").jstree('uncheck_all');
+            $.ajax({
+                type: "get",
+                url: "/Admin/SysUser/get",
+                data: {
+                    'id' : id,
+                },
+                datatype: "json",
+                success: function (data) {
+                    // 批量选中节点
+                    $("#jstree").jstree('check_node', data.data.ruleIds);
+                }
             });
         });
         //用户授权表单验证
         $("#ruleform").validate({
             submitHandler: function(form) {
+                var checkedNode = $("#jstree").jstree('get_checked');
                 $(form).ajaxSubmit({
                     type:'post',
                     dataType:'json',
+                    data:{
+                        ruleIds:checkedNode
+                    },
                     success:function(data) {
                         showToastr(data);
                         if (data.status == 'success'){

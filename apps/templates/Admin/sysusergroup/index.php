@@ -84,7 +84,6 @@
                     <div class="modal-body">
                         <form role="form" id="ruleform" action="/Admin/SysUserGroup/saveRule">
                             <input type="hidden" name="id" id="id" value="0">
-                            <input type="hidden" name="ruleIds" id="ruleIds" value="">
                             <div id="jstree">
                             </div>
                         </form>
@@ -234,19 +233,18 @@
                 }
             });
         });
-        //编辑权限
+        //编辑权限,参考网址(http://luozhihua.com/jquery-jstree%E9%80%89%E4%B8%AD%E6%88%96%E5%8F%96%E6%B6%88%E9%80%89%E4%B8%AD%E8%8A%82%E7%82%B9.html)
         $('.editrule').on('click', function () {
-            $('#ruleModal').modal('show');
+            //$('#ruleModal').modal('show');
             var id = $(this).parents("li").attr('data-id');
             $("#ruleform input[name='id']").val(id);
             //加载树结构
-            $('#jstree').data('jstree', false).empty();
             $('#jstree').jstree({
                 'core' : {
                     'data' : {
-                        'url' : '/Admin/SysUserGroup/getRuleJsTreeData',
+                        'url' : '/Admin/SysAuthRule/getJsTreeData',
                         'data' : function (node) {
-                            return {'id' : id};
+                            //return {'id' : id};
                         },
                     }
                 },
@@ -260,17 +258,30 @@
                 },
                 "plugins" : [ 'types', 'checkbox'],
             });
-            $('#jstree').on("changed.jstree", function (e, data) {
-                //console.log(data.selected);
-                $("#ruleform input[name='ruleIds']").val(data.selected);
+            $("#jstree").jstree('uncheck_all');
+            $.ajax({
+                type: "get",
+                url: "/Admin/SysUserGroup/get",
+                data: {
+                    'id' : id,
+                },
+                datatype: "json",
+                success: function (data) {
+                    // 批量选中节点
+                    $("#jstree").jstree('check_node', data.data.ruleIds);
+                }
             });
         });
         //用户授权表单验证
         $("#ruleform").validate({
             submitHandler: function(form) {
+                var checkedNode = $("#jstree").jstree('get_checked');
                 $(form).ajaxSubmit({
                     type:'post',
                     dataType:'json',
+                    data:{
+                        ruleIds:checkedNode
+                    },
                     success:function(data) {
                         showToastr(data);
                         if (data.status == 'success'){
