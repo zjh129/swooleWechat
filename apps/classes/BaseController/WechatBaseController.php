@@ -3,7 +3,6 @@ namespace App\BaseController;
 
 /**
  * 微信接口基类控制器
- * @property \EasyWeChat\Foundation\Application $easywechat
  * @package App\Controller\Api
  */
 class WechatBaseController extends BaseController

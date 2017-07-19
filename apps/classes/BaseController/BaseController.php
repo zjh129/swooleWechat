@@ -6,8 +6,7 @@ use Swoole;
 
 /**
  * 接口基类控制器.
- *
- * @property \EasyWeChat\Foundation\Application         $wechatApp
+ * @property \EasyWeChat\Foundation\Application $easywechat
  */
 class BaseController extends Swoole\Controller
 {

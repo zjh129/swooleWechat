@@ -13,10 +13,11 @@ class SysUserGroup extends Base
      * @var \App\Model\SysUserGroup
      */
     private $sysUserGroupModel;
+
     /**
-     * @var \App\Model\SysAuthRule
+     * 构造函数
+     * @param \Swoole $swoole
      */
-    private $sysAuthRuleModel;
     public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
@@ -29,8 +30,8 @@ class SysUserGroup extends Base
      */
     public function index()
     {
-        $this->setSeoTitle('用户组管理');
-        $this->addBreadcrumb('用户组管理', $this->currentUrl);
+        $this->setSeoTitle('系统用户组管理');
+        $this->addBreadcrumb('系统用户组管理', $this->currentUrl);
         //用户组列表
         $groupList     = $this->sysUserGroupModel->getUserGroupList();
         //树结构用户组列表

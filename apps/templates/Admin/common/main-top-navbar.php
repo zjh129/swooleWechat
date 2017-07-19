@@ -131,7 +131,7 @@
         <ol class="breadcrumb">
             <?php $countBreadcrumb = count($this->breadcrumbData);?>
             <?php foreach ($this->breadcrumbData as $menuK => $menuV){?>
-                <?php if ($menuK < $countBreadcrumb){?>
+                <?php if ($menuK < $countBreadcrumb-1){?>
                     <li>
                         <a href="<?php echo $menuV['url']?>"><?php echo $menuV['title']?></a>
                     </li>

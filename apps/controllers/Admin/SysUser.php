@@ -13,10 +13,6 @@ class SysUser extends Base
      * @var \App\Model\SysUser
      */
     private $sysUserModel;
-    /**
-     * @var \App\Model\SysAuthRule
-     */
-    private $sysAuthRuleModel;
 
     /**
      * 构造函数.
@@ -35,8 +31,8 @@ class SysUser extends Base
      */
     public function index()
     {
-        $this->setSeoTitle('用户管理');
-        $this->addBreadcrumb('用户管理', $this->currentUrl);
+        $this->setSeoTitle('系统用户管理');
+        $this->addBreadcrumb('系统用户管理', $this->currentUrl);
 
         $this->display();
     }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-17 23:51:36
+Date: 2017-07-19 23:23:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -95,19 +95,22 @@ CREATE TABLE `sys_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', 'fa fa-dashboard', '0', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', 'fa fa-desktop', '1', '1', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '1', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '2', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', 'fa fa-sitemap', '3', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('5', 'admin', '用户组管理', '/Admin/SysUserGroup/index', 'fa fa-group', '3', '1', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('6', 'admin', '用户管理', '/Admin/SysUser/Index', 'fa fa-user', '3', '2', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('5', 'admin', '系统用户组管理', '/Admin/SysUserGroup/index', 'fa fa-group', '3', '1', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('6', 'admin', '系统用户管理', '/Admin/SysUser/Index', 'fa fa-user', '3', '2', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', 'fa fa-gavel', '3', '3', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', 'fa fa-linux', '1', '0', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('9', 'admin', '微信用户', '/Admin/WxUser/index', 'fa fa-user', '0', '1', '0', '2', '1500474574');
+INSERT INTO `sys_menu` VALUES ('10', 'admin', '用户组管理', '/Admin/WxUserGroup/index', 'fa fa-group', '9', '4', '0', '2', '1500474665');
+INSERT INTO `sys_menu` VALUES ('11', 'admin', '微信用户管理', '/Admin/WxUser/index', 'fa fa-user', '9', '5', '0', '2', '1500474711');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -448,6 +451,26 @@ CREATE TABLE `wx_user` (
 
 -- ----------------------------
 -- Records of wx_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_user_group
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_user_group`;
+CREATE TABLE `wx_user_group` (
+  `groupId` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户组ID',
+  `groupName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户组名称',
+  `parentId` int(10) NOT NULL DEFAULT '0' COMMENT '上级用户组ID',
+  `userCount` int(10) NOT NULL DEFAULT '0',
+  `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除)',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`groupId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
+
+-- ----------------------------
+-- Records of wx_user_group
 -- ----------------------------
 
 -- ----------------------------
