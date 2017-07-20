@@ -30,7 +30,7 @@
                 toastr.warning(data.message, data.title);
                 break;
         }
-        if (isReload && data.redirectUrl){
+        if (isReload && data.status == 'success' && data.redirectUrl){
             setTimeout(function(){
                 window.location.href = data.redirectUrl;
             }, 1000);

@@ -37,7 +37,7 @@
                                 你可以通过拖拽来调整用户组所属层级及顺序。
                             </p>
                             <div class="dd" id="nestable">
-                                <?php //echo $nestableHtml; ?>
+                                <?php echo $nestableHtml; ?>
                             </div>
                         </div>
 
@@ -54,7 +54,7 @@
                         <h4 class="modal-title">添加用户组</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/admin/SysUserGroup/save">
+                        <form role="form" id="form" action="/admin/WxUserGroup/save">
                             <input type="hidden" name="groupId" id="groupId" value="0">
                             <div class="form-group">
                                 <label>用户组名称</label>
@@ -83,7 +83,7 @@
                         <h4 class="modal-title">权限控制</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="ruleform" action="/Admin/SysUserGroup/saveRule">
+                        <form role="form" id="ruleform" action="/Admin/WxUserGroup/saveRule">
                             <input type="hidden" name="id" id="id" value="0">
                             <div id="jstree">
                             </div>
@@ -125,7 +125,7 @@
                 output = list.data('output');
             $.ajax({
                 type: "post",
-                url: "/Admin/SysUserGroup/saveSort",
+                url: "/Admin/WxUserGroup/saveSort",
                 data: {
                     'sortData' : list.nestable('serialize'),
                 },
@@ -168,7 +168,7 @@
             var secId = arguments[0] ? arguments[0] : 0;
             $.ajax({
                 type: "get",
-                url: "/Admin/SysUserGroup/getTreeOption",
+                url: "/Admin/WxUserGroup/getTreeOption",
                 data: {
                     'secId' : secId,
                 },
@@ -198,7 +198,7 @@
             loadOption();
             $.ajax({
                 type: "get",
-                url: "/Admin/SysUserGroup/get",
+                url: "/Admin/WxUserGroup/get",
                 data: {
                     'id' : $(this).parents("li").attr('data-id'),
                 },
@@ -219,7 +219,7 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/Admin/SysUserGroup/del",
+                            url: "/Admin/WxUserGroup/del",
                             data: {
                                 'id' : id,
                             },
@@ -234,71 +234,14 @@
                 }
             });
         });
-        //编辑权限,参考网址(http://luozhihua.com/jquery-jstree%E9%80%89%E4%B8%AD%E6%88%96%E5%8F%96%E6%B6%88%E9%80%89%E4%B8%AD%E8%8A%82%E7%82%B9.html)
-        $('.editrule').on('click', function () {
-            //$('#ruleModal').modal('show');
-            var id = $(this).parents("li").attr('data-id');
-            $("#ruleform input[name='id']").val(id);
-            //加载树结构
-            $('#jstree').jstree({
-                'core' : {
-                    'data' : {
-                        'url' : '/Admin/SysAuthRule/getJsTreeData',
-                        'data' : function (node) {
-                            //return {'id' : id};
-                        },
-                    }
-                },
-                'types' : {
-                    'default' : {
-                        'icon' : 'fa fa-folder'
-                    },
-                },
-                "checkbox" : {
-                    "keep_selected_style" : false
-                },
-                "plugins" : [ 'types', 'checkbox'],
-            });
-            $("#jstree").jstree('uncheck_all');
-            $.ajax({
-                type: "get",
-                url: "/Admin/SysUserGroup/get",
-                data: {
-                    'id' : id,
-                },
-                datatype: "json",
-                success: function (data) {
-                    // 批量选中节点
-                    $("#jstree").jstree('check_node', data.data.ruleIds);
-                }
-            });
-        });
-        //用户授权表单验证
-        $("#ruleform").validate({
-            submitHandler: function(form) {
-                var checkedNode = $("#jstree").jstree('get_checked');
-                $(form).ajaxSubmit({
-                    type:'post',
-                    dataType:'json',
-                    data:{
-                        ruleIds:checkedNode
-                    },
-                    success:function(data) {
-                        showToastr(data);
-                        if (data.status == 'success'){
-                            $('#ruleModal').modal('hide');
-                        }
-                    }
-                });
-            }
-        });
+        //同步线上数据
         $(".synconline").on('click', function(){
             $.ajax({
                 type: "get",
                 url: "/Admin/WxUserGroup/syncOnline",
                 datatype: "json",
                 success: function (data) {
-                    showToastr(data, true);
+                    showToastr(data);
                 }
             });
         });

@@ -45,9 +45,6 @@ class SysUserGroup extends Base
         $addHtml .= '<button type="button" class="btn btn-outline btn-primary btn-xs pull-right addchild" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>添加子菜单</button>';
         $nestableHtml = $tree->buildNestableTree($addHtml);
         $this->assign('nestableHtml', $nestableHtml);
-        //用户组选择列表
-        $optionHtml = $tree->buildOptions();
-        $this->assign('treeOption', $optionHtml);
         $this->display();
     }
     /**
@@ -87,7 +84,7 @@ class SysUserGroup extends Base
             if ($rs) {
                 return $this->showMsg('success', ($postData['groupId'] ? '编辑' : '添加') . '成功', '/Admin/SysUserGroup/index');
             }
-            throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '用户组失败');
+            throw new \Exception(($postData['groupId'] ? '编辑' : '添加') . '用户组失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }
