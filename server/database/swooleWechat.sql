@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-21 00:12:17
+Date: 2017-07-21 23:01:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -430,11 +430,11 @@ DROP TABLE IF EXISTS `wx_user`;
 CREATE TABLE `wx_user` (
   `userId` int(10) NOT NULL AUTO_INCREMENT COMMENT 'userId',
   `subscribe` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户是否订阅该公众号标识',
-  `openid` varchar(30) NOT NULL DEFAULT '' COMMENT '用户的标识，对当前公众号唯一',
-  `unionid` varchar(30) NOT NULL DEFAULT '' COMMENT '只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。',
-  `groupid` int(10) NOT NULL,
+  `openId` varchar(30) NOT NULL DEFAULT '' COMMENT '用户的标识，对当前公众号唯一',
+  `unionId` varchar(30) NOT NULL DEFAULT '' COMMENT '只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。',
+  `groupId` int(10) NOT NULL DEFAULT '0' COMMENT '微信分组ID',
   `tagidList` varchar(150) NOT NULL DEFAULT '' COMMENT '用户被打上的标签ID列表',
-  `nickname` varchar(20) NOT NULL DEFAULT '' COMMENT '用户的昵称',
+  `nickName` varchar(20) NOT NULL DEFAULT '' COMMENT '用户的昵称',
   `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户的性别，值为1时是男性，值为2时是女性，值为0时是未知',
   `country` varchar(30) NOT NULL DEFAULT '' COMMENT '用户所在国家',
   `province` varchar(50) NOT NULL DEFAULT '' COMMENT '用户所在省份',
@@ -446,7 +446,7 @@ CREATE TABLE `wx_user` (
   `firstSubscribeTime` int(10) NOT NULL DEFAULT '0' COMMENT '时间',
   `createTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`userId`),
-  KEY `openid` (`openid`,`unionid`)
+  KEY `openid` (`openId`,`unionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户表';
 
 -- ----------------------------
@@ -469,7 +469,7 @@ CREATE TABLE `wx_user_group` (
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`groupId`),
   UNIQUE KEY `groupIdIndex` (`wxGroupId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
 
 -- ----------------------------
 -- Records of wx_user_group
@@ -477,8 +477,10 @@ CREATE TABLE `wx_user_group` (
 INSERT INTO `wx_user_group` VALUES ('1', '0', '未分组', '0', '2', '0', '0', '2', '1500559958');
 INSERT INTO `wx_user_group` VALUES ('2', '1', '黑名单', '0', '0', '1', '0', '2', '1500559958');
 INSERT INTO `wx_user_group` VALUES ('3', '2', '星标组', '0', '0', '2', '0', '2', '1500559958');
-INSERT INTO `wx_user_group` VALUES ('4', '100', '内部人员', '0', '0', '4', '0', '2', '1500564732');
-INSERT INTO `wx_user_group` VALUES ('25', '111', '工作人员', '0', '0', '3', '0', '2', '1500566436');
+INSERT INTO `wx_user_group` VALUES ('4', '100', '内部人员', '0', '0', '3', '0', '2', '1500564732');
+INSERT INTO `wx_user_group` VALUES ('26', '112', '测试组', '4', '0', '0', '0', '2', '1500647210');
+INSERT INTO `wx_user_group` VALUES ('27', '113', '开发组', '4', '0', '2', '0', '2', '1500647233');
+INSERT INTO `wx_user_group` VALUES ('28', '114', '运营组', '4', '0', '1', '0', '2', '1500647240');
 
 -- ----------------------------
 -- Table structure for wx_user_subscribe_log

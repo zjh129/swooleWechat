@@ -25,8 +25,9 @@ class WxSyncUser implements Swoole\IFace\EventHandler
         if ($userInfo) {
             if ($userInfo->subscribe == 1) {
                 $saveData = [
-                    'openid'        => $userInfo->openid,
-                    'nickname'      => $userInfo->nickname,
+                    'openId'        => $userInfo->openid,
+                    'unionId'       => $userInfo->unionid,
+                    'nickName'      => $userInfo->nickname,
                     'sex'           => (int) $userInfo->sex,
                     'country'       => $userInfo->country,
                     'province'      => $userInfo->province,
@@ -35,7 +36,7 @@ class WxSyncUser implements Swoole\IFace\EventHandler
                     'headimgurl'    => $userInfo->headimgurl,
                     'subscribeTime' => $userInfo->subscribe_time,
                     'remark'        => $userInfo->remark,
-                    'groupid'       => (int) $userInfo->groupid,
+                    'groupId'       => (int) $userInfo->groupid,
                     'tagidList'     => json_encode((array) $userInfo->tagid_list),
                 ];
             }

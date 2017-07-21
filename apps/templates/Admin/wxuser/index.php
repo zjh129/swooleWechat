@@ -129,7 +129,7 @@
         var secId = arguments[0] ? arguments[0] : 0;
         $.ajax({
             type: "get",
-            url: "/Admin/SysUserGroup/getTreeOption",
+            url: "/Admin/WxUserGroup/getTreeOption",
             data: {
                 'secId' : secId,
             },
@@ -184,7 +184,7 @@
             serverSide: true,
             //数据来源（包括处理分页，排序，过滤） ，即url，action，接口，等等
             ajax: {
-                url : '/Admin/SysUser/getPageList',
+                url : '/Admin/WxUser/getPageList',
                 type : 'POST',
             },
             columns:[
@@ -312,64 +312,6 @@
                     },
                 }
             });
-        });
-        //编辑权限
-        $("#tableBox").on('click', '.rule', function () {
-            var id = $(this).parents("tr").attr('id');
-            $("#ruleform input[name='id']").val(id);
-            //加载树结构
-            $('#jstree').jstree({
-                'core' : {
-                    'data' : {
-                        'url' : '/Admin/SysAuthRule/getJsTreeData',
-                        'data' : function (node) {
-                            //return {'id' : id};
-                        },
-                    }
-                },
-                'types' : {
-                    'default' : {
-                        'icon' : 'fa fa-folder'
-                    },
-                },
-                "checkbox" : {
-                    "keep_selected_style" : false
-                },
-                "plugins" : [ 'types', 'checkbox'],
-            });
-            $("#jstree").jstree('uncheck_all');
-            $.ajax({
-                type: "get",
-                url: "/Admin/SysUser/get",
-                data: {
-                    'id' : id,
-                },
-                datatype: "json",
-                success: function (data) {
-                    // 批量选中节点
-                    $("#jstree").jstree('check_node', data.data.ruleIds);
-                }
-            });
-        });
-        //用户授权表单验证
-        $("#ruleform").validate({
-            submitHandler: function(form) {
-                var checkedNode = $("#jstree").jstree('get_checked');
-                $(form).ajaxSubmit({
-                    type:'post',
-                    dataType:'json',
-                    data:{
-                        ruleIds:checkedNode
-                    },
-                    success:function(data) {
-                        showToastr(data);
-                        if (data.status == 'success'){
-                            $('#ruleModal').modal('hide');
-                            table.ajax.reload();
-                        }
-                    }
-                });
-            }
         });
     });
 </script>
