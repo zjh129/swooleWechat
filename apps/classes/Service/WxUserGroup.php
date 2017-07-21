@@ -33,7 +33,6 @@ class WxUserGroup
             throw new \Exception('线上用户组数据为空');
         }
         $this->wxUserGroupModel->start();
-        var_dump($onlineGroups['groups']);
         try{
             foreach ($onlineGroups['groups'] as $groupData){
                 $findGroup = $this->wxUserGroupModel->getone(['wxGroupId'=>$groupData['id']]);
@@ -171,7 +170,7 @@ class WxUserGroup
         if (!$onlineGroupData){
             throw new \Exception('删除线上失败');
         }
-        $upLocal = $this->wxUserGroupModel->del($findData['groupId']);
+        $upLocal = $this->wxUserGroupModel->set($findData['groupId'], ['isDel'=>1]);
         if (!$upLocal){
             throw new \Exception('删除本地失败');
         }
