@@ -20,7 +20,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#userModal"><i class="fa fa-plus"></i>添加用户</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#groupModal"><i class="fa fa-group"></i>设置用户组</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#userModal"><i class="fa fa-lock"></i>拉黑用户</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#userModal"><i class="fa fa-unlock"></i>取消拉黑用户</button>
                     </div>
                 </div>
             </div>
@@ -188,34 +190,63 @@
                 type : 'POST',
             },
             columns:[
-                {data: "userName",title: "用户名称",orderable:false, searchable:true,},
-                {data: "account",title: "账号",orderable:true, "orderDataType": "dom-text", searchable:true,},
-                {data: "groupName",title: "所属用户组",orderable:false, searchable:false,},
-                {data: "email",title: "邮箱",orderable:false, searchable:true,},
+                {data: "userId",title:"用户ID",orderable:false,searchable:true,},
+                {
+                    data: "headimgurl",title:"用户头像",orderable:false,searchable:true,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        var html = '';
+                        if (cellData.headimgurl){
+                            html = '<img src="' + cellData.headimgurl + '" class="img-circle img-md">';
+                        }
+                        $(td).html(html);
+                    }
+                },
+                {data: "openId",title:"openId",orderable:false,searchable:true,},
+                {data: "unionId",title:"unionId",orderable:false,searchable:true,},
+                {data: "nickName",title: "用户昵称",orderable:false, searchable:true,},
+                {data: "groupName",title: "用户组",orderable:false, searchable:true,},
+                {data: "sex",title: "性别",orderable:false, searchable:true,},
+                {data: "country",title: "国家",orderable:false, searchable:false,},
+                {data: "province",title: "省份",orderable:false, searchable:false,},
+                {data: "city",title: "城市",orderable:false, searchable:false,},
+                {
+                    data: "tagidList",title: "标签",orderable:false, searchable:false,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        var html = '<ul class="tag-list" style="padding: 0">';
+                        if (cellData.tagidList){
+                            $.each(cellData.tagidList, function(i, n){
+                                html += '<li><a href="#">n</a></li>';
+                            });
+                        }
+                        html += '</ul>';
+                        $(td).html(html);
+                    }
+                },
+                {data: "remark",title: "备注",orderable:false, searchable:false,},
                 {
                     data: null,title: "状态",orderable:false, searchable:true,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
-                        if (cellData.isDel == 1){
-                            html = '<span class="label label-warning">禁用</span>';
+                        if (cellData.isBlock == 1){
+                            html = '<span class="label label-warning">拉黑</span>';
                         }else{
                             html = '<span class="label label-primary">正常</span>';
                         }
                         $(td).html(html);
                     }
                 },
-                {data: "loginTime",title: "最后登录时间",searchable : false,orderable:false, searchable:false,},
-                {data: "loginIp",title: "最后登录IP",orderable:false, searchable:false,},
+                {data: "subscribeTime",title: "关注时间",searchable : false,orderable:false, searchable:false,},
                 {
                     data:null, title: "操作", orderable:false, searchable:false,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-pencil"></i>编辑</button>';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs rule" data-toggle="modal" data-target="#ruleModal"><i class="fa fa-pencil"></i>用户授权</button>';
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-group"></i>设置分组</button>';
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-pencil"></i>设置备注</button>';
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs rule" data-toggle="modal" data-target="#ruleModal"><i class="fa fa-pencil"></i>设置标签</button>';
                         if (cellData.isDel == 1){
-                            html += '<button type="button" setStatus=0 class="btn btn-outline btn-success btn-xs del"><i class="fa fa-unlock"></i>开启</button>';
+                            html += '<button type="button" setStatus=0 class="btn btn-outline btn-success btn-xs del"><i class="fa fa-unlock"></i>拉黑</button>';
                         }else{
-                            html += '<button type="button" setStatus=1 class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-lock"></i>禁用</button>';
+                            html += '<button type="button" setStatus=1 class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-lock"></i>解锁</button>';
                         }
                         $(td).html(html);
                     }
