@@ -43,7 +43,7 @@ class WxSyncUser implements Swoole\IFace\EventHandler
             $saveData['subscribe'] = $userInfo->subscribe;
         }
         $model = model('WxUser');
-        $findOne = $model->getone(['openid'=>$openid]);
+        $findOne = $model->getone(['openId'=>$openid]);
         if ($findOne){
             return $model->set($findOne['userId'], $saveData);
         }else{
