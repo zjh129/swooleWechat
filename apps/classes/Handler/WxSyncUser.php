@@ -34,7 +34,7 @@ class WxSyncUser implements Swoole\IFace\EventHandler
                     'city'          => $userInfo->city,
                     'language'      => $userInfo->language,
                     'headimgurl'    => $userInfo->headimgurl,
-                    'subscribeTime' => $userInfo->subscribe_time,
+                    'subscribeTime' => (int) $userInfo->subscribe_time,
                     'remark'        => $userInfo->remark,
                     'groupId'       => (int) $userInfo->groupid,
                     'tagidList'     => json_encode((array) $userInfo->tagid_list),
@@ -47,7 +47,8 @@ class WxSyncUser implements Swoole\IFace\EventHandler
         if ($findOne){
             return $model->set($findOne['userId'], $saveData);
         }else{
-            $saveData['firstSubscribeTime'] = $userInfo->subscribe_time;
+            $saveData['openId'] = $openid;
+            $saveData['firstSubscribeTime'] = (int) $userInfo->subscribe_time;
             $saveData['createTime'] = time();
             return $model->put($saveData);
         }

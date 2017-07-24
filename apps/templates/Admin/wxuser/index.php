@@ -195,8 +195,8 @@
                     data: "headimgurl",title:"用户头像",orderable:false,searchable:true,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
-                        if (cellData.headimgurl){
-                            html = '<img src="' + cellData.headimgurl + '" class="img-circle img-md">';
+                        if (cellData){
+                            html = '<img src="' + cellData + '" class="img-circle img-sm">';
                         }
                         $(td).html(html);
                     }
@@ -213,8 +213,8 @@
                     data: "tagidList",title: "标签",orderable:false, searchable:false,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '<ul class="tag-list" style="padding: 0">';
-                        if (cellData.tagidList){
-                            $.each(cellData.tagidList, function(i, n){
+                        if (cellData != '[]'){
+                            $.each(cellData, function(i, n){
                                 html += '<li><a href="#">n</a></li>';
                             });
                         }
@@ -224,11 +224,11 @@
                 },
                 {data: "remark",title: "备注",orderable:false, searchable:false,},
                 {
-                    data: null,title: "状态",orderable:false, searchable:true,
+                    data: 'isBlock',title: "状态",orderable:false, searchable:true,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
-                        if (cellData.isBlock == 1){
-                            html = '<span class="label label-warning">拉黑</span>';
+                        if (cellData == 1){
+                            html = '<span class="label label-danger">拉黑</span>';
                         }else{
                             html = '<span class="label label-primary">正常</span>';
                         }
@@ -243,10 +243,10 @@
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-group"></i>设置分组</button>';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-pencil"></i>设置备注</button>';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs rule" data-toggle="modal" data-target="#ruleModal"><i class="fa fa-pencil"></i>设置标签</button>';
-                        if (cellData.isDel == 1){
-                            html += '<button type="button" setStatus=0 class="btn btn-outline btn-success btn-xs del"><i class="fa fa-unlock"></i>拉黑</button>';
+                        if (cellData.isBlock == 1){
+                            html += '<button type="button" setBlock=0 class="btn btn-outline btn-success btn-xs del"><i class="fa fa-lock"></i>解锁</button>';
                         }else{
-                            html += '<button type="button" setStatus=1 class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-lock"></i>解锁</button>';
+                            html += '<button type="button" setBlock=1 class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-unlock"></i>拉黑</button>';
                         }
                         $(td).html(html);
                     }

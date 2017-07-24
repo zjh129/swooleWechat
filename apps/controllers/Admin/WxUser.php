@@ -76,7 +76,8 @@ class WxUser extends Base
         $list = $this->wxUserModel->getUserList($where);
         if ($list){
             foreach ($list as $k => $v){
-                $v['DT_RowId'] = $v['id'];
+                $v['DT_RowId'] = $v['userId'];
+                $v['subscribeTime'] = date('Y-m-d H:i:s', $v['subscribeTime']);
                 $list[$k] = $v;
             }
         }
