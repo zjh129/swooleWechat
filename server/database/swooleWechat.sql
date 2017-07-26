@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-24 23:33:26
+Date: 2017-07-26 23:34:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -453,8 +453,8 @@ CREATE TABLE `wx_user` (
 -- ----------------------------
 -- Records of wx_user
 -- ----------------------------
-INSERT INTO `wx_user` VALUES ('2', '1', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '', '0', '[]', '千寻', '1', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50Bia7ERBy8ITHKd1NaWNTxEyJXuLWgGP3pnyrP5wvxwm19Rwkoas4ApkKSYormQxo5ibYEYibicgPX3U/0', '', '0', '1500906186', '1500906186', '1500906211');
-INSERT INTO `wx_user` VALUES ('3', '1', 'ogKdPt0tKAYQM4a1buEoJti1A1dk', '', '0', '[]', '霞文', '2', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50KMeTaia7qzfh6tccEWxoialovZym3WEYIw1c4ZZBSbMianOjLicOfpRfC4XWX5mk0iaZHbSpX3EiaBey8/0', '', '1', '1500906325', '1500906325', '1500906327');
+INSERT INTO `wx_user` VALUES ('2', '1', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '', '0', '[]', '千寻', '1', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50Bia7ERBy8ITHKd1NaWNTxEyJXuLWgGP3pnyrP5wvxwm19Rwkoas4ApkKSYormQxo5ibYEYibicgPX3U/0', '测试备注', '0', '1500906186', '1500906186', '1500906211');
+INSERT INTO `wx_user` VALUES ('3', '1', 'ogKdPt0tKAYQM4a1buEoJti1A1dk', '', '0', '[]', '霞文', '2', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50KMeTaia7qzfh6tccEWxoialovZym3WEYIw1c4ZZBSbMianOjLicOfpRfC4XWX5mk0iaZHbSpX3EiaBey8/0', '你好吗？', '0', '1500906325', '1500906325', '1500906327');
 
 -- ----------------------------
 -- Table structure for wx_user_group

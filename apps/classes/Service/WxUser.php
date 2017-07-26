@@ -37,7 +37,7 @@ class WxUser
     {
         $this->wxUserModel->start();
         try{
-            $findUser = $this->wxUserModel->get($userId);
+            $findUser = $this->wxUserModel->getone(['userId'=>$userId]);
             if (!$findUser){
                 throw new \Exception('微信用户不存在');
             }

@@ -86,4 +86,71 @@ class WxUser extends Base
 
         return $data;
     }
+
+    /**
+     * 获取用户数据
+     * @return bool
+     */
+    public function get()
+    {
+        try {
+            $id   = $this->request->get['id'] ?? 0;
+            $data = $this->wxUserModel->getone([
+                'where'=>"`userId`=$id",
+            ]);
+            return $this->showMsg('success', '获取成功', '', $data);
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 设置用户备注
+     * @return bool
+     */
+    public function setRemark()
+    {
+        try {
+            $id   = $this->request->post['id'] ?? 0;
+            $remark = $this->request->post['remark'] ?? '';
+            if (!$remark){
+                throw new \Exception('您要设置的备注为空');
+            }
+            $wxUserSer = new \App\Service\WxUser();
+            $rs = $wxUserSer->setRemark($id, $remark);
+            if ($rs){
+                return $this->showMsg('success', '设置备注成功');
+            }
+            throw new \Exception('设置备注失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+    /**
+     * 设置拉黑和取消拉黑
+     * @return bool
+     */
+    public function setBlock()
+    {
+        try {
+            $ids   = $this->request->post['ids'] ?? 0;
+            $status = (int) $this->request->post['status'] ?? 0;
+            $actName = $status == 1 ? '拉黑' : '开启';
+            if (!$ids){
+                throw new \Exception('请指定要拉黑的用户');
+            }
+            $wxUserSer = new \App\Service\WxUser();
+            if ($status){
+                $rs = $wxUserSer->setBatchBlock($ids);
+            }else{
+                $rs = $wxUserSer->setBatchUnblock($ids);
+            }
+            if ($rs){
+                return $this->showMsg('success', $actName . '成功');
+            }
+            throw new \Exception($actName . '失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
 }

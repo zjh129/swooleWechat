@@ -86,24 +86,26 @@
                 </div>
             </div>
         </div>
-        <!-- 权限编辑 -->
-        <div class="modal inmodal" id="ruleModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- 用户备注编辑 -->
+        <div class="modal inmodal" id="remarkModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">权限控制</h4>
+                        <h4 class="modal-title">备注设置</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="ruleform" action="/Admin/SysUser/saveRule">
+                        <form role="form" id="remarkform" action="/Admin/WxUser/setRemark">
                             <input type="hidden" name="id" id="id" value="0">
-                            <div id="jstree">
+                            <div class="form-group">
+                                <label for="password">备注内容</label>
+                                <textarea class="form-control" name="remark" id="remark" placeholder="输入用户备注"></textarea>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="javascript:$('#ruleform').submit();">保存</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:$('#remarkform').submit();">保存</button>
                     </div>
                 </div>
             </div>
@@ -241,12 +243,12 @@
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-group"></i>设置分组</button>';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-pencil"></i>设置备注</button>';
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs setRemark" data-toggle="modal" data-target="#remarkModal"><i class="fa fa-pencil"></i>设置备注</button>';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs rule" data-toggle="modal" data-target="#ruleModal"><i class="fa fa-pencil"></i>设置标签</button>';
                         if (cellData.isBlock == 1){
-                            html += '<button type="button" setBlock=0 class="btn btn-outline btn-success btn-xs del"><i class="fa fa-lock"></i>解锁</button>';
+                            html += '<button type="button" setBlock=0 class="btn btn-outline btn-success btn-xs setBlock"><i class="fa fa-lock"></i>解锁</button>';
                         }else{
-                            html += '<button type="button" setBlock=1 class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-unlock"></i>拉黑</button>';
+                            html += '<button type="button" setBlock=1 class="btn btn-outline btn-danger btn-xs setBlock"><i class="fa fa-unlock"></i>拉黑</button>';
                         }
                         $(td).html(html);
                     }
@@ -262,6 +264,7 @@
                     success:function(data) {
                         showToastr(data);
                         if (data.status == 'success'){
+                            console.log(this.id);
                             $('#userModal').modal('hide');
                             table.ajax.reload();
                         }
@@ -307,12 +310,46 @@
                 }
             });
         });
-        $("#tableBox").on('click', '.del', function () {
+        //设置备注
+        var remarkvalidator = $("#remarkform").validate({
+            submitHandler: function(form) {
+                $(form).ajaxSubmit({
+                    type:'post',
+                    dataType:'json',
+                    success:function(data) {
+                        showToastr(data);
+                        if (data.status == 'success'){
+                            $('#remarkModal').modal('hide');
+                            table.ajax.reload();
+                        }
+                    }
+                });
+            }
+        });
+        $("#tableBox").on('click', '.setRemark', function () {
+            //清除错误提示
+            remarkvalidator.resetForm();
+            $(".modal-title").html('设置备注');
+            $.ajax({
+                type: "get",
+                url: "/Admin/WxUser/get",
+                data: {
+                    'id' : $(this).parents("tr").attr('id'),
+                },
+                datatype: "json",
+                success: function (data) {
+                    $("#remarkform input[name='id']").val(data.data.userId);
+                    $("#remarkform textarea[name='remark']").val(data.data.remark);
+                }
+            });
+        });
+        //设置拉黑
+        $("#tableBox").on('click', '.setBlock', function () {
             var id = $(this).parents("tr").attr('id');
-            var setStatus = $(this).attr('setStatus');
-            if (setStatus == 1){
-                var title = '你确定禁用该账号么？';
-                var content = '禁用后该账号将无法正常登录';
+            var setBlock = $(this).attr('setBlock');
+            if (setBlock == 1){
+                var title = '你确定拉黑该账号么？';
+                var content = '拉黑后该账号将无法正常访问';
             }else{
                 var title = '你确定开启该账号么？';
                 var content = '开启后该账号可以正常访问';
@@ -325,10 +362,10 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/Admin/SysUser/setStatus",
+                            url: "/Admin/WxUser/setBlock",
                             data: {
-                                'id' : id,
-                                'status' : setStatus
+                                'ids' : [id],
+                                'status' : setBlock
                             },
                             datatype: "json",
                             success: function (data) {
