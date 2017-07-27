@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
+Source Server         : local_swooleWechat
 Source Server Version : 80001
-Source Host           : 127.0.0.1:3306
+Source Host           : 192.168.35.130:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-26 23:34:12
+Date: 2017-07-27 12:02:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -453,8 +453,8 @@ CREATE TABLE `wx_user` (
 -- ----------------------------
 -- Records of wx_user
 -- ----------------------------
-INSERT INTO `wx_user` VALUES ('2', '1', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '', '0', '[]', '千寻', '1', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50Bia7ERBy8ITHKd1NaWNTxEyJXuLWgGP3pnyrP5wvxwm19Rwkoas4ApkKSYormQxo5ibYEYibicgPX3U/0', '测试备注', '0', '1500906186', '1500906186', '1500906211');
-INSERT INTO `wx_user` VALUES ('3', '1', 'ogKdPt0tKAYQM4a1buEoJti1A1dk', '', '0', '[]', '霞文', '2', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50KMeTaia7qzfh6tccEWxoialovZym3WEYIw1c4ZZBSbMianOjLicOfpRfC4XWX5mk0iaZHbSpX3EiaBey8/0', '你好吗？', '0', '1500906325', '1500906325', '1500906327');
+INSERT INTO `wx_user` VALUES ('2', '1', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '', '100', '[]', '千寻', '1', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50Bia7ERBy8ITHKd1NaWNTxEyJXuLWgGP3pnyrP5wvxwm19Rwkoas4ApkKSYormQxo5ibYEYibicgPX3U/0', '测试备注', '0', '1500906186', '1500906186', '1500906211');
+INSERT INTO `wx_user` VALUES ('3', '1', 'ogKdPt0tKAYQM4a1buEoJti1A1dk', '', '2', '[]', '霞文', '2', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50KMeTaia7qzfh6tccEWxoialovZym3WEYIw1c4ZZBSbMianOjLicOfpRfC4XWX5mk0iaZHbSpX3EiaBey8/0', '你好吗？', '0', '1500906325', '1500906325', '1500906327');
 
 -- ----------------------------
 -- Table structure for wx_user_group
@@ -465,14 +465,14 @@ CREATE TABLE `wx_user_group` (
   `wxGroupId` int(10) NOT NULL DEFAULT '0' COMMENT '微信端用户组ID',
   `groupName` varchar(50) NOT NULL DEFAULT '' COMMENT '用户组名称',
   `parentId` int(10) NOT NULL DEFAULT '0' COMMENT '上级用户组ID',
-  `userCount` int(10) NOT NULL DEFAULT '0',
+  `userCount` int(10) NOT NULL DEFAULT '0' COMMENT '用户数',
   `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除)',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`groupId`),
   UNIQUE KEY `groupIdIndex` (`wxGroupId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='系统用户分组表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='微信用户分组表';
 
 -- ----------------------------
 -- Records of wx_user_group
@@ -501,4 +501,24 @@ CREATE TABLE `wx_user_subscribe_log` (
 -- ----------------------------
 -- Records of wx_user_subscribe_log
 -- ----------------------------
-SET FOREIGN_KEY_CHECKS=1;
+
+-- ----------------------------
+-- Table structure for wx_user_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_user_tag`;
+CREATE TABLE `wx_user_tag` (
+  `tagId` int(10) NOT NULL AUTO_INCREMENT COMMENT '标签ID',
+  `wxTagId` int(10) NOT NULL DEFAULT '0' COMMENT '微信标签ID',
+  `tagName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标签名称',
+  `userCount` int(10) NOT NULL DEFAULT '0' COMMENT '用户数',
+  `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除)',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`tagId`),
+  KEY `tagIdindex` (`wxTagId`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信用户标签表';
+
+-- ----------------------------
+-- Records of wx_user_tag
+-- ----------------------------

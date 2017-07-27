@@ -61,18 +61,21 @@ class WxUserGroup extends Base
         $secId = isset($_GET['secId']) ? $_GET['secId'] : 0;
         //用户组列表
         $groupList     = $this->wxUserGroupModel->getUserGroupList();
-        //树结构用户组列表
-        $tree          = new \App\Common\Tree('groupId', 'parentId', 'child');
-        $tree->nameKey = 'groupName';
-        $tree->load($groupList);
-        $secId && $tree->optionSelectId = $secId;
+        $primaryKey = 'groupId';
         //用户组选择列表
         $optionHtml = '';
         if (isset($this->request->header['Referer']) && strpos(strtolower($this->request->header['Referer']), '/admin/wxusergroup/index') !== false){
             $optionHtml .= '<option value="0">顶级分组</option>';
         }else{
-            $optionHtml .= '<option value="0">请选择</option>';
+            //设置主键字段
+            $primaryKey = 'wxGroupId';
         }
+        //树结构用户组列表
+        $tree          = new \App\Common\Tree($primaryKey, 'parentId', 'child');
+        $tree->nameKey = 'groupName';
+        $tree->load($groupList);
+        $secId && $tree->optionSelectId = $secId;
+
         $optionHtml .= $tree->buildOptions();
         $this->http->finish($optionHtml);
     }

@@ -4,22 +4,22 @@ namespace App\Service;
 use Swoole;
 
 /**
- * 微信用户相关服务类
+ * 微信用户标签相关服务类
  * @package App\Service
  */
-class WxUser
+class WxUserTag
 {
     /**
-     * @var \App\Model\WxUser
+     * @var \App\Model\WxUserTag
      */
-    private $wxUserModel;
+    private $wxUserTagModel;
 
     /**
      * 构造函数
      */
     public function __construct()
     {
-        $this->wxUserModel = model('WxUser');
+        $this->wxUserTagModel = model('WxUserTag');
     }
 
     /**

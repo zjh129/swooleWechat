@@ -20,9 +20,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#groupModal"><i class="fa fa-group"></i>设置用户组</button>
-                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#userModal"><i class="fa fa-lock"></i>拉黑用户</button>
-                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#userModal"><i class="fa fa-unlock"></i>取消拉黑用户</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm syncAllUser"><i class="fa fa-group"></i>同步线上用户</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm setGroup" data-toggle="modal" data-target="#groupModal"><i class="fa fa-group"></i>设置用户组</button>
                     </div>
                 </div>
             </div>
@@ -41,52 +40,32 @@
                 </div>
             </div>
         </div>
-        <!-- 用户编辑model -->
-        <div class="modal inmodal" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- 用户分组编辑model -->
+        <div class="modal inmodal" id="groupModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">添加用户</h4>
+                        <h4 class="modal-title">设置用户分组</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/Admin/SysUser/save">
-                            <input type="hidden" name="id" id="id" value="0">
-                            <div class="form-group">
-                                <label>用户账号</label>
-                                <input type="text" class="form-control" name="account" id="account" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">密码</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" value="">
-                                <span class="help-block m-b-none help-password">如不设置则留空</span>
-                            </div>
-                            <div class="form-group">
-                                <div class="pwstrength_viewport_progress"></div>
-                            </div>
-                            <div class="form-group">
-                                <label>用户名称</label>
-                                <input type="text" placeholder="输入用户名称" class="form-control" name="userName" id="userName" required>
-                            </div>
+                        <form role="groupform" id="groupform" action="/Admin/WxUser/setGroup">
+                            <input type="hidden" name="ids[]" id="ids" value="0">
                             <div class="form-group">
                                 <label>所属用户组</label>
                                 <select class="form-control m-b __web-inspector-hide-shortcut__" name="groupId" id="groupId" required>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>邮箱</label>
-                                <input type="email" placeholder="输入邮箱" class="form-control" name="email" id="email">
-                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="javascript:$('#form').submit();">保存</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:$('#groupform').submit();">保存</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- 用户备注编辑 -->
+        <!-- 用户备注编辑modal -->
         <div class="modal inmodal" id="remarkModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
@@ -138,7 +117,7 @@
                 'secId' : secId,
             },
             success: function (data) {
-                $("#form select[name='groupId']").html(data);
+                $("#groupform select[name='groupId']").html(data);
             }
         });
     }
@@ -242,9 +221,9 @@
                     data:null, title: "操作", orderable:false, searchable:false,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs edit" data-toggle="modal" data-target="#userModal"><i class="fa fa-group"></i>设置分组</button>';
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs setGroup" data-toggle="modal" data-target="#groupModal"><i class="fa fa-group"></i>设置分组</button>';
                         html += '<button type="button" class="btn btn-outline btn-primary btn-xs setRemark" data-toggle="modal" data-target="#remarkModal"><i class="fa fa-pencil"></i>设置备注</button>';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs rule" data-toggle="modal" data-target="#ruleModal"><i class="fa fa-pencil"></i>设置标签</button>';
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs setTag" data-toggle="modal" data-target="#tagModal"><i class="fa fa-pencil"></i>设置标签</button>';
                         if (cellData.isBlock == 1){
                             html += '<button type="button" setBlock=0 class="btn btn-outline btn-success btn-xs setBlock"><i class="fa fa-lock"></i>解锁</button>';
                         }else{
@@ -255,8 +234,8 @@
                 },
             ],
         });
-        //表单验证
-        var validator = $("#form").validate({
+        //设置分组
+        var groupValidator = $("#groupform").validate({
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     type:'post',
@@ -264,54 +243,32 @@
                     success:function(data) {
                         showToastr(data);
                         if (data.status == 'success'){
-                            console.log(this.id);
-                            $('#userModal').modal('hide');
+                            $('#groupModal').modal('hide');
                             table.ajax.reload();
                         }
                     }
                 });
             }
         });
-        //弹窗
-        $(".add").on('click', function () {
-            //载入用户组选项
-            loadGroupIdOption();
+        $("#tableBox").on('click', '.setGroup', function () {
             //清除错误提示
-            validator.resetForm();
-
-            $("#form")[0].reset();
-            $("#form input[name='id']").val(0);
-            $("#form input[name='account']").attr('readonly', false);
-            $(".help-password").css("display","block");
-            $("#form input[name='password']").attr('required', true);
-            $(".modal-title").html('添加用户');
-        });
-        $("#tableBox").on('click', '.edit', function () {
-            //清除错误提示
-            validator.resetForm();
-            $(".help-password").css("display","none");
-            $("#form input[name='account']").attr('readonly', true);
-            $("#form input[name='password']").attr('required', false);
-            $(".modal-title").html('编辑用户');
+            groupValidator.resetForm();
             $.ajax({
                 type: "get",
-                url: "/Admin/SysUser/get",
+                url: "/Admin/WxUser/get",
                 data: {
                     'id' : $(this).parents("tr").attr('id'),
                 },
                 datatype: "json",
                 success: function (data) {
-                    $("#form input[name='id']").val(data.data.id);
-                    $("#form input[name='userName']").val(data.data.userName);
-                    $("#form input[name='account']").val(data.data.account);
-                    $("#form input[name='email']").val(data.data.email);
+                    $("#groupform input[name='ids[]']").val(data.data.userId);
                     //载入用户组选项
                     loadGroupIdOption(data.data.groupId);
                 }
             });
         });
         //设置备注
-        var remarkvalidator = $("#remarkform").validate({
+        var remarkValidator = $("#remarkform").validate({
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     type:'post',
@@ -328,8 +285,7 @@
         });
         $("#tableBox").on('click', '.setRemark', function () {
             //清除错误提示
-            remarkvalidator.resetForm();
-            $(".modal-title").html('设置备注');
+            remarkValidator.resetForm();
             $.ajax({
                 type: "get",
                 url: "/Admin/WxUser/get",
@@ -343,18 +299,41 @@
                 }
             });
         });
+        //同步所有用户信息
+        $(".syncAllUser").on('click', function(){
+            $.confirm({
+                title: "同步所有用户数据",
+                content: "此同步过程可能比较耗时",
+                buttons: {
+                    '确定': function () {
+                        $.ajax({
+                            type: "post",
+                            url: "/Admin/WxUser/syncOnline",
+                            datatype: "json",
+                            success: function (data) {
+                                showToastr(data);
+                                if (data.status == 'success'){
+                                    table.ajax.reload();
+                                }
+                            }
+                        });
+                    },
+                    '取消': function () {
+                    },
+                }
+            });
+        });
         //设置拉黑
         $("#tableBox").on('click', '.setBlock', function () {
             var id = $(this).parents("tr").attr('id');
             var setBlock = $(this).attr('setBlock');
             if (setBlock == 1){
                 var title = '你确定拉黑该账号么？';
-                var content = '拉黑后该账号将无法正常访问';
+                var content = '拉黑后该账号将无法正常使用服务号';
             }else{
                 var title = '你确定开启该账号么？';
-                var content = '开启后该账号可以正常访问';
+                var content = '开启后该账号可以正常使用服务号';
             }
-
             $.confirm({
                 title: title,
                 content: content,

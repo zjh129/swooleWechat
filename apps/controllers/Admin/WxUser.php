@@ -88,6 +88,23 @@ class WxUser extends Base
     }
 
     /**
+     * 同步所有用户信息
+     * @return bool
+     */
+    public function syncOnline()
+    {
+        try {
+            $wxUserSer = new \App\Service\WxUser();
+            $rs = $wxUserSer->syncOnline();
+            if ($rs){
+                return $this->showMsg('success', '同步所有用户成功');
+            }
+            throw new \Exception('同步所有用户失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+    /**
      * 获取用户数据
      * @return bool
      */
@@ -149,6 +166,29 @@ class WxUser extends Base
                 return $this->showMsg('success', $actName . '成功');
             }
             throw new \Exception($actName . '失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 设置用户分组
+     * @return bool
+     */
+    public function setGroup()
+    {
+        try {
+            $ids   = $this->request->post['ids'] ?? 0;
+            $wxGroupId = (int) $this->request->post['groupId'] ?? 0;
+            if (!$ids){
+                throw new \Exception('请指定要设置分组的用户');
+            }
+            $wxUserSer = new \App\Service\WxUser();
+            $rs = $wxUserSer->setUsersGroup($ids, $wxGroupId);
+            if ($rs){
+                return $this->showMsg('success',  '设置用户分组成功');
+            }
+            throw new \Exception('设置用户分组失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }

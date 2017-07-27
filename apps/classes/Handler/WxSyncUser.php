@@ -15,42 +15,11 @@ class WxSyncUser implements Swoole\IFace\EventHandler
 
     public function trigger($type, $data)
     {
-        $openid = $data['openid'] ?? '';
-        if (!$openid) {
+        $openId = $data['openid'] ?? '';
+        if (!$openId) {
             return false;
         }
-        $this->easywechat = Swoole::$php->easywechat;
-        $userService      = $this->easywechat->user;
-        $userInfo         = $userService->get($openid);
-        if ($userInfo) {
-            if ($userInfo->subscribe == 1) {
-                $saveData = [
-                    'openId'        => $userInfo->openid,
-                    'unionId'       => $userInfo->unionid,
-                    'nickName'      => $userInfo->nickname,
-                    'sex'           => (int) $userInfo->sex,
-                    'country'       => $userInfo->country,
-                    'province'      => $userInfo->province,
-                    'city'          => $userInfo->city,
-                    'language'      => $userInfo->language,
-                    'headimgurl'    => $userInfo->headimgurl,
-                    'subscribeTime' => (int) $userInfo->subscribe_time,
-                    'remark'        => $userInfo->remark,
-                    'groupId'       => (int) $userInfo->groupid,
-                    'tagidList'     => json_encode((array) $userInfo->tagid_list),
-                ];
-            }
-            $saveData['subscribe'] = $userInfo->subscribe;
-        }
-        $model = model('WxUser');
-        $findOne = $model->getone(['openId'=>$openid]);
-        if ($findOne){
-            return $model->set($findOne['userId'], $saveData);
-        }else{
-            $saveData['openId'] = $openid;
-            $saveData['firstSubscribeTime'] = (int) $userInfo->subscribe_time;
-            $saveData['createTime'] = time();
-            return $model->put($saveData);
-        }
+        $wxUserSer = new \App\Service\WxUser();
+        $wxUserSer->syncUser($openId);
     }
 }
