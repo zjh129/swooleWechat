@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" class="btn btn-outline btn-primary btn-sm syncAllUser"><i class="fa fa-group"></i>同步线上用户</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm syncOnline"><i class="fa fa-cloud-download"></i>同步线上用户</button>
                         <button type="button" class="btn btn-outline btn-primary btn-sm setGroup" data-toggle="modal" data-target="#groupModal"><i class="fa fa-group"></i>设置用户组</button>
                     </div>
                 </div>
@@ -300,7 +300,7 @@
             });
         });
         //同步所有用户信息
-        $(".syncAllUser").on('click', function(){
+        $(".syncOnline").on('click', function(){
             $.confirm({
                 title: "同步所有用户数据",
                 content: "此同步过程可能比较耗时",

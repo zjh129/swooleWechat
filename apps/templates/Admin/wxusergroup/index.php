@@ -236,12 +236,22 @@
         });
         //同步线上数据
         $(".synconline").on('click', function(){
-            $.ajax({
-                type: "get",
-                url: "/Admin/WxUserGroup/syncOnline",
-                datatype: "json",
-                success: function (data) {
-                    showToastr(data);
+            $.confirm({
+                title: "同步所有线上数据",
+                content: "此同步过程可能比较耗时",
+                buttons: {
+                    '确定': function () {
+                        $.ajax({
+                            type: "post",
+                            url: "/Admin/WxUserGroup/syncOnline",
+                            datatype: "json",
+                            success: function (data) {
+                                showToastr(data, true);
+                            }
+                        });
+                    },
+                    '取消': function () {
+                    },
                 }
             });
         });

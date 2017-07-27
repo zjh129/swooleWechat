@@ -27,207 +27,169 @@ class WxUserTag
      */
     public function syncOnline()
     {
-        $nextOpenId = null;
-        do{
-            $users = Swoole::$php->easywechat->user->lists($nextOpenId);
-            //下一个openId
-            $nextOpenId = isset($users['next_openid']) && !empty($users['next_openid']) ? $users['next_openid'] : null;
-            if (isset($users['data']['openid']) && !empty($users['data']['openid'])){
-                foreach ($users['data']['openid'] as $openId){
-                    $this->syncUser($openId);
+        $onlineTags = Swoole::$php->easywechat->user_tag->lists();
+        $onlineTags = $onlineTags->toArray();
+        if (!isset($onlineTags['tags']) || empty($onlineTags['tags'])){
+            throw new \Exception('线上标签为空');
+        }
+        $this->wxUserTagModel->start();
+        try{
+            foreach ($onlineTags['tags'] as $tagData){
+                $findTag = $this->wxUserTagModel->getone(['wxTagId'=>$tagData['id']]);
+                $saveData = [
+                    'tagName' => $tagData['name'],
+                    'userCount' => $tagData['count'],
+                    'isDel' => 0,
+                ];
+                if (!empty($findTag)){
+                    $this->wxUserTagModel->set($findTag['tagId'], $saveData);
+                }else{
+                    $saveData['wxTagId'] = $tagData['id'];
+                    $saveData['addUserId'] = Swoole::$php->user->getUid();
+                    $saveData['addTime'] = time();
+                    $this->wxUserTagModel->put($saveData);
                 }
             }
-        }while(!empty($nextOpenId));
+            $this->wxUserTagModel->commit();
+            return true;
+        }catch (\Exception $e){
+            $this->wxUserTagModel->rollback();
+            throw new \Exception($e->getMessage());
+        }
 
         return true;
     }
     /**
-     * 同步微信用户信息
-     * @param $openId
+     * 保存规则数据
+     * @param $data
      * @return bool|int
-     */
-    public function syncUser($openId)
-    {
-        $userInfo         = Swoole::$php->easywechat->user->get($openId);
-        if ($userInfo) {
-            if ($userInfo->subscribe == 1) {
-                $saveData = [
-                    'openId'        => $userInfo->openid,
-                    'unionId'       => $userInfo->unionid,
-                    'nickName'      => $userInfo->nickname,
-                    'sex'           => (int) $userInfo->sex,
-                    'country'       => $userInfo->country,
-                    'province'      => $userInfo->province,
-                    'city'          => $userInfo->city,
-                    'language'      => $userInfo->language,
-                    'headimgurl'    => $userInfo->headimgurl,
-                    'subscribeTime' => (int) $userInfo->subscribe_time,
-                    'remark'        => $userInfo->remark,
-                    'groupId'       => (int) $userInfo->groupid,
-                    'tagidList'     => json_encode((array) $userInfo->tagid_list),
-                ];
-            }
-            $saveData['subscribe'] = (int) $userInfo->subscribe;
-        }
-        $findOne = $this->wxUserModel->getone(['openId'=>$openId]);
-        if ($findOne){
-            return $this->wxUserModel->set($findOne['userId'], $saveData);
-        }else{
-            $saveData['openId'] = $openId;
-            $saveData['firstSubscribeTime'] = (int) $userInfo->subscribe_time;
-            $saveData['createTime'] = time();
-            return $this->wxUserModel->put($saveData);
-        }
-    }
-    /**
-     * 设置用户备注
-     * @param $openId
-     * @param string $remark
-     * @return bool
      * @throws \Exception
      */
-    public function setRemark($userId, $remark = '')
+    public function saveData($data)
     {
-        $this->wxUserModel->start();
+        $id = isset($data['tagId']) ? (int) $data['tagId'] : 0;
+        $saveData = [
+            'parentId' => $data['parentId'],
+            'tagName' => $data['tagName'],
+        ];
+        //判断是否重名
+        $existsWhere = ['parentId'=>$saveData['parentId'], 'tagName'=>$saveData['tagName'],'isDel'=>0];
+        $id && $existsWhere['tagId !'] = $id;
+        $findExists = $this->wxUserTagModel->exists($existsWhere);
+        if ($findExists){
+            throw new \Exception('该层级已存在同名标签');
+        }
+        $this->wxUserTagModel->start();
         try{
-            $findUser = $this->wxUserModel->getone(['userId'=>$userId]);
-            if (!$findUser){
-                throw new \Exception('微信用户不存在');
+            if ($id){//修改
+                $findData = $this->wxUserTagModel->get($id);
+                if (empty($findData)){
+                    throw new \Exception('标签数据不存在');
+                }
+                $upOnline = Swoole::$php->easywechat->user_tag->update($findData['wxTagId'], $saveData['tagName']);
+                $upOnline = $upOnline->toArray();
+                if ($upOnline['errcode'] != 0){
+                    throw new \Exception('线上编辑用户标签失败:'.$upOnline['errmsg']);
+                }
+
+                $upLocal = $this->wxUserTagModel->set($id, $saveData);
+                if (!$upLocal){
+                    throw new \Exception('更新本地用户标签失败');
+                }
+            }else{//添加
+                //排序最大值
+                $maxOrderNum = $this->wxUserTagModel->getMax('orderNum');
+                $saveData['orderNum'] = $maxOrderNum + 1;
+                $saveData['addUserId'] =$data['addUserId'];
+                $saveData['addTime'] = time();
+                $upOnline = Swoole::$php->easywechat->user_tag->create($saveData['tagName']);
+                $upOnline = $upOnline->toArray();
+                if (!$upOnline){
+                    throw new \Exception('线上创建分组失败');
+                }
+                $saveData['wxTagId'] = isset($upOnline['tag']['id']) ? $upOnline['tag']['id'] : 0;
+
+                $upLocal = $this->wxUserTagModel->put($saveData);
+                if (!$upLocal){
+                    throw new \Exception('本地创建微信分组失败');
+                }
             }
-            $rs = Swoole::$php->easywechat->user->remark($findUser['openId'], $remark);
-            if (!$rs){
-                throw new \Exception('线上设置用户备注失败');
-            }
-            $localRs = $this->wxUserModel->set($findUser['userId'], ['remark' => $remark]);
-            if (!$localRs){
-                throw new \Exception('本地设置备注失败');
-            }
-            $this->wxUserModel->commit();
+
             return true;
         }catch (\Exception $e){
-            $this->wxUserModel->rollback();
             throw new \Exception($e->getMessage());
         }
     }
 
     /**
-     * 批量拉黑用户
-     * @param array $userIds
+     * 设置顺序
+     * @param $parentId
+     * @param $tagId
+     * @param $position
      * @return bool
      * @throws \Exception
      */
-    public function setBatchBlock($userIds = [])
+    public function setOrderNum($parentId, $tagId, $position)
     {
-        if (!$userIds){
-            throw new \Exception('请选择要拉黑的用户ID');
+        $tagList = $this->wxUserTagModel->getAuthRuleListByParentId($parentId);
+        $orderKeyList = [];
+        //第一个首先插入
+        if($position == 0){
+            $orderKeyList[] = $tagId;
         }
-        $this->wxUserModel->start();
-        try{
-            $userList = $this->wxUserModel->gets([
-                'select' => 'userId,openId',
-                'where' => "`userId` in (".implode(',', $userIds).") AND `isBlock`=0"
-            ]);
-            if (!$userList){
-                throw new \Exception('您所选择拉黑的用户无效');
+        if ($tagList){
+            $countAuthtag = count($tagList);
+            foreach ($tagList as $k => $v){
+                //如果插入之前顺序恰当，将当前规则id强制加入
+                if($k == $position){
+                    $orderKeyList[] = $tagId;
+                }
+                //非当前规则id时：按顺序排序规则ID
+                if ($v['tagId'] != $tagId){
+                    $orderKeyList[] = $v['tagId'];
+                }
             }
-            $userIds = array_column($userList, 'userId');
-            $openIdList = array_column($userList, 'openId');
-            $rs = Swoole::$php->easywechat->user->batchBlock($openIdList);
-            if ($rs['errcode'] != 0){
-                throw new \Exception('线上拉黑用户失败');
+            //插入最后
+            if($position == $countAuthtag - 1){
+                $orderKeyList[] = $tagId;
             }
-            $rsLocal = $this->wxUserModel->sets(['isBlock'=>1], [
-                'where' => "`userId` in (".implode(',', $userIds).")"
-            ]);
-            if (!$rsLocal){
-                throw new \Exception('本地拉黑用户失败');
+        }
+        if ($orderKeyList){
+            $this->wxUserTagModel->start();
+            try{
+                foreach ($orderKeyList as $orderNum => $tagId){
+                    $this->wxUserTagModel->set($tagId, ['orderNum' => $orderNum, 'parentId'=>$parentId]);
+                }
+                $this->wxUserTagModel->commit();
+                return true;
+            }catch (\Exception $e){
+                $this->wxUserTagModel->rollback();
+                throw new \Exception($e->getMessage());
             }
-            $this->wxUserModel->commit();
-            return true;
-        }catch (\Exception $e){
-            $this->wxUserModel->rollback();
-            throw new \Exception($e->getMessage());
         }
     }
 
     /**
-     * 批量取消拉黑用户
-     * @param array $userIds
+     * 删除标签
+     * @param $tagId
      * @return bool
      * @throws \Exception
      */
-    public function setBatchUnblock($userIds = [])
+    public function del($tagId)
     {
-        if (!$userIds){
-            throw new \Exception('请选择要取消拉黑的用户ID');
+        $findData = $this->wxUserTagModel->get($tagId);
+        if (!$findData){
+            throw new \Exception('用户标签不存在');
         }
-        $this->wxUserModel->start();
-        try{
-            $userList = $this->wxUserModel->gets([
-                'select' => 'userId,openId',
-                'where' => "`userId` in (".implode(',', $userIds).") AND `isBlock`=1"
-            ]);
-            if (!$userList){
-                throw new \Exception('您所选择取消拉黑的用户无效');
-            }
-            $userIds = array_column($userList, 'userId');
-            $openIdList = array_column($userList, 'openId');
-            $rs = Swoole::$php->easywechat->user->batchUnblock($openIdList);
-            if ($rs['errcode'] != 0){
-                throw new \Exception('线上取消拉黑用户失败');
-            }
-            $rsLocal = $this->wxUserModel->sets(['isBlock'=>0], [
-                'where' => "`userId` in (".implode(',', $userIds).")"
-            ]);
-            if (!$rsLocal){
-                throw new \Exception('本地取消拉黑用户失败');
-            }
-            $this->wxUserModel->commit();
-            return true;
-        }catch (\Exception $e){
-            $this->wxUserModel->rollback();
-            throw new \Exception($e->getMessage());
+        $upOnline = Swoole::$php->easywechat->user_tag->delete($findData['wxTagId']);
+        $upOnline = $upOnline->toArray();
+        if (!$upOnline){
+            throw new \Exception('删除线上失败');
         }
-    }
-
-    /**
-     * 批量设置用户分组
-     * @param $userIds
-     * @param int $wxGroupId
-     * @return bool
-     * @throws \Exception
-     */
-    public function setUsersGroup($userIds, $wxGroupId = 0)
-    {
-        if (!$userIds){
-            throw new \Exception('请选择要移动分组的用户ID');
+        $upLocal = $this->wxUserTagModel->set($findData['tagId'], ['isDel'=>1]);
+        if (!$upLocal){
+            throw new \Exception('删除本地失败');
         }
-        $this->wxUserModel->start();
-        try{
-            $userList = $this->wxUserModel->gets([
-                'select' => 'userId,openId',
-                'where' => "`userId` in (".implode(',', $userIds).") AND `subscribe`=1"
-            ]);
-            if (!$userList){
-                throw new \Exception('您选择设置分组的用户无效');
-            }
-            $userIds = array_column($userList, 'userId');
-            $openIdList = array_column($userList, 'openId');
-            $rs = Swoole::$php->easywechat->user_group->moveUsers($openIdList, $wxGroupId);
-            if ($rs['errcode'] != 0){
-                throw new \Exception('线上设置用户分组失败');
-            }
-            $rsLocal = $this->wxUserModel->sets(['groupId'=>$wxGroupId], [
-                'where' => "`userId` in (".implode(',', $userIds).")"
-            ]);
-            if (!$rsLocal){
-                throw new \Exception('本地设置用户分组失败');
-            }
-            $this->wxUserModel->commit();
-            return true;
-        }catch (\Exception $e){
-            $this->wxUserModel->rollback();
-            throw new \Exception($e->getMessage());
-        }
+        return true;
     }
 }

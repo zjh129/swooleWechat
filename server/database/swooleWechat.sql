@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local_swooleWechat
+Source Server         : 本地数据库
 Source Server Version : 80001
-Source Host           : 192.168.35.130:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-27 12:02:00
+Date: 2017-07-27 23:28:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -95,7 +95,7 @@ CREATE TABLE `sys_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -109,8 +109,9 @@ INSERT INTO `sys_menu` VALUES ('6', 'admin', '系统用户管理', '/Admin/SysUs
 INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', 'fa fa-gavel', '3', '3', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', 'fa fa-linux', '1', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('9', 'admin', '微信用户', '/Admin/WxUser/index', 'fa fa-user', '0', '1', '0', '2', '1500474574');
-INSERT INTO `sys_menu` VALUES ('10', 'admin', '用户组管理', '/Admin/WxUserGroup/index', 'fa fa-group', '9', '4', '0', '2', '1500474665');
-INSERT INTO `sys_menu` VALUES ('11', 'admin', '微信用户管理', '/Admin/WxUser/index', 'fa fa-user', '9', '5', '0', '2', '1500474711');
+INSERT INTO `sys_menu` VALUES ('10', 'admin', '用户组管理', '/Admin/WxUserGroup/index', 'fa fa-group', '9', '1', '0', '2', '1500474665');
+INSERT INTO `sys_menu` VALUES ('11', 'admin', '微信用户管理', '/Admin/WxUser/index', 'fa fa-user', '9', '2', '0', '2', '1500474711');
+INSERT INTO `sys_menu` VALUES ('12', 'admin', '用户标签管理', '/Admin/WxUserTag/Index', 'fa fa-tag', '9', '0', '0', '2', '1501164293');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -477,10 +478,10 @@ CREATE TABLE `wx_user_group` (
 -- ----------------------------
 -- Records of wx_user_group
 -- ----------------------------
-INSERT INTO `wx_user_group` VALUES ('1', '0', '未分组', '0', '2', '0', '0', '2', '1500559958');
+INSERT INTO `wx_user_group` VALUES ('1', '0', '未分组', '0', '0', '0', '0', '2', '1500559958');
 INSERT INTO `wx_user_group` VALUES ('2', '1', '黑名单', '0', '0', '1', '0', '2', '1500559958');
-INSERT INTO `wx_user_group` VALUES ('3', '2', '星标组', '0', '0', '2', '0', '2', '1500559958');
-INSERT INTO `wx_user_group` VALUES ('4', '100', '内部人员', '0', '0', '3', '0', '2', '1500564732');
+INSERT INTO `wx_user_group` VALUES ('3', '2', '星标组', '0', '1', '2', '0', '2', '1500559958');
+INSERT INTO `wx_user_group` VALUES ('4', '100', '内部人员', '0', '1', '3', '0', '2', '1500564732');
 INSERT INTO `wx_user_group` VALUES ('26', '112', '测试组', '4', '0', '0', '0', '2', '1500647210');
 INSERT INTO `wx_user_group` VALUES ('27', '113', '开发组', '4', '0', '2', '0', '2', '1500647233');
 INSERT INTO `wx_user_group` VALUES ('28', '114', '运营组', '4', '0', '1', '0', '2', '1500647240');
@@ -511,14 +512,21 @@ CREATE TABLE `wx_user_tag` (
   `wxTagId` int(10) NOT NULL DEFAULT '0' COMMENT '微信标签ID',
   `tagName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标签名称',
   `userCount` int(10) NOT NULL DEFAULT '0' COMMENT '用户数',
+  `parentId` int(10) NOT NULL DEFAULT '0' COMMENT '父级ID',
   `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除(0:正常,1:删除)',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`tagId`),
   KEY `tagIdindex` (`wxTagId`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信用户标签表';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信用户标签表';
 
 -- ----------------------------
 -- Records of wx_user_tag
 -- ----------------------------
+INSERT INTO `wx_user_tag` VALUES ('9', '117', '测试标签', '0', '0', '0', '1', '2', '1501168508');
+INSERT INTO `wx_user_tag` VALUES ('10', '2', '星标组', '1', '0', '0', '0', '2', '1501168837');
+INSERT INTO `wx_user_tag` VALUES ('11', '100', '内部人员', '1', '10', '3', '0', '2', '1501168837');
+INSERT INTO `wx_user_tag` VALUES ('12', '112', '测试组', '0', '10', '2', '0', '2', '1501168837');
+INSERT INTO `wx_user_tag` VALUES ('13', '114', '运营组', '0', '11', '0', '0', '2', '1501168837');
+SET FOREIGN_KEY_CHECKS=1;

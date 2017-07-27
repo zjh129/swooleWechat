@@ -28,8 +28,10 @@ class WxUser
     public function syncOnline()
     {
         $nextOpenId = null;
-        do{
+        //do{
             $users = Swoole::$php->easywechat->user->lists($nextOpenId);
+            var_dump($users);
+            return true;
             if (isset($users['next_openid']) && !empty($users['next_openid'])){
                 $nextOpenId = $users['next_openid'];
             }
@@ -38,7 +40,7 @@ class WxUser
                     $this->syncUser($openId);
                 }
             }
-        }while(!empty($nextOpenId));
+        //}while(!empty($nextOpenId));
 
         return true;
     }

@@ -78,6 +78,7 @@ class WxUser extends Base
             foreach ($list as $k => $v){
                 $v['DT_RowId'] = $v['userId'];
                 $v['subscribeTime'] = date('Y-m-d H:i:s', $v['subscribeTime']);
+                $v['tagidList'] = isset($v['tagidList']) && $v['tagidList'] ? json_decode($v['tagidList']) : [];
                 $list[$k] = $v;
             }
         }

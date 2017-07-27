@@ -29,6 +29,7 @@ class WxUserGroup
     public function syncOnline()
     {
         $onlineGroups = Swoole::$php->easywechat->user_group->lists();
+        $onlineGroups = $onlineGroups->toArray();
         if (!isset($onlineGroups['groups']) || empty($onlineGroups['groups'])){
             throw new \Exception('线上用户组数据为空');
         }
@@ -120,9 +121,9 @@ class WxUserGroup
                     throw new \Exception('分组数据不存在');
                 }
                 $upOnline = Swoole::$php->easywechat->user_group->update($findData['wxGroupId'], $saveData['groupName']);
-                $onlineGroupData = $upOnline->toArray();
-                if ($onlineGroupData['errcode'] != 0){
-                    throw new \Exception('线上创建分组失败:'.$onlineGroupData['errmsg']);
+                $upOnline = $upOnline->toArray();
+                if ($upOnline['errcode'] != 0){
+                    throw new \Exception('线上编辑分组失败:'.$upOnline['errmsg']);
                 }
 
                 $upLocal = $this->wxUserGroupModel->set($id, $saveData);
@@ -136,11 +137,11 @@ class WxUserGroup
                 $saveData['addUserId'] =$data['addUserId'];
                 $saveData['addTime'] = time();
                 $upOnline = Swoole::$php->easywechat->user_group->create($saveData['groupName']);
-                $onlineGroupData = $upOnline->toArray();
-                if (!$onlineGroupData){
+                $upOnline = $upOnline->toArray();
+                if (!$upOnline){
                     throw new \Exception('线上创建分组失败');
                 }
-                $saveData['wxGroupId'] = isset($onlineGroupData['group']['id']) ? $onlineGroupData['group']['id'] : 0;
+                $saveData['wxGroupId'] = isset($upOnline['group']['id']) ? $upOnline['group']['id'] : 0;
 
                 $upLocal = $this->wxUserGroupModel->put($saveData);
                 if (!$upLocal){
