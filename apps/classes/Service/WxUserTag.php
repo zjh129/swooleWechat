@@ -30,9 +30,8 @@ class WxUserTag
         $nextOpenId = null;
         do{
             $users = Swoole::$php->easywechat->user->lists($nextOpenId);
-            if (isset($users['next_openid']) && !empty($users['next_openid'])){
-                $nextOpenId = $users['next_openid'];
-            }
+            //下一个openId
+            $nextOpenId = isset($users['next_openid']) && !empty($users['next_openid']) ? $users['next_openid'] : null;
             if (isset($users['data']['openid']) && !empty($users['data']['openid'])){
                 foreach ($users['data']['openid'] as $openId){
                     $this->syncUser($openId);
