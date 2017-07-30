@@ -27,20 +27,21 @@ class WxUser
      */
     public function syncOnline()
     {
-        $nextOpenId = null;
-        //do{
+        $nextOpenId = '';
+        do{
             $users = Swoole::$php->easywechat->user->lists($nextOpenId);
-            var_dump($users);
-            return true;
+            $users = $users->toArray();
             if (isset($users['next_openid']) && !empty($users['next_openid'])){
                 $nextOpenId = $users['next_openid'];
+            }else{
+                $nextOpenId = '';
             }
             if (isset($users['data']['openid']) && !empty($users['data']['openid'])){
                 foreach ($users['data']['openid'] as $openId){
                     $this->syncUser($openId);
                 }
             }
-        //}while(!empty($nextOpenId));
+        }while(!empty($nextOpenId));
 
         return true;
     }
@@ -232,5 +233,43 @@ class WxUser
             $this->wxUserModel->rollback();
             throw new \Exception($e->getMessage());
         }
+    }
+
+    /**
+     * 设置用户标签
+     * @param $userId
+     * @param $wxTagIds
+     * @return bool
+     * @throws \Exception
+     */
+    public function setUserTag($userId, $wxTagIds)
+    {
+        $userData = $this->wxUserModel->getone([
+            'where'=>"`userId`=$userId",
+            'select' => 'openId,tagidList',
+        ]);
+        if (!$userData){
+            throw new \Exception('用户不存在');
+        }
+        $userTagIds = $userData['tagidList'] ? json_decode($userData['tagidList']) : [];
+        //相同的标签ID列表
+        $sameTagIds = array_intersect($userTagIds, $wxTagIds);
+        //删除的标签ID列表
+        $removeTagIds = array_diff($userTagIds, $sameTagIds);
+        //新增的标签ID列表
+        $newTagIds = array_diff($wxTagIds, $sameTagIds);
+        //处理用户标签
+        if ($removeTagIds){
+            foreach ($removeTagIds as $removeTagId){
+                Swoole::$php->easywechat->user_tag->batchUntagUsers($userData['openId'], $removeTagId);
+            }
+        }
+        if ($newTagIds){
+            foreach ($newTagIds as $newTagId){
+                Swoole::$php->easywechat->user_tag->batchTagUsers($userData['openId'], $newTagId);
+            }
+        }
+        $this->wxUserModel->set($userId, ['tagidList'=>json_encode($wxTagIds)]);
+        return true;
     }
 }

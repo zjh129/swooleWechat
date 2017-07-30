@@ -21,7 +21,6 @@
                 <div class="col-md-4">
                     <div id="nestable-menu">
                         <button type="button" class="btn btn-outline btn-primary btn-sm syncOnline"><i class="fa fa-cloud-download"></i>同步线上用户</button>
-                        <button type="button" class="btn btn-outline btn-primary btn-sm setGroup" data-toggle="modal" data-target="#groupModal"><i class="fa fa-group"></i>设置用户组</button>
                     </div>
                 </div>
             </div>
@@ -85,6 +84,28 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
                         <button type="button" class="btn btn-primary" onclick="javascript:$('#remarkform').submit();">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--用户标签管理-->
+        <div class="modal inmodal" id="tagModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated fadeIn">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">标签设置</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" id="tagform" action="/Admin/WxUser/setTag">
+                            <input type="hidden" name="id" id="id" value="0">
+                            <div id="jstree">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:$('#tagform').submit();">保存</button>
                     </div>
                 </div>
             </div>
@@ -196,7 +217,7 @@
                         var html = '<ul class="tag-list" style="padding: 0">';
                         if (cellData != '[]'){
                             $.each(cellData, function(i, n){
-                                html += '<li><a href="#">n</a></li>';
+                                html += '<li><a href="#">' + n + '</a></li>';
                             });
                         }
                         html += '</ul>';
@@ -359,6 +380,64 @@
                     },
                 }
             });
+        });
+        //编辑标签
+        $("#tableBox").on('click', '.setTag', function () {
+            var id = $(this).parents("tr").attr('id');
+            $("#tagform input[name='id']").val(id);
+            //加载树结构
+            $('#jstree').jstree({
+                'core' : {
+                    'data' : {
+                        'url' : '/Admin/WxUserTag/getJsTreeData',
+                        'data' : function (node) {
+                            //return {'id' : id};
+                        },
+                    }
+                },
+                'types' : {
+                    'default' : {
+                        'icon' : 'fa fa-folder'
+                    },
+                },
+                "checkbox" : {
+                    "keep_selected_style" : false
+                },
+                "plugins" : [ 'types', 'checkbox'],
+            });
+            $("#jstree").jstree('uncheck_all');
+            $.ajax({
+                type: "get",
+                url: "/Admin/WxUser/get",
+                data: {
+                    'id' : id,
+                },
+                datatype: "json",
+                success: function (data) {
+                    // 批量选中节点
+                    $("#jstree").jstree('check_node', data.data.tagidList);
+                }
+            });
+        });
+        //用户授权表单验证
+        $("#tagform").validate({
+            submitHandler: function(form) {
+                var checkedNode = $("#jstree").jstree('get_checked');
+                $(form).ajaxSubmit({
+                    type:'post',
+                    dataType:'json',
+                    data:{
+                        tagIds:checkedNode
+                    },
+                    success:function(data) {
+                        showToastr(data);
+                        if (data.status == 'success'){
+                            $('#tagModal').modal('hide');
+                            table.ajax.reload();
+                        }
+                    }
+                });
+            }
         });
     });
 </script>

@@ -116,6 +116,8 @@ class WxUser extends Base
             $data = $this->wxUserModel->getone([
                 'where'=>"`userId`=$id",
             ]);
+            $data['tagidList'] = isset($data['tagidList']) && $data['tagidList'] ? json_decode($data['tagidList']) : [];
+
             return $this->showMsg('success', '获取成功', '', $data);
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
@@ -190,6 +192,29 @@ class WxUser extends Base
                 return $this->showMsg('success',  '设置用户分组成功');
             }
             throw new \Exception('设置用户分组失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 设置用户标签
+     * @return bool
+     */
+    public function setTag()
+    {
+        try {
+            $id   = $this->request->post['id'] ?? 0;
+            $tagIds = $this->request->post['tagIds'] ?? '';
+            if (!$tagIds){
+                throw new \Exception('请勾选要设置的标签列表');
+            }
+            $wxUserSer = new \App\Service\WxUser();
+            $rs = $wxUserSer->setUserTag($id, $tagIds);
+            if ($rs){
+                return $this->showMsg('success', '设置标签成功');
+            }
+            throw new \Exception('设置标签失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }

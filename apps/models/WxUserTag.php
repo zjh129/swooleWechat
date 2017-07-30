@@ -36,7 +36,7 @@ class WxUserTag extends \App\Component\BaseModel
     public function getUserTagListByChoice()
     {
         $groupList = $this->gets([
-            'select' => 'wxTagId as tagId,tagName,parentId,orderNum',
+            'select' => 'tagId,wxTagId,tagName,parentId,orderNum',
             'from' => $this->table,
             'where' => "isDel=0",
             'order' => "orderNum ASC,tagId ASC",

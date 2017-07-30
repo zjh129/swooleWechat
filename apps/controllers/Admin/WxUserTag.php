@@ -59,16 +59,21 @@ class WxUserTag extends Base
      */
     public function getJsTreeData()
     {
+        $dataType = 'list';
         //权限规则列表
         if (isset($this->request->header['Referer']) && strpos(strtolower($this->request->header['Referer']), '/admin/wxusertag/index') !== false){
             $ruleList     = $this->wxUserTagModel->getUserTagList();
         }else{
+            $dataType = 'choice';
             $ruleList     = $this->wxUserTagModel->getUserTagListByChoice();
         }
         //树结构用户组列表
         $tree          = new \App\Common\Tree('tagId', 'parentId', 'children');
         $tree->nameKey = 'tagName';
         $tree->load($ruleList);
+        if ($dataType == 'choice'){
+            $tree->pk = 'wxTagId';
+        }
         return $tree->makeJsTreeFormat();
     }
 
