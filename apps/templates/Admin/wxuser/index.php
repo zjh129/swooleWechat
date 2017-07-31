@@ -381,30 +381,31 @@
                 }
             });
         });
+        //加载树结构
+        $('#jstree').jstree({
+            'core' : {
+                'data' : {
+                    'url' : '/Admin/WxUserTag/getJsTreeData',
+                    'data' : function (node) {
+                        //return {'id' : id};
+                    },
+                }
+            },
+            'types' : {
+                'default' : {
+                    'icon' : 'fa fa-folder'
+                },
+            },
+            "checkbox" : {
+                "keep_selected_style" : false
+            },
+            "plugins" : [ 'types', 'checkbox'],
+        });
         //编辑标签
         $("#tableBox").on('click', '.setTag', function () {
             var id = $(this).parents("tr").attr('id');
             $("#tagform input[name='id']").val(id);
-            //加载树结构
-            $('#jstree').jstree({
-                'core' : {
-                    'data' : {
-                        'url' : '/Admin/WxUserTag/getJsTreeData',
-                        'data' : function (node) {
-                            //return {'id' : id};
-                        },
-                    }
-                },
-                'types' : {
-                    'default' : {
-                        'icon' : 'fa fa-folder'
-                    },
-                },
-                "checkbox" : {
-                    "keep_selected_style" : false
-                },
-                "plugins" : [ 'types', 'checkbox'],
-            });
+
             $("#jstree").jstree('uncheck_all');
             $.ajax({
                 type: "get",

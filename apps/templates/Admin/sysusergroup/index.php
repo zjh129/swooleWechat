@@ -233,31 +233,32 @@
                 }
             });
         });
+        //加载树结构
+        $('#jstree').jstree({
+            'core' : {
+                'data' : {
+                    'url' : '/Admin/SysAuthRule/getJsTreeData',
+                    'data' : function (node) {
+                        //return {'id' : id};
+                    },
+                }
+            },
+            'types' : {
+                'default' : {
+                    'icon' : 'fa fa-folder'
+                },
+            },
+            "checkbox" : {
+                "keep_selected_style" : false
+            },
+            "plugins" : [ 'types', 'checkbox'],
+        });
         //编辑权限,参考网址(http://luozhihua.com/jquery-jstree%E9%80%89%E4%B8%AD%E6%88%96%E5%8F%96%E6%B6%88%E9%80%89%E4%B8%AD%E8%8A%82%E7%82%B9.html)
         $('.editrule').on('click', function () {
             //$('#ruleModal').modal('show');
             var id = $(this).parents("li").attr('data-id');
             $("#ruleform input[name='id']").val(id);
-            //加载树结构
-            $('#jstree').jstree({
-                'core' : {
-                    'data' : {
-                        'url' : '/Admin/SysAuthRule/getJsTreeData',
-                        'data' : function (node) {
-                            //return {'id' : id};
-                        },
-                    }
-                },
-                'types' : {
-                    'default' : {
-                        'icon' : 'fa fa-folder'
-                    },
-                },
-                "checkbox" : {
-                    "keep_selected_style" : false
-                },
-                "plugins" : [ 'types', 'checkbox'],
-            });
+
             $("#jstree").jstree('uncheck_all');
             $.ajax({
                 type: "get",

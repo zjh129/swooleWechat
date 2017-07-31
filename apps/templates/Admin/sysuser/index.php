@@ -313,30 +313,31 @@
                 }
             });
         });
+        //加载树结构
+        $('#jstree').jstree({
+            'core' : {
+                'data' : {
+                    'url' : '/Admin/SysAuthRule/getJsTreeData',
+                    'data' : function (node) {
+                        //return {'id' : id};
+                    },
+                }
+            },
+            'types' : {
+                'default' : {
+                    'icon' : 'fa fa-folder'
+                },
+            },
+            "checkbox" : {
+                "keep_selected_style" : false
+            },
+            "plugins" : [ 'types', 'checkbox'],
+        });
         //编辑权限
         $("#tableBox").on('click', '.rule', function () {
             var id = $(this).parents("tr").attr('id');
             $("#ruleform input[name='id']").val(id);
-            //加载树结构
-            $('#jstree').jstree({
-                'core' : {
-                    'data' : {
-                        'url' : '/Admin/SysAuthRule/getJsTreeData',
-                        'data' : function (node) {
-                            //return {'id' : id};
-                        },
-                    }
-                },
-                'types' : {
-                    'default' : {
-                        'icon' : 'fa fa-folder'
-                    },
-                },
-                "checkbox" : {
-                    "keep_selected_style" : false
-                },
-                "plugins" : [ 'types', 'checkbox'],
-            });
+
             $("#jstree").jstree('uncheck_all');
             $.ajax({
                 type: "get",
