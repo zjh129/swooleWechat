@@ -192,4 +192,47 @@ class WxUserTag
         }
         return true;
     }
+    /**
+     * 本地tagId集转换为微信tagId集
+     * @param array $tagIds
+     * @return array
+     */
+    public function tagIdsToWxTagIds($tagIds = [])
+    {
+        $tagList = $this->wxUserTagModel->getUserTagList();
+        if ($tagList){
+            $tagIdToWxTagIdMap = array_combine(array_column($tagList, 'tagId'), array_column($tagList, 'wxTagId'));
+        }else{
+            $tagIdToWxTagIdMap = [];
+        }
+        $wxTagIds = [];
+        if ($tagIdToWxTagIdMap && $tagIds){
+            foreach ($tagIds as $tagId){
+                isset($tagIdToWxTagIdMap[$tagId]) && $wxTagIds[] = $tagIdToWxTagIdMap[$tagId];
+            }
+        }
+        return $wxTagIds;
+    }
+
+    /**
+     * 微信tagId集转换为本地TagId集
+     * @param array $wxTagIds
+     * @return array
+     */
+    public function wxTagIdsToTagIds($wxTagIds = [])
+    {
+        $tagList = $this->wxUserTagModel->getUserTagList();
+        if ($tagList){
+            $wxTagIdToTagIdMap = array_combine(array_column($tagList, 'wxTagId'), array_column($tagList, 'tagId'));
+        }else{
+            $wxTagIdToTagIdMap = [];
+        }
+        $tagIds = [];
+        if ($wxTagIdToTagIdMap && $wxTagIds){
+            foreach ($wxTagIds as $wxTagId){
+                isset($wxTagIdToTagIdMap[$wxTagId]) && $tagIds[] = $wxTagIdToTagIdMap[$wxTagId];
+            }
+        }
+        return $tagIds;
+    }
 }

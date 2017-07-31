@@ -116,7 +116,10 @@ class WxUser extends Base
             $data = $this->wxUserModel->getone([
                 'where'=>"`userId`=$id",
             ]);
+            //解析微信用户标签ID，并转换为本地微信用户标签ID
             $data['tagidList'] = isset($data['tagidList']) && $data['tagidList'] ? json_decode($data['tagidList']) : [];
+            $wxUserTagSer = new \App\Service\WxUserTag();
+            $data['tagidList'] = $wxUserTagSer->wxTagIdsToTagIds($data['tagidList']);
 
             return $this->showMsg('success', '获取成功', '', $data);
         } catch (\Exception $e) {
@@ -210,7 +213,11 @@ class WxUser extends Base
                 throw new \Exception('请勾选要设置的标签列表');
             }
             $wxUserSer = new \App\Service\WxUser();
-            $rs = $wxUserSer->setUserTag($id, $tagIds);
+            //转换数据库标签ID为微信用户标签ID
+            $wxUserTagSer = new \App\Service\WxUserTag();
+            $wxTagIds = $wxUserTagSer->tagIdsToWxTagIds($tagIds);
+
+            $rs = $wxUserSer->setUserTag($id, $wxTagIds);
             if ($rs){
                 return $this->showMsg('success', '设置标签成功');
             }
