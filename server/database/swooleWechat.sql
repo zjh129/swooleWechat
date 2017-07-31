@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-27 23:28:39
+Date: 2017-07-31 22:50:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -95,23 +95,25 @@ CREATE TABLE `sys_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', 'fa fa-dashboard', '0', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', 'fa fa-desktop', '1', '1', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '2', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '3', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', 'fa fa-sitemap', '3', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('5', 'admin', '系统用户组管理', '/Admin/SysUserGroup/index', 'fa fa-group', '3', '1', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('6', 'admin', '系统用户管理', '/Admin/SysUser/Index', 'fa fa-user', '3', '2', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', 'fa fa-gavel', '3', '3', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', 'fa fa-linux', '1', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('9', 'admin', '微信用户', '/Admin/WxUser/index', 'fa fa-user', '0', '1', '0', '2', '1500474574');
+INSERT INTO `sys_menu` VALUES ('9', 'admin', '微信用户', '/Admin/WxUser/index', 'fa fa-user', '0', '2', '0', '2', '1500474574');
 INSERT INTO `sys_menu` VALUES ('10', 'admin', '用户组管理', '/Admin/WxUserGroup/index', 'fa fa-group', '9', '1', '0', '2', '1500474665');
 INSERT INTO `sys_menu` VALUES ('11', 'admin', '微信用户管理', '/Admin/WxUser/index', 'fa fa-user', '9', '2', '0', '2', '1500474711');
 INSERT INTO `sys_menu` VALUES ('12', 'admin', '用户标签管理', '/Admin/WxUserTag/Index', 'fa fa-tag', '9', '0', '0', '2', '1501164293');
+INSERT INTO `sys_menu` VALUES ('13', 'admin', '自定义菜单', '/Admin/WxMenu/index', 'fa fa-list-alt', '0', '1', '0', '2', '1501509672');
+INSERT INTO `sys_menu` VALUES ('14', 'admin', '菜单管理', '/Admin/WxMenu/index', 'fa fa-list-alt', '13', '4', '0', '2', '1501510227');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -183,6 +185,33 @@ CREATE TABLE `sys_user_to_group` (
 
 -- ----------------------------
 -- Records of sys_user_to_group
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_menu`;
+CREATE TABLE `wx_menu` (
+  `menuId` int(10) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+  `wxMenuId` varchar(20) NOT NULL DEFAULT '' COMMENT '微信菜单ID',
+  `menuType` varchar(20) NOT NULL DEFAULT '' COMMENT '菜单类型',
+  `menuName` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单名称',
+  `key` varchar(100) NOT NULL DEFAULT '' COMMENT 'click类型key值',
+  `url` varchar(100) NOT NULL DEFAULT '' COMMENT 'view类型url值',
+  `appid` varchar(50) NOT NULL DEFAULT '' COMMENT '小程序的appid',
+  `pagePath` varchar(50) NOT NULL DEFAULT '' COMMENT '小程序的页面路径',
+  `mediaId` varchar(150) NOT NULL DEFAULT '' COMMENT '调用新增永久素材接口返回的合法media_id',
+  `matchrule` tinytext NOT NULL COMMENT '菜单匹配规则',
+  `parentId` int(10) NOT NULL DEFAULT '0' COMMENT '父级菜单ID',
+  `orderNum` mediumint(5) NOT NULL DEFAULT '0' COMMENT '排序数字，值越小越靠前',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`menuId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+
+-- ----------------------------
+-- Records of wx_menu
 -- ----------------------------
 
 -- ----------------------------
@@ -454,8 +483,8 @@ CREATE TABLE `wx_user` (
 -- ----------------------------
 -- Records of wx_user
 -- ----------------------------
-INSERT INTO `wx_user` VALUES ('2', '1', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '', '100', '[]', '千寻', '1', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50Bia7ERBy8ITHKd1NaWNTxEyJXuLWgGP3pnyrP5wvxwm19Rwkoas4ApkKSYormQxo5ibYEYibicgPX3U/0', '测试备注', '0', '1500906186', '1500906186', '1500906211');
-INSERT INTO `wx_user` VALUES ('3', '1', 'ogKdPt0tKAYQM4a1buEoJti1A1dk', '', '2', '[]', '霞文', '2', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50KMeTaia7qzfh6tccEWxoialovZym3WEYIw1c4ZZBSbMianOjLicOfpRfC4XWX5mk0iaZHbSpX3EiaBey8/0', '你好吗？', '0', '1500906325', '1500906325', '1500906327');
+INSERT INTO `wx_user` VALUES ('2', '1', 'ogKdPt-LQTpRjBSRQYEZwNN2dGE4', '', '100', '[100,112,2,114]', '千寻', '1', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50Bia7ERBy8ITHKd1NaWNTxEyJXuLWgGP3pnyrP5wvxwm19Rwkoas4ApkKSYormQxo5ibYEYibicgPX3U/0', '测试备注', '0', '1500906186', '1500906186', '1500906211');
+INSERT INTO `wx_user` VALUES ('3', '1', 'ogKdPt0tKAYQM4a1buEoJti1A1dk', '', '2', '[2,112]', '霞文', '2', '中国', '广东', '广州', 'zh_CN', 'http://wx.qlogo.cn/mmopen/N5k3j7jY0gEyjFdiarAI50KMeTaia7qzfh6tccEWxoialovZym3WEYIw1c4ZZBSbMianOjLicOfpRfC4XWX5mk0iaZHbSpX3EiaBey8/0', '你好吗？', '0', '1500906325', '1500906325', '1500906327');
 
 -- ----------------------------
 -- Table structure for wx_user_group
