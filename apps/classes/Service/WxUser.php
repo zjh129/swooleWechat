@@ -261,12 +261,12 @@ class WxUser
         //处理用户标签
         if ($removeTagIds){
             foreach ($removeTagIds as $removeTagId){
-                Swoole::$php->easywechat->user_tag->batchUntagUsers($userData['openId'], $removeTagId);
+                Swoole::$php->easywechat->user_tag->batchUntagUsers([$userData['openId']], $removeTagId);
             }
         }
         if ($newTagIds){
             foreach ($newTagIds as $newTagId){
-                Swoole::$php->easywechat->user_tag->batchTagUsers($userData['openId'], $newTagId);
+                Swoole::$php->easywechat->user_tag->batchTagUsers([$userData['openId']], $newTagId);
             }
         }
         $this->wxUserModel->set($userId, ['tagidList'=>json_encode($wxTagIds)]);

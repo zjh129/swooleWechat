@@ -192,6 +192,27 @@ class WxUserTag
         }
         return true;
     }
+
+    /**
+     * 微信标签ID集转换为名称集
+     * @param array $wxTagIds
+     * @return array
+     */
+    public function wxTagIdsToNames($wxTagIds = []){
+        $tagList = $this->wxUserTagModel->getUserTagList();
+        if ($tagList){
+            $tagIdToNameMap = array_combine(array_column($tagList, 'wxTagId'), array_column($tagList, 'tagName'));
+        }else{
+            $tagIdToNameMap = [];
+        }
+        $names = [];
+        if ($tagIdToNameMap && $wxTagIds){
+            foreach ($wxTagIds as $wxTagId){
+                isset($tagIdToNameMap[$wxTagId]) && $names[] = $tagIdToNameMap[$wxTagId];
+            }
+        }
+        return $names;
+    }
     /**
      * 本地tagId集转换为微信tagId集
      * @param array $tagIds

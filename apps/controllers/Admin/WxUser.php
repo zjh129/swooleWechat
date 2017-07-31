@@ -75,10 +75,14 @@ class WxUser extends Base
         $data['recordsTotal'] = $this->wxUserModel->count($where);
         $list = $this->wxUserModel->getUserList($where);
         if ($list){
+            $wxUserTagSer = new \App\Service\WxUserTag();
             foreach ($list as $k => $v){
                 $v['DT_RowId'] = $v['userId'];
                 $v['subscribeTime'] = date('Y-m-d H:i:s', $v['subscribeTime']);
-                $v['tagidList'] = isset($v['tagidList']) && $v['tagidList'] ? json_decode($v['tagidList']) : [];
+                //标签ID集转换为名称集
+                $tagidList = isset($v['tagidList']) && $v['tagidList'] ? json_decode($v['tagidList']) : [];
+                $v['tagidList'] = $wxUserTagSer->wxTagIdsToNames($tagidList);
+
                 $list[$k] = $v;
             }
         }
