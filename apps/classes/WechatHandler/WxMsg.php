@@ -148,7 +148,7 @@ class WxMsg
             return true;
         }
         //自定义菜单事件
-        if ($msgType == 'event' && in_array($event, ['click', 'view'])) {
+        if ($msgType == 'event' && in_array($event, ['click', 'view','scancode_push','scancode_waitmsg','pic_sysphoto','pic_photo_or_album','pic_weixin','location_select'])) {
             $this->recMessageType = self::RECMSG_EVENT_MENU;
 
             return true;

@@ -45,6 +45,23 @@ class WxRecMessage
     public $Latitude;
     public $Longitude;
     public $Precision;
+    //事件消息-自定义菜单
+    public $MenuID;
+    //事件消息-自定义菜单(扫码推事件的事件推送、扫码推事件且弹出“消息接收中”提示框的事件推送）
+    /**
+     * @var \App\WechatHandler\ScanCodeInfo
+     */
+    public $ScanCodeInfo;//扫描信息
+    //事件消息-自定义菜单（弹出系统拍照发图的事件推送、 ）
+    /**
+     * @var \App\WechatHandler\SendPicsInfo
+     */
+    public $SendPicsInfo;
+    /**
+     * 发送的位置信息
+     * @var \App\WechatHandler\SendLocationInfo
+     */
+    public $SendLocationInfo;
     #-------------------群发消息属性-------------------------
     /**
      * 群发的消息ID、模板消息ID
@@ -329,6 +346,72 @@ class WxRecMessage
      * @var
      */
     public $DeviceNo;
+}
+
+/**
+ * 扫描信息
+ * @package App\WechatHandler
+ */
+class ScanCodeInfo{
+    /**
+     * 扫描类型，一般是qrcode
+     * @var
+     */
+    public $ScanType;
+    /**
+     * 扫描结果，即二维码对应的字符串信息
+     * @var
+     */
+    public $ScanResult;
+}
+
+/**
+ * 发送的图片信息
+ * @package App\WechatHandler
+ */
+class SendPicsInfo{
+    /**
+     * 发送的图片数量
+     * @var
+     */
+    public $Count;
+    /**
+     * 图片列表
+     * @var
+     */
+    public $PicList;
+}
+
+/**
+ * 发送的位置信息
+ * @package App\WechatHandler
+ */
+class SendLocationInfo{
+    /**
+     * X坐标信息
+     * @var
+     */
+    public $Location_X;
+    /**
+     * Y坐标信息
+     * @var
+     */
+    public $Location_Y;
+    /**
+     * 精度，可理解为精度或者比例尺、越精细的话 scale越高
+     * @var
+     */
+    public $Scale;
+    /**
+     * 地理位置的字符串信息
+     * @var
+     */
+    public $Label;
+    /**
+     * 朋友圈POI的名字，可能为空
+     * @var
+     */
+    public $Poiname;
 }
 class WxRecCopyrightCheckResult
 {

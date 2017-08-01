@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
+Source Server         : local_swooleWechat
 Source Server Version : 80001
-Source Host           : 127.0.0.1:3306
+Source Host           : 192.168.38.128:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-07-31 22:50:45
+Date: 2017-08-01 17:28:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -188,6 +188,149 @@ CREATE TABLE `sys_user_to_group` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for wx_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_comment`;
+CREATE TABLE `wx_comment` (
+  `commentId` int(10) NOT NULL AUTO_INCREMENT COMMENT '评论文章id',
+  `msgDataId` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '群发返回的msg_data_id',
+  `index` int(11) NOT NULL DEFAULT '0' COMMENT '多图文时，用来指定第几篇图文',
+  `mediaNewId` int(10) NOT NULL DEFAULT '0' COMMENT '微信图文文章ID',
+  `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文章ID',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`commentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of wx_comment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_comment_msg
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_comment_msg`;
+CREATE TABLE `wx_comment_msg` (
+  `commentMsgId` int(10) NOT NULL AUTO_INCREMENT COMMENT '微信评论消息自增ID',
+  `commentId` int(19) NOT NULL COMMENT '评论所属文章id',
+  `userCommenIid` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '用户评论id',
+  `openId` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'openid',
+  `content` tinytext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '评论内容',
+  `commentType` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否精选评论，0为即非精选，1为true，即精选',
+  `commentTime` int(10) NOT NULL DEFAULT '0' COMMENT '评论时间',
+  `replyContent` tinytext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '作者回复内容',
+  `replyTime` int(10) NOT NULL DEFAULT '0' COMMENT '作者回复时间',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`commentMsgId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of wx_comment_msg
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_mass
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_mass`;
+CREATE TABLE `wx_mass` (
+  `massId` int(10) NOT NULL AUTO_INCREMENT COMMENT '群发ID',
+  `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '群发标题',
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '消息的描述',
+  `isToAll` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否全部发送',
+  `filterType` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '过滤类别（tagId:用户标签ID,touser:指定用户列表）',
+  `tagId` int(10) NOT NULL DEFAULT '0' COMMENT '群发到的标签的tag_id',
+  `toUser` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '填写图文消息的接收者，一串OpenID列表，OpenID最少2个，最多10000个',
+  `msgType` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '群发内容类别(mpnews:图文消息,text:文本,voice:语音/音频,music:音乐,image:图片,mpvideo:视频,wxcard:卡券消息)',
+  `mediaId` int(10) NOT NULL DEFAULT '0' COMMENT '素材自增ID',
+  `wxMediaId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '用于群发的消息的media_id',
+  `content` tinytext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文本内容',
+  `thumbMediaId` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '视频缩略图的媒体ID',
+  `cardId` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '卡券ID',
+  `sendIgnoreReprint` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1为继续群发（转载），0为停止群发。',
+  `sendTime` int(10) NOT NULL DEFAULT '0' COMMENT '发送时间',
+  `errcode` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '错误码',
+  `errmsg` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '错误信息',
+  `msgId` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '消息发送任务的ID',
+  `msgDataId` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '消息的数据ID',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`massId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='群发消息';
+
+-- ----------------------------
+-- Records of wx_mass
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_media
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_media`;
+CREATE TABLE `wx_media` (
+  `mediaId` int(10) NOT NULL AUTO_INCREMENT COMMENT '素材自增ID',
+  `mediaType` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '媒体文件类型',
+  `wxMediaId` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '媒体文件上传后，获取标识',
+  `title` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '素材的标题',
+  `introduction` tinytext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '素材的描述',
+  `uploadPath` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '上传文件地址',
+  `wxRemoteUrl` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '微信端图片访问地址',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`mediaId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Records of wx_media
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_media_news
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_media_news`;
+CREATE TABLE `wx_media_news` (
+  `mediaNewId` int(10) NOT NULL AUTO_INCREMENT COMMENT '微信图文文章ID',
+  `mediaId` int(10) NOT NULL DEFAULT '0' COMMENT '图文所属素材ID',
+  `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标题',
+  `thumbMediaId` int(10) NOT NULL DEFAULT '0' COMMENT '永久素材-缩略图本地数据库编号',
+  `thumbWxMediaId` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '图文消息的封面图片素材id',
+  `author` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '作者',
+  `digest` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '图文消息的摘要，仅有单图文消息才有摘要，多图文此处为空。',
+  `showCoverPic` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示封面，0为false，即不显示，1为true，即显示',
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '图文消息的具体内容',
+  `contentSourceUrl` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '图文消息的原文地址，即点击“阅读原文”后的URL',
+  `needOpenComment` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否打开评论，0不打开，1打开',
+  `onlyFansCanComment` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否粉丝才可评论，0所有人可评论，1粉丝才可评论',
+  `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`mediaNewId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='图文素材-文章基本信息';
+
+-- ----------------------------
+-- Records of wx_media_news
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_media_upimages
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_media_upimages`;
+CREATE TABLE `wx_media_upimages` (
+  `upImageId` int(10) NOT NULL DEFAULT '0' COMMENT '图片ID',
+  `uploadPath` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `wxRemoteUrl` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '微信端图片访问地址',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`upImageId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='图文素材中图片上传列表';
+
+-- ----------------------------
+-- Records of wx_media_upimages
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wx_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `wx_menu`;
@@ -196,6 +339,7 @@ CREATE TABLE `wx_menu` (
   `wxMenuId` varchar(20) NOT NULL DEFAULT '' COMMENT '微信菜单ID',
   `menuType` varchar(20) NOT NULL DEFAULT '' COMMENT '菜单类型',
   `menuName` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单名称',
+  `isConditional` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否为个性化菜单，只针对一级菜单',
   `key` varchar(100) NOT NULL DEFAULT '' COMMENT 'click类型key值',
   `url` varchar(100) NOT NULL DEFAULT '' COMMENT 'view类型url值',
   `appid` varchar(50) NOT NULL DEFAULT '' COMMENT '小程序的appid',
@@ -233,6 +377,31 @@ CREATE TABLE `wx_rec_event_location` (
 
 -- ----------------------------
 -- Records of wx_rec_event_location
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_rec_event_mass
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_rec_event_mass`;
+CREATE TABLE `wx_rec_event_mass` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'event',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，LOCATION',
+  `MsgID` varchar(20) NOT NULL DEFAULT '' COMMENT '群发的消息ID',
+  `Status` varchar(20) NOT NULL DEFAULT '' COMMENT 'Status',
+  `TotalCount` varchar(20) NOT NULL DEFAULT '' COMMENT 'tag_id下粉丝数；或者openid_list中的粉丝数',
+  `FilterCount` varchar(20) NOT NULL DEFAULT '' COMMENT '过滤后，准备发送的粉丝数',
+  `SentCount` varchar(20) NOT NULL DEFAULT '' COMMENT '发送成功的粉丝数',
+  `ErrorCount` varchar(20) NOT NULL DEFAULT '' COMMENT '发送失败的粉丝数',
+  `CopyrightCheckResult` text NOT NULL COMMENT '原创检查结果',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上报地理位置事件记录表';
+
+-- ----------------------------
+-- Records of wx_rec_event_mass
 -- ----------------------------
 
 -- ----------------------------
@@ -558,4 +727,3 @@ INSERT INTO `wx_user_tag` VALUES ('10', '2', '星标组', '1', '0', '0', '0', '2
 INSERT INTO `wx_user_tag` VALUES ('11', '100', '内部人员', '1', '10', '3', '0', '2', '1501168837');
 INSERT INTO `wx_user_tag` VALUES ('12', '112', '测试组', '0', '10', '2', '0', '2', '1501168837');
 INSERT INTO `wx_user_tag` VALUES ('13', '114', '运营组', '0', '11', '0', '0', '2', '1501168837');
-SET FOREIGN_KEY_CHECKS=1;
