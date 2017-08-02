@@ -1,6 +1,6 @@
 <?php
 namespace App\Controller;
-use App\Model\WxRecMsgText;
+use App\Model\WxmsgRecMsgText;
 use Swoole;
 
 class Db extends Swoole\Controller

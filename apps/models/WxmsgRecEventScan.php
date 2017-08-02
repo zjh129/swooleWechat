@@ -2,15 +2,15 @@
 namespace App\Model;
 
 /**
- * 语音接收消息记录模型
+ * 扫码事件记录模型
  * @package App\Model
  */
-class WxRecMsgVoice extends \App\Component\BaseModel
+class WxmsgRecEventScan extends BaseModel
 {
     public $primary = 'id';
     /**
      * 表名
      * @var string
      */
-    public $table = 'wx_rec_msg_voice';
+    public $table = 'wxmsg_rec_event_scan';
 }

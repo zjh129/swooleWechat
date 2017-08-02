@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local_swooleWechat
+Source Server         : 本地数据库
 Source Server Version : 80001
-Source Host           : 192.168.38.128:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : swooleWechat
 
 Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-02 17:23:33
+Date: 2017-08-03 00:26:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7950,287 +7950,22 @@ CREATE TABLE `wx_qrcode_type` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for wx_rec_event_location
+-- Table structure for wx_shorturl
 -- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_event_location`;
-CREATE TABLE `wx_rec_event_location` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgType` varchar(10) NOT NULL COMMENT 'event',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，LOCATION',
-  `Latitude` varchar(20) NOT NULL DEFAULT '' COMMENT '地理位置纬度',
-  `Longitude` varchar(20) NOT NULL DEFAULT '' COMMENT '地理位置经度',
-  `Precision` varchar(20) NOT NULL DEFAULT '' COMMENT '地理位置精度',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+DROP TABLE IF EXISTS `wx_shorturl`;
+CREATE TABLE `wx_shorturl` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '短链接列表自增Id',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '链接名称',
+  `shorturl` varchar(100) NOT NULL DEFAULT '' COMMENT '短链接地址',
+  `longUrl` varchar(200) NOT NULL DEFAULT '',
+  `isDel` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否删除',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上报地理位置事件记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短链接列表';
 
 -- ----------------------------
--- Records of wx_rec_event_location
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_event_mass
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_event_mass`;
-CREATE TABLE `wx_rec_event_mass` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgType` varchar(10) NOT NULL COMMENT 'event',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，LOCATION',
-  `MsgID` varchar(20) NOT NULL DEFAULT '' COMMENT '群发的消息ID',
-  `Status` varchar(20) NOT NULL DEFAULT '' COMMENT 'Status',
-  `TotalCount` varchar(20) NOT NULL DEFAULT '' COMMENT 'tag_id下粉丝数；或者openid_list中的粉丝数',
-  `FilterCount` varchar(20) NOT NULL DEFAULT '' COMMENT '过滤后，准备发送的粉丝数',
-  `SentCount` varchar(20) NOT NULL DEFAULT '' COMMENT '发送成功的粉丝数',
-  `ErrorCount` varchar(20) NOT NULL DEFAULT '' COMMENT '发送失败的粉丝数',
-  `CopyrightCheckResult` text NOT NULL COMMENT '原创检查结果',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上报地理位置事件记录表';
-
--- ----------------------------
--- Records of wx_rec_event_mass
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_event_menu
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_event_menu`;
-CREATE TABLE `wx_rec_event_menu` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgType` varchar(10) NOT NULL COMMENT 'event',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，CLICK/VIEW',
-  `EventKey` varchar(200) NOT NULL DEFAULT '' COMMENT '事件KEY值，与自定义菜单接口中KEY值对应',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='自定义菜单事件记录表';
-
--- ----------------------------
--- Records of wx_rec_event_menu
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_event_scan
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_event_scan`;
-CREATE TABLE `wx_rec_event_scan` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgType` varchar(10) NOT NULL COMMENT 'event',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，SCAN/subscribe',
-  `EventKey` varchar(50) NOT NULL DEFAULT '' COMMENT '事件KEY值，即创建二维码时的二维码scene_id',
-  `Ticket` varchar(50) NOT NULL DEFAULT '' COMMENT '二维码的ticket，可用来换取二维码图片',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='扫码事件记录表';
-
--- ----------------------------
--- Records of wx_rec_event_scan
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_event_subscribe
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_event_subscribe`;
-CREATE TABLE `wx_rec_event_subscribe` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgType` varchar(10) NOT NULL COMMENT 'voice',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，subscribe(订阅)、unsubscribe(取消订阅)',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='关注与取关注事件消息记录表';
-
--- ----------------------------
--- Records of wx_rec_event_subscribe
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_event_template
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_event_template`;
-CREATE TABLE `wx_rec_event_template` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgType` varchar(10) NOT NULL COMMENT 'event',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，CLICK/VIEW',
-  `MsgID` varchar(30) NOT NULL DEFAULT '' COMMENT '消息id',
-  `Status` varchar(30) DEFAULT '' COMMENT '发送状态为用户拒绝接收',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='模板消息发送任务完成推送数据';
-
--- ----------------------------
--- Records of wx_rec_event_template
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_msg_image
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_msg_image`;
-CREATE TABLE `wx_rec_msg_image` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
-  `MsgType` varchar(10) NOT NULL COMMENT 'image',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `PicUrl` varchar(150) NOT NULL DEFAULT '' COMMENT '图片链接（由系统生成）',
-  `MediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '图片消息媒体id，可以调用多媒体文件下载接口拉取数据。',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='图片接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_image
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_msg_link
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_msg_link`;
-CREATE TABLE `wx_rec_msg_link` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
-  `MsgType` varchar(10) NOT NULL COMMENT 'link',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Title` varchar(100) NOT NULL DEFAULT '' COMMENT '消息标题',
-  `Description` varchar(200) NOT NULL DEFAULT '' COMMENT '消息描述',
-  `Url` varchar(150) NOT NULL DEFAULT '' COMMENT '消息链接',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='链接接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_link
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_msg_location
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_msg_location`;
-CREATE TABLE `wx_rec_msg_location` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
-  `MsgType` varchar(10) NOT NULL COMMENT 'location',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Location_X` varchar(30) NOT NULL DEFAULT '' COMMENT '地理位置维度',
-  `Location_Y` varchar(30) NOT NULL DEFAULT '' COMMENT '地理位置经度',
-  `Scale` tinyint(2) NOT NULL DEFAULT '0' COMMENT '地图缩放大小',
-  `Label` varchar(150) NOT NULL DEFAULT '' COMMENT '地理位置信息',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='地理位置接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_location
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_msg_shortvideo
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_msg_shortvideo`;
-CREATE TABLE `wx_rec_msg_shortvideo` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
-  `MsgType` varchar(10) NOT NULL COMMENT 'shortvideo',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `MediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '语音消息媒体id，可以调用多媒体文件下载接口拉取数据。',
-  `ThumbMediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据。',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短视频接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_shortvideo
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_msg_text
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_msg_text`;
-CREATE TABLE `wx_rec_msg_text` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
-  `MsgType` varchar(10) NOT NULL COMMENT 'text',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `Content` text NOT NULL COMMENT '文本消息内容',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_text
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_msg_video
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_msg_video`;
-CREATE TABLE `wx_rec_msg_video` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
-  `MsgType` varchar(10) NOT NULL COMMENT 'voice',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `MediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '视频消息媒体id，可以调用多媒体文件下载接口拉取数据。',
-  `ThumbMediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据。',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='视频接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_video
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_rec_msg_voice
--- ----------------------------
-DROP TABLE IF EXISTS `wx_rec_msg_voice`;
-CREATE TABLE `wx_rec_msg_voice` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
-  `MsgType` varchar(10) NOT NULL COMMENT 'voice',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `MediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '语音消息媒体id，可以调用多媒体文件下载接口拉取数据。',
-  `Format` varchar(30) NOT NULL DEFAULT '' COMMENT '语音格式，如amr，speex等',
-  `Recognition` text NOT NULL COMMENT '语音识别文字',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='语音接收消息记录表';
-
--- ----------------------------
--- Records of wx_rec_msg_voice
--- ----------------------------
-
--- ----------------------------
--- Table structure for wx_send_msg
--- ----------------------------
-DROP TABLE IF EXISTS `wx_send_msg`;
-CREATE TABLE `wx_send_msg` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `MsgType` varchar(10) NOT NULL COMMENT 'text',
-  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
-  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
-  `ContentDetail` text NOT NULL COMMENT '回复的消息内容',
-  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
-
--- ----------------------------
--- Records of wx_send_msg
+-- Records of wx_shorturl
 -- ----------------------------
 
 -- ----------------------------
@@ -8361,3 +8096,521 @@ INSERT INTO `wx_user_tag` VALUES ('10', '2', '星标组', '1', '0', '0', '0', '2
 INSERT INTO `wx_user_tag` VALUES ('11', '100', '内部人员', '1', '10', '3', '0', '2', '1501168837');
 INSERT INTO `wx_user_tag` VALUES ('12', '112', '测试组', '0', '10', '2', '0', '2', '1501168837');
 INSERT INTO `wx_user_tag` VALUES ('13', '114', '运营组', '0', '11', '0', '0', '2', '1501168837');
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_event_location
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_event_location`;
+CREATE TABLE `wxmsg_rec_event_location` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'event',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，LOCATION',
+  `Latitude` varchar(20) NOT NULL DEFAULT '' COMMENT '地理位置纬度',
+  `Longitude` varchar(20) NOT NULL DEFAULT '' COMMENT '地理位置经度',
+  `Precision` varchar(20) NOT NULL DEFAULT '' COMMENT '地理位置精度',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上报地理位置事件记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_event_location
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_event_mass
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_event_mass`;
+CREATE TABLE `wxmsg_rec_event_mass` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'event',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，LOCATION',
+  `MsgID` varchar(20) NOT NULL DEFAULT '' COMMENT '群发的消息ID',
+  `Status` varchar(20) NOT NULL DEFAULT '' COMMENT 'Status',
+  `TotalCount` varchar(20) NOT NULL DEFAULT '' COMMENT 'tag_id下粉丝数；或者openid_list中的粉丝数',
+  `FilterCount` varchar(20) NOT NULL DEFAULT '' COMMENT '过滤后，准备发送的粉丝数',
+  `SentCount` varchar(20) NOT NULL DEFAULT '' COMMENT '发送成功的粉丝数',
+  `ErrorCount` varchar(20) NOT NULL DEFAULT '' COMMENT '发送失败的粉丝数',
+  `CopyrightCheckResult` text NOT NULL COMMENT '原创检查结果',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='上报地理位置事件记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_event_mass
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_event_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_event_menu`;
+CREATE TABLE `wxmsg_rec_event_menu` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'event',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，CLICK/VIEW',
+  `EventKey` varchar(200) NOT NULL DEFAULT '' COMMENT '事件KEY值，与自定义菜单接口中KEY值对应',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='自定义菜单事件记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_event_menu
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_event_scan
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_event_scan`;
+CREATE TABLE `wxmsg_rec_event_scan` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'event',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，SCAN/subscribe',
+  `EventKey` varchar(50) NOT NULL DEFAULT '' COMMENT '事件KEY值，即创建二维码时的二维码scene_id',
+  `Ticket` varchar(50) NOT NULL DEFAULT '' COMMENT '二维码的ticket，可用来换取二维码图片',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='扫码事件记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_event_scan
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_event_subscribe
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_event_subscribe`;
+CREATE TABLE `wxmsg_rec_event_subscribe` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'voice',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，subscribe(订阅)、unsubscribe(取消订阅)',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='关注与取关注事件消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_event_subscribe
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_event_template
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_event_template`;
+CREATE TABLE `wxmsg_rec_event_template` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'event',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Event` varchar(100) NOT NULL DEFAULT '' COMMENT '事件类型，CLICK/VIEW',
+  `MsgID` varchar(30) NOT NULL DEFAULT '' COMMENT '消息id',
+  `Status` varchar(30) DEFAULT '' COMMENT '发送状态为用户拒绝接收',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='模板消息发送任务完成推送数据';
+
+-- ----------------------------
+-- Records of wxmsg_rec_event_template
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_msg_image
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_msg_image`;
+CREATE TABLE `wxmsg_rec_msg_image` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
+  `MsgType` varchar(10) NOT NULL COMMENT 'image',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `PicUrl` varchar(150) NOT NULL DEFAULT '' COMMENT '图片链接（由系统生成）',
+  `MediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '图片消息媒体id，可以调用多媒体文件下载接口拉取数据。',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='图片接收消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_msg_image
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_msg_link
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_msg_link`;
+CREATE TABLE `wxmsg_rec_msg_link` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
+  `MsgType` varchar(10) NOT NULL COMMENT 'link',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Title` varchar(100) NOT NULL DEFAULT '' COMMENT '消息标题',
+  `Description` varchar(200) NOT NULL DEFAULT '' COMMENT '消息描述',
+  `Url` varchar(150) NOT NULL DEFAULT '' COMMENT '消息链接',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='链接接收消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_msg_link
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_msg_location
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_msg_location`;
+CREATE TABLE `wxmsg_rec_msg_location` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
+  `MsgType` varchar(10) NOT NULL COMMENT 'location',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Location_X` varchar(30) NOT NULL DEFAULT '' COMMENT '地理位置维度',
+  `Location_Y` varchar(30) NOT NULL DEFAULT '' COMMENT '地理位置经度',
+  `Scale` tinyint(2) NOT NULL DEFAULT '0' COMMENT '地图缩放大小',
+  `Label` varchar(150) NOT NULL DEFAULT '' COMMENT '地理位置信息',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='地理位置接收消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_msg_location
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_msg_shortvideo
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_msg_shortvideo`;
+CREATE TABLE `wxmsg_rec_msg_shortvideo` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
+  `MsgType` varchar(10) NOT NULL COMMENT 'shortvideo',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `MediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '语音消息媒体id，可以调用多媒体文件下载接口拉取数据。',
+  `ThumbMediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据。',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短视频接收消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_msg_shortvideo
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_msg_text
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_msg_text`;
+CREATE TABLE `wxmsg_rec_msg_text` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
+  `MsgType` varchar(10) NOT NULL COMMENT 'text',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `Content` text NOT NULL COMMENT '文本消息内容',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_msg_text
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_msg_video
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_msg_video`;
+CREATE TABLE `wxmsg_rec_msg_video` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
+  `MsgType` varchar(10) NOT NULL COMMENT 'voice',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `MediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '视频消息媒体id，可以调用多媒体文件下载接口拉取数据。',
+  `ThumbMediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '视频消息缩略图的媒体id，可以调用多媒体文件下载接口拉取数据。',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='视频接收消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_msg_video
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_rec_msg_voice
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_rec_msg_voice`;
+CREATE TABLE `wxmsg_rec_msg_voice` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgId` varchar(20) NOT NULL COMMENT '消息id，64位整型',
+  `MsgType` varchar(10) NOT NULL COMMENT 'voice',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `MediaId` varchar(100) NOT NULL DEFAULT '' COMMENT '语音消息媒体id，可以调用多媒体文件下载接口拉取数据。',
+  `Format` varchar(30) NOT NULL DEFAULT '' COMMENT '语音格式，如amr，speex等',
+  `Recognition` text NOT NULL COMMENT '语音识别文字',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='语音接收消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_rec_msg_voice
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxmsg_send
+-- ----------------------------
+DROP TABLE IF EXISTS `wxmsg_send`;
+CREATE TABLE `wxmsg_send` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `MsgType` varchar(10) NOT NULL COMMENT 'text',
+  `ToUserName` varchar(50) NOT NULL COMMENT '开发者微信号',
+  `FromUserName` varchar(50) NOT NULL COMMENT '发送方帐号（一个OpenID）',
+  `ContentDetail` text NOT NULL COMMENT '回复的消息内容',
+  `CreateTime` int(10) NOT NULL DEFAULT '0' COMMENT '消息创建时间 （整型）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='文本接收消息记录表';
+
+-- ----------------------------
+-- Records of wxmsg_send
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_articlesummary
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_articlesummary`;
+CREATE TABLE `wxtj_articlesummary` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文群发每日数据';
+
+-- ----------------------------
+-- Records of wxtj_articlesummary
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_articletotal
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_articletotal`;
+CREATE TABLE `wxtj_articletotal` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文群发总数据';
+
+-- ----------------------------
+-- Records of wxtj_articletotal
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_interfacesummary
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_interfacesummary`;
+CREATE TABLE `wxtj_interfacesummary` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='接口分析数据-接口分析数据';
+
+-- ----------------------------
+-- Records of wxtj_interfacesummary
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_interfacesummaryhour
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_interfacesummaryhour`;
+CREATE TABLE `wxtj_interfacesummaryhour` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='接口分析数据-接口分析分时数据';
+
+-- ----------------------------
+-- Records of wxtj_interfacesummaryhour
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_upstreammsg
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_upstreammsg`;
+CREATE TABLE `wxtj_upstreammsg` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送概况数据';
+
+-- ----------------------------
+-- Records of wxtj_upstreammsg
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_upstreammsgdis
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_upstreammsgdis`;
+CREATE TABLE `wxtj_upstreammsgdis` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送分布数据';
+
+-- ----------------------------
+-- Records of wxtj_upstreammsgdis
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_upstreammsgdistmonth
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_upstreammsgdistmonth`;
+CREATE TABLE `wxtj_upstreammsgdistmonth` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送分布月数据';
+
+-- ----------------------------
+-- Records of wxtj_upstreammsgdistmonth
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_upstreammsgdistweek
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_upstreammsgdistweek`;
+CREATE TABLE `wxtj_upstreammsgdistweek` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送分布周数据';
+
+-- ----------------------------
+-- Records of wxtj_upstreammsgdistweek
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_upstreammsghour
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_upstreammsghour`;
+CREATE TABLE `wxtj_upstreammsghour` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息分送分时数据';
+
+-- ----------------------------
+-- Records of wxtj_upstreammsghour
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_upstreammsgmonth
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_upstreammsgmonth`;
+CREATE TABLE `wxtj_upstreammsgmonth` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送月数据';
+
+-- ----------------------------
+-- Records of wxtj_upstreammsgmonth
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_upstreammsgweek
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_upstreammsgweek`;
+CREATE TABLE `wxtj_upstreammsgweek` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送周数据';
+
+-- ----------------------------
+-- Records of wxtj_upstreammsgweek
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_usercumulate
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_usercumulate`;
+CREATE TABLE `wxtj_usercumulate` (
+  `id` int(10) NOT NULL,
+  `refDate` varchar(10) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `cumulateUser` int(10) NOT NULL DEFAULT '0' COMMENT '总用户量',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`id`),
+  KEY `refDate` (`refDate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户分析数据-累计用户数据';
+
+-- ----------------------------
+-- Records of wxtj_usercumulate
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_userread
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_userread`;
+CREATE TABLE `wxtj_userread` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文统计数据';
+
+-- ----------------------------
+-- Records of wxtj_userread
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_userreadhour
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_userreadhour`;
+CREATE TABLE `wxtj_userreadhour` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文统计分时数据';
+
+-- ----------------------------
+-- Records of wxtj_userreadhour
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_usershare
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_usershare`;
+CREATE TABLE `wxtj_usershare` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文分享转发数据';
+
+-- ----------------------------
+-- Records of wxtj_usershare
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_usersharehour
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_usersharehour`;
+CREATE TABLE `wxtj_usersharehour` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文分享转发分时数据';
+
+-- ----------------------------
+-- Records of wxtj_usersharehour
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wxtj_usersummary
+-- ----------------------------
+DROP TABLE IF EXISTS `wxtj_usersummary`;
+CREATE TABLE `wxtj_usersummary` (
+  `id` int(10) NOT NULL,
+  `refDate` varchar(10) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `userSource` varchar(10) NOT NULL DEFAULT '0' COMMENT '用户的渠道',
+  `newUser` int(10) NOT NULL DEFAULT '0' COMMENT '新增的用户数量',
+  `cancelUser` int(10) NOT NULL DEFAULT '0' COMMENT '取消关注的用户数量',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`id`),
+  KEY `refDate` (`refDate`,`userSource`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户分析数据-用户增减数据';
+
+-- ----------------------------
+-- Records of wxtj_usersummary
+-- ----------------------------
+SET FOREIGN_KEY_CHECKS=1;

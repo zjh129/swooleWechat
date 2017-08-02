@@ -2,15 +2,15 @@
 namespace App\Model;
 
 /**
- * 视频接收消息记录模型
+ * 文本接收消息记录模型
  * @package App\Model
  */
-class WxRecMsgVideo extends \App\Component\BaseModel
+class WxmsgRecMsgText extends \App\Component\BaseModel
 {
     public $primary = 'id';
     /**
      * 表名
      * @var string
      */
-    public $table = 'wx_rec_msg_video';
+    public $table = 'wxmsg_rec_msg_text';
 }
