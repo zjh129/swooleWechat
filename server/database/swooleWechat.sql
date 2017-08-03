@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-03 00:26:15
+Date: 2017-08-03 22:57:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -8387,6 +8387,19 @@ CREATE TABLE `wxmsg_send` (
 DROP TABLE IF EXISTS `wxtj_articlesummary`;
 CREATE TABLE `wxtj_articlesummary` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `msgid` varchar(20) NOT NULL DEFAULT '' COMMENT '这里的msgid实际上是由msgid（图文消息id，这也就是群发接口调用后返回的msg_data_id）和index（消息次序索引）组成',
+  `title` varchar(150) NOT NULL DEFAULT '' COMMENT '图文消息的标题',
+  `intPageReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '图文页（点击群发图文卡片进入的页面）的阅读人数',
+  `intPageReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '图文页的阅读次数',
+  `oriPageReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
+  `oriPageReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '原文页的阅读次数',
+  `shareUser` int(10) NOT NULL DEFAULT '0' COMMENT '分享的人数',
+  `shareCount` int(10) NOT NULL DEFAULT '0' COMMENT '分享的次数',
+  `addToFavUser` int(10) NOT NULL DEFAULT '0' COMMENT '收藏的人数',
+  `addToFavCount` int(10) NOT NULL DEFAULT '0' COMMENT '收藏的次数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文群发每日数据';
 
@@ -8400,6 +8413,37 @@ CREATE TABLE `wxtj_articlesummary` (
 DROP TABLE IF EXISTS `wxtj_articletotal`;
 CREATE TABLE `wxtj_articletotal` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(10) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `msgid` varchar(20) NOT NULL DEFAULT '' COMMENT '这里的msgid实际上是由msgid（图文消息id，这也就是群发接口调用后返回的msg_data_id）和index（消息次序索引）组成',
+  `title` varchar(150) NOT NULL DEFAULT '' COMMENT '图文消息的标题',
+  `statDate` varchar(20) NOT NULL DEFAULT '' COMMENT '统计的日期',
+  `targetUser` int(10) NOT NULL DEFAULT '0' COMMENT '送达人数',
+  `intPageReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '图文页（点击群发图文卡片进入的页面）的阅读人数',
+  `intPageReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '图文页的阅读次数',
+  `oriPageReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
+  `oriPageReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '原文页的阅读次数',
+  `shareUser` int(10) NOT NULL DEFAULT '0' COMMENT '分享的人数',
+  `shareCount` int(10) NOT NULL DEFAULT '0' COMMENT '分享的次数',
+  `addToFavUser` int(10) NOT NULL DEFAULT '0' COMMENT '收藏的人数',
+  `addToFavCount` int(10) NOT NULL DEFAULT '0' COMMENT '收藏的次数',
+  `intPageFromSessionReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '公众号会话阅读人数',
+  `intPageFromSessionReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '公众号会话阅读次数',
+  `intPageFromHistMsgReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '历史消息页阅读人数',
+  `intPageFromHistMsgReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '历史消息页阅读次数',
+  `intPageFromFeedReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '朋友圈阅读人数',
+  `intPageFromFeedReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '朋友圈阅读次数',
+  `intPageFromFriendsReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '好友转发阅读人数',
+  `intPageFromFriendsReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '好友转发阅读次数',
+  `intPageFromOtherReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '其他场景阅读人数',
+  `intPageFromOtherReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '其他场景阅读次数',
+  `feedShareFromSessionUser` int(10) NOT NULL DEFAULT '0' COMMENT '公众号会话转发朋友圈人数',
+  `feedShareFromSessionCnt` int(10) NOT NULL DEFAULT '0' COMMENT '公众号会话转发朋友圈次数',
+  `feedShareFromFeedUser` int(10) NOT NULL DEFAULT '0' COMMENT '朋友圈转发朋友圈人数',
+  `feedShareFromFeedCnt` int(10) NOT NULL DEFAULT '0' COMMENT '朋友圈转发朋友圈次数',
+  `feedShareFromOtherUser` int(10) NOT NULL DEFAULT '0' COMMENT '其他场景转发朋友圈人数',
+  `feedShareFromOtherCnt` int(10) NOT NULL DEFAULT '0' COMMENT '其他场景转发朋友圈次数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文群发总数据';
 
@@ -8413,6 +8457,13 @@ CREATE TABLE `wxtj_articletotal` (
 DROP TABLE IF EXISTS `wxtj_interfacesummary`;
 CREATE TABLE `wxtj_interfacesummary` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `callbackCount` int(10) NOT NULL DEFAULT '0' COMMENT '通过服务器配置地址获得消息后，被动回复用户消息的次数',
+  `failCount` int(10) NOT NULL DEFAULT '0' COMMENT '上述动作的失败次数',
+  `totalTimeCost` int(10) NOT NULL DEFAULT '0' COMMENT '总耗时，除以callback_count即为平均耗时',
+  `maxTimeCost` int(10) NOT NULL DEFAULT '0' COMMENT '最大耗时',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='接口分析数据-接口分析数据';
 
@@ -8426,6 +8477,14 @@ CREATE TABLE `wxtj_interfacesummary` (
 DROP TABLE IF EXISTS `wxtj_interfacesummaryhour`;
 CREATE TABLE `wxtj_interfacesummaryhour` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `refHour` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的小时',
+  `callbackCount` int(10) NOT NULL DEFAULT '0' COMMENT '通过服务器配置地址获得消息后，被动回复用户消息的次数',
+  `failCount` int(10) NOT NULL DEFAULT '0' COMMENT '上述动作的失败次数',
+  `totalTimeCost` int(10) NOT NULL DEFAULT '0' COMMENT '总耗时，除以callback_count即为平均耗时',
+  `maxTimeCost` int(10) NOT NULL DEFAULT '0' COMMENT '最大耗时',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='接口分析数据-接口分析分时数据';
 
@@ -8439,6 +8498,12 @@ CREATE TABLE `wxtj_interfacesummaryhour` (
 DROP TABLE IF EXISTS `wxtj_upstreammsg`;
 CREATE TABLE `wxtj_upstreammsg` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(10) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `msgType` tinyint(2) NOT NULL DEFAULT '0' COMMENT '消息类型，代表含义如下：\r\n1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息',
+  `msgUser` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了（向公众号发送了）消息的用户数',
+  `msgCount` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了消息的消息总数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送概况数据';
 
@@ -8447,16 +8512,21 @@ CREATE TABLE `wxtj_upstreammsg` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for wxtj_upstreammsgdis
+-- Table structure for wxtj_upstreammsgdist
 -- ----------------------------
-DROP TABLE IF EXISTS `wxtj_upstreammsgdis`;
-CREATE TABLE `wxtj_upstreammsgdis` (
+DROP TABLE IF EXISTS `wxtj_upstreammsgdist`;
+CREATE TABLE `wxtj_upstreammsgdist` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `countInterval` tinyint(2) NOT NULL DEFAULT '0' COMMENT '当日发送消息量分布的区间，0代表 “0”，1代表“1-5”，2代表“6-10”，3代表“10次以上”',
+  `msgUser` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了（向公众号发送了）消息的用户数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送分布数据';
 
 -- ----------------------------
--- Records of wxtj_upstreammsgdis
+-- Records of wxtj_upstreammsgdist
 -- ----------------------------
 
 -- ----------------------------
@@ -8465,6 +8535,11 @@ CREATE TABLE `wxtj_upstreammsgdis` (
 DROP TABLE IF EXISTS `wxtj_upstreammsgdistmonth`;
 CREATE TABLE `wxtj_upstreammsgdistmonth` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `countInterval` tinyint(2) NOT NULL DEFAULT '0' COMMENT '当日发送消息量分布的区间，0代表 “0”，1代表“1-5”，2代表“6-10”，3代表“10次以上”',
+  `msgUser` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了（向公众号发送了）消息的用户数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送分布月数据';
 
@@ -8478,6 +8553,11 @@ CREATE TABLE `wxtj_upstreammsgdistmonth` (
 DROP TABLE IF EXISTS `wxtj_upstreammsgdistweek`;
 CREATE TABLE `wxtj_upstreammsgdistweek` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `countInterval` tinyint(2) NOT NULL DEFAULT '0' COMMENT '当日发送消息量分布的区间，0代表 “0”，1代表“1-5”，2代表“6-10”，3代表“10次以上”',
+  `msgUser` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了（向公众号发送了）消息的用户数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送分布周数据';
 
@@ -8491,6 +8571,12 @@ CREATE TABLE `wxtj_upstreammsgdistweek` (
 DROP TABLE IF EXISTS `wxtj_upstreammsghour`;
 CREATE TABLE `wxtj_upstreammsghour` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `reDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `refHour` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时',
+  `msgUser` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了（向公众号发送了）消息的用户数',
+  `msgCount` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了消息的消息总数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息分送分时数据';
 
@@ -8504,6 +8590,12 @@ CREATE TABLE `wxtj_upstreammsghour` (
 DROP TABLE IF EXISTS `wxtj_upstreammsgmonth`;
 CREATE TABLE `wxtj_upstreammsgmonth` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `msgType` tinyint(2) NOT NULL DEFAULT '0' COMMENT '消息类型，代表含义如下：\r\n1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息）',
+  `msgUser` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了（向公众号发送了）消息的用户数',
+  `msgCount` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了消息的消息总数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送月数据';
 
@@ -8517,6 +8609,12 @@ CREATE TABLE `wxtj_upstreammsgmonth` (
 DROP TABLE IF EXISTS `wxtj_upstreammsgweek`;
 CREATE TABLE `wxtj_upstreammsgweek` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `msgType` tinyint(2) NOT NULL DEFAULT '0' COMMENT '消息类型，代表含义如下：\r\n1代表文字 2代表图片 3代表语音 4代表视频 6代表第三方应用消息（链接消息）',
+  `msgUser` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了（向公众号发送了）消息的用户数',
+  `msgCount` int(10) NOT NULL DEFAULT '0' COMMENT '上行发送了消息的消息总数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='消息分析数据-消息发送周数据';
 
@@ -8529,8 +8627,8 @@ CREATE TABLE `wxtj_upstreammsgweek` (
 -- ----------------------------
 DROP TABLE IF EXISTS `wxtj_usercumulate`;
 CREATE TABLE `wxtj_usercumulate` (
-  `id` int(10) NOT NULL,
-  `refDate` varchar(10) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
   `cumulateUser` int(10) NOT NULL DEFAULT '0' COMMENT '总用户量',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
@@ -8548,6 +8646,17 @@ CREATE TABLE `wxtj_usercumulate` (
 DROP TABLE IF EXISTS `wxtj_userread`;
 CREATE TABLE `wxtj_userread` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `intPageReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '图文页（点击群发图文卡片进入的页面）的阅读人数',
+  `intPageReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '图文页的阅读次数',
+  `oriPageReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
+  `oriPageReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '原文页的阅读次数',
+  `shareUser` int(10) NOT NULL DEFAULT '0' COMMENT '分享的人数',
+  `shareCount` int(10) NOT NULL DEFAULT '0' COMMENT '分享的次数',
+  `addToFavUser` int(10) NOT NULL DEFAULT '0' COMMENT '收藏的人数',
+  `addToFavCount` int(10) NOT NULL DEFAULT '0' COMMENT '收藏的次数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文统计数据';
 
@@ -8561,6 +8670,19 @@ CREATE TABLE `wxtj_userread` (
 DROP TABLE IF EXISTS `wxtj_userreadhour`;
 CREATE TABLE `wxtj_userreadhour` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `refHour` varchar(10) NOT NULL DEFAULT '' COMMENT '数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时',
+  `userSource` int(10) NOT NULL DEFAULT '0' COMMENT '在获取图文阅读分时数据时才有该字段，代表用户从哪里进入来阅读该图文。0:会话;1.好友;2.朋友圈;3.腾讯微博;4.历史消息页;5.其他',
+  `intPageReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '图文页（点击群发图文卡片进入的页面）的阅读人数',
+  `intPageReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '图文页的阅读次数',
+  `oriPageReadUser` int(10) NOT NULL DEFAULT '0' COMMENT '原文页（点击图文页“阅读原文”进入的页面）的阅读人数，无原文页时此处数据为0',
+  `oriPageReadCount` int(10) NOT NULL DEFAULT '0' COMMENT '原文页的阅读次数',
+  `shareUser` int(10) NOT NULL DEFAULT '0' COMMENT '分享的人数',
+  `shareCount` int(10) NOT NULL DEFAULT '0' COMMENT '分享的次数',
+  `addToFavUser` int(10) NOT NULL DEFAULT '0' COMMENT '收藏的人数',
+  `addToFavCount` int(10) NOT NULL DEFAULT '0' COMMENT '收藏的次数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文统计分时数据';
 
@@ -8574,6 +8696,12 @@ CREATE TABLE `wxtj_userreadhour` (
 DROP TABLE IF EXISTS `wxtj_usershare`;
 CREATE TABLE `wxtj_usershare` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `shareScene` int(10) NOT NULL DEFAULT '0' COMMENT '分享的场景\r\n1代表好友转发 2代表朋友圈 3代表腾讯微博 255代表其他',
+  `shareCount` int(10) NOT NULL DEFAULT '0' COMMENT '分享的次数',
+  `shareUser` int(10) NOT NULL DEFAULT '0' COMMENT '分享的人数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文分享转发数据';
 
@@ -8587,6 +8715,13 @@ CREATE TABLE `wxtj_usershare` (
 DROP TABLE IF EXISTS `wxtj_usersharehour`;
 CREATE TABLE `wxtj_usersharehour` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `refHour` varchar(10) NOT NULL DEFAULT '' COMMENT '数据的小时，包括从000到2300，分别代表的是[000,100)到[2300,2400)，即每日的第1小时和最后1小时',
+  `shareScene` int(10) NOT NULL DEFAULT '0' COMMENT '分享的场景\r\n1代表好友转发 2代表朋友圈 3代表腾讯微博 255代表其他',
+  `shareCount` int(10) NOT NULL DEFAULT '0' COMMENT '分享的次数',
+  `shareUser` int(10) NOT NULL DEFAULT '0' COMMENT '分享的人数',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图文分析数据-图文分享转发分时数据';
 
@@ -8599,9 +8734,9 @@ CREATE TABLE `wxtj_usersharehour` (
 -- ----------------------------
 DROP TABLE IF EXISTS `wxtj_usersummary`;
 CREATE TABLE `wxtj_usersummary` (
-  `id` int(10) NOT NULL,
-  `refDate` varchar(10) NOT NULL DEFAULT '' COMMENT '数据的日期',
-  `userSource` varchar(10) NOT NULL DEFAULT '0' COMMENT '用户的渠道',
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `refDate` varchar(20) NOT NULL DEFAULT '' COMMENT '数据的日期',
+  `userSource` int(10) NOT NULL DEFAULT '0' COMMENT '用户的渠道',
   `newUser` int(10) NOT NULL DEFAULT '0' COMMENT '新增的用户数量',
   `cancelUser` int(10) NOT NULL DEFAULT '0' COMMENT '取消关注的用户数量',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
