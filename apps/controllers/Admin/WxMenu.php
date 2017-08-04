@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 use App\BaseController\AdminBaseController as Base;
+use App\Service\WxMenu as WxMenuService;
 
 /**
  * 微信自定义菜单相关操作.
@@ -13,6 +14,10 @@ class WxMenu extends Base
      */
     private $wxMenuModel;
     /**
+     * @var \App\Service\WxMenu
+     */
+    private $wxMenuSer;
+    /**
      * 构造函数
      * @param \Swoole $swoole
      */
@@ -21,6 +26,7 @@ class WxMenu extends Base
         parent::__construct($swoole);
         $this->addBreadcrumb('自定义菜单', '/Admin/WxMenu/index');
         $this->wxMenuModel = model('WxMenu');
+        $this->wxMenuSer = new WxMenuService();
     }
 
     /**
@@ -30,6 +36,8 @@ class WxMenu extends Base
     {
         $this->setSeoTitle('菜单管理');
         $this->addBreadcrumb('菜单管理', $this->currentUrl);
+        //微信菜单类别
+        $this->assign('menuTypeList', $this->wxMenuSer->getMenuTypeList());
         //菜单列表
         $menuList     = $this->wxMenuModel->getMenuList();
         //树结构菜单列表

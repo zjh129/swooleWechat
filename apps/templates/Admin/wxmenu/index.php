@@ -69,6 +69,9 @@
                             <div class="form-group">
                                 <label>菜单类别</label>
                                 <select class="form-control m-b __web-inspector-hide-shortcut__" name="menuType" id="menuType">
+                                    <?php foreach ($menuTypeList as $typeKey => $typeName) {?>
+                                    <option value="<?php echo $typeKey; ?>"><?php echo $typeName; ?></option>
+                                    <?php }?>
                                 </select>
                             </div>
                             <div class="form-group">
