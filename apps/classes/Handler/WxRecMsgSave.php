@@ -29,32 +29,32 @@ class WxRecMsgSave extends WxMsg implements Swoole\IFace\EventHandler
             case self::RECMSG_TYPE_TEXT://文本消息
                 $saveData['MsgId']   = $this->recMessage->MsgId ?? '';
                 $saveData['Content'] = $this->recMessage->Content ?? '';
-                $model           = Model('WxmsgRecMsgText');
+                $model           = model('WxmsgRecMsgText');
                 break;
             case self::RECMSG_TYPE_IMAGE://图片消息
                 $saveData['MsgId']   = $this->recMessage->MsgId ?? '';
                 $saveData['MediaId'] = $this->recMessage->MediaId ?? '';
                 $saveData['PicUrl']  = $this->recMessage->PicUrl ?? '';
-                $model           = Model('WxmsgRecMsgImage');
+                $model           = model('WxmsgRecMsgImage');
                 break;
             case self::RECMSG_TYPE_VOICE://语音消息
                 $saveData['MsgId']       = $this->recMessage->MsgId ?? '';
                 $saveData['MediaId']     = $this->recMessage->MediaId ?? '';
                 $saveData['Format']      = $this->recMessage->Format ?? '';
                 $saveData['Recognition'] = $this->recMessage->Recognition ?? '';
-                $model               = Model('WxmsgRecMsgVoice');
+                $model               = model('WxmsgRecMsgVoice');
                 break;
             case self::RECMSG_TYPE_VIDEO://视频消息
                 $saveData['MsgId']        = $this->recMessage->MsgId ?? '';
                 $saveData['MediaId']      = $this->recMessage->MediaId ?? '';
                 $saveData['ThumbMediaId'] = $this->recMessage->ThumbMediaId ?? '';
-                $model                = Model('WxmsgRecMsgVideo');
+                $model                = model('WxmsgRecMsgVideo');
                 break;
             case self::RECMSG_TYPE_SHORTVIDEO://小视频消息
                 $saveData['MsgId']        = $this->recMessage->MsgId ?? '';
                 $saveData['MediaId']      = $this->recMessage->MediaId ?? '';
                 $saveData['ThumbMediaId'] = $this->recMessage->ThumbMediaId ?? '';
-                $model                = Model('WxmsgRecMsgShortvideo');
+                $model                = model('WxmsgRecMsgShortvideo');
                 break;
             case self::RECMSG_TYPE_LOCATION://地理位置消息
                 $saveData['MsgId']       = $this->recMessage->MsgId ?? '';
@@ -62,36 +62,36 @@ class WxRecMsgSave extends WxMsg implements Swoole\IFace\EventHandler
                 $saveData['Location_Y']  = $this->recMessage->Location_Y ?? 0;
                 $saveData['Scale']       = $this->recMessage->Scale ?? 0;
                 $saveData['Label']       = $this->recMessage->Label ?? '';
-                $model               = Model('WxmsgRecMsgLocation');
+                $model               = model('WxmsgRecMsgLocation');
                 break;
             case self::RECMSG_TYPE_LINK://链接消息
                 $saveData['MsgId']       = $this->recMessage->MsgId ?? '';
                 $saveData['Title']       = $this->recMessage->Title ?? '';
                 $saveData['Description'] = $this->recMessage->Description ?? '';
                 $saveData['Url']         = $this->recMessage->Description ?? '';
-                $model               = Model('WxmsgRecMsgLink');
+                $model               = model('WxmsgRecMsgLink');
                 break;
             case self::RECMSG_EVENT_SUBSCRIBE://关注事件推送
                 $saveData['Event'] = $this->recMessage->Event ?? '';
-                $model         = Model('WxmsgRecEventSubscribe');
+                $model         = model('WxmsgRecEventSubscribe');
                 break;
             case self::RECMSG_EVENT_SCAN://扫码事件
                 $saveData['Event']    = $this->recMessage->Event ?? '';
                 $saveData['EventKey'] = $this->recMessage->EventKey ?? '';
                 $saveData['Ticket']   = $this->recMessage->Ticket ?? '';
-                $model            = Model('WxmsgRecEventSubscribe');
+                $model            = model('WxmsgRecEventSubscribe');
                 break;
             case self::RECMSG_EVENT_LOCATION://上报地理位置事件
                 $saveData['Event']     = $this->recMessage->Event ?? '';
                 $saveData['Latitude']  = $this->recMessage->Latitude ?? 0;
                 $saveData['Longitude'] = $this->recMessage->Longitude ?? 0;
                 $saveData['Precision'] = $this->recMessage->Precision ?? '';
-                $model             = Model('WxmsgRecEventLocation');
+                $model             = model('WxmsgRecEventLocation');
                 break;
             case self::RECMSG_EVENT_MENU://自定义菜单事件
                 $saveData['Event']    = $this->recMessage->Event ?? '';
                 $saveData['EventKey'] = $this->recMessage->EventKey ?? '';
-                $model            = Model('WxmsgRecEventMenu');
+                $model            = model('WxmsgRecEventMenu');
                 break;
             default:
                 break;

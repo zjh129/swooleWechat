@@ -16,15 +16,6 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <div class="col-md-4">
-                            <select class="form-control" name="moduleType" id="moduleType">
-                                <?php foreach ($moduleTypeList as $moduleK => $moduleV) {
-                                    ?>
-                                    <option value="<?php echo $moduleK; ?>" <?php echo $moduleType == $moduleK ? 'selected' : ''?>><?php echo $moduleV; ?></option>
-                                    <?php
-                                }?>
-                            </select>
-                        </div>
                         <button type="button" data-action="expand-all" class="btn btn-white btn-sm">全部展开</button>
                         <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">全部收缩</button>
                         <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>添加菜单</button>
@@ -73,9 +64,13 @@
                         <h4 class="modal-title">添加菜单</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="/Admin/SysMenu/save">
-                            <input type="hidden" name="moduleType" id="moduleType" value="<?php echo $moduleType; ?>">
+                        <form role="form" id="form" action="/Admin/WxMenu/save">
                             <input type="hidden" name="menuId" id="menuId" value="0">
+                            <div class="form-group">
+                                <label>菜单类别</label>
+                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="menuType" id="menuType">
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label>菜单名称</label>
                                 <input type="text" placeholder="输入菜单名称" class="form-control" name="menuName" id="menuName" required>
@@ -86,13 +81,31 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>访问链接</label>
-                                <input type="text" placeholder="例如：/Admin/Index/index" class="form-control" name="url" required>
+                                <label>网页链接</label>
+                                <input type="text" placeholder="例如：https://mp.weixin.qq.com/" class="form-control" name="url" required>
                             </div>
                             <div class="form-group">
-                                <label>菜单图标样式</label>
-                                <input type="text" placeholder="例如：fa fa-sitemap" class="form-control" name="iconClass" id="iconClass">
+                                <label>菜单KEY值</label>
+                                <input type="text" placeholder="例如：kefu" class="form-control" name="key" required>
                             </div>
+                            <div class="form-group">
+                                <label>appid</label>
+                                <input type="text" placeholder="小程序的appid" class="form-control" name="appid" required>
+                            </div>
+                            <div class="form-group">
+                                <label>页面路径</label>
+                                <input type="text" placeholder="小程序的页面路径" class="form-control" name="pagepath" required>
+                            </div>
+                            <div class="form-group">
+                                <label>素材ID</label>
+                                <input type="text" placeholder="" class="form-control" name="mediaId" id="mediaId">
+                            </div>
+                            <div class="form-group">
+                                <label>是否个性化菜单</label>
+                                <div class="i-checks"><label><input type="radio" name="isConditional" value="1" checked> <i></i>是</label></div>
+                                <div class="i-checks"><label><input type="radio" name="isConditional" value="0"> <i></i> 否</label></div>
+                            </div>
+
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -117,14 +130,11 @@
 
 <script>
     $(document).ready(function(){
-        //模块选择
-        $("#moduleType").on('change', function () {
-            window.location.href = '<?php echo $this->currentUrl?>?moduleType='+$(this).val();
-        });
         //可嵌套列表
         // activate Nestable for list
         $('#nestable').nestable({
-            group: 1
+            group: 1,
+            maxDepth:2,
         }).on('change', function (e) {
             var list = e.length ? e : $(e.target),
                 output = list.data('output');
@@ -156,7 +166,7 @@
             var secId = arguments[0] ? arguments[0] : 0;
             $.ajax({
                 type: "get",
-                url: "/Admin/SysMenu/getTreeOption",
+                url: "/Admin/WxMenu/getTreeOption",
                 data: {
                     'moduleType' : $("#moduleType").val(),
                     'secId' : secId,
@@ -187,7 +197,7 @@
             $(".modal-title").html('编辑菜单');
             $.ajax({
                 type: "get",
-                url: "/Admin/SysMenu/get",
+                url: "/Admin/WxMenu/get",
                 data: {
                     'menuId' : $(this).parents("li").attr('data-id'),
                 },
@@ -210,7 +220,7 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/Admin/SysMenu/Del",
+                            url: "/Admin/WxMenu/Del",
                             data: {
                                 'menuId' : menuId,
                             },

@@ -9,9 +9,9 @@ class WxMenu extends Base
 {
     /**
      * 菜单模型
-     * @var \App\Model\SysMenu
+     * @var \App\Model\WxMenu
      */
-    private $sysMenuModel;
+    private $wxMenuModel;
     /**
      * 构造函数
      * @param \Swoole $swoole
@@ -20,7 +20,7 @@ class WxMenu extends Base
     {
         parent::__construct($swoole);
         $this->addBreadcrumb('自定义菜单', '/Admin/WxMenu/index');
-        $this->sysMenuModel = model('SysMenu');
+        $this->wxMenuModel = model('WxMenu');
     }
 
     /**
@@ -30,13 +30,8 @@ class WxMenu extends Base
     {
         $this->setSeoTitle('菜单管理');
         $this->addBreadcrumb('菜单管理', $this->currentUrl);
-        //菜单模块类别
-        $sysMenu = new \App\Service\SysMenu();
-        $this->assign('moduleTypeList', $sysMenu->getModuleTypeList());
-        $moduleType = isset($_GET['moduleType']) && $_GET['moduleType'] ? $_GET['moduleType'] : $sysMenu::MENU_TYPE_ADMIN;
-        $this->assign('moduleType', $moduleType);
         //菜单列表
-        $menuList     = $this->sysMenuModel->getMenuList($moduleType);
+        $menuList     = $this->wxMenuModel->getMenuList();
         //树结构菜单列表
         $tree          = new \App\Common\Tree('menuId', 'parentId', 'child');
         $tree->nameKey = 'menuName';
@@ -48,5 +43,106 @@ class WxMenu extends Base
         $nestableHtml = $tree->buildNestableTree($addHtml);
         $this->assign('nestableHtml', $nestableHtml);
         $this->display();
+    }
+
+    /**
+     * 生成树结构option文本
+     */
+    public function getTreeOption()
+    {
+        $secId = isset($_GET['secId']) ? $_GET['secId'] : 0;
+        //菜单列表
+        $menuList     = $this->wxMenuModel->gets([
+            'select' => 'menuId,wxMenuId,menuName,isConditional,parentId',
+            'where' => "`isDel`=0 AND `parentId`=0",
+            'order' => "orderNum ASC,menuId ASC",
+        ]);
+        //树结构菜单列表
+        $tree          = new \App\Common\Tree('menuId', 'parentId', 'child');
+        $tree->nameKey = 'menuName';
+        $tree->load($menuList);
+        $secId && $tree->optionSelectId = $secId;
+        //菜单选择列表
+        $optionHtml = '<option value="0">顶级菜单</option>';
+        $optionHtml .= $tree->buildOptions();
+        $this->http->finish($optionHtml);
+    }
+    /**
+     * 获取菜单数据
+     * @return bool
+     */
+    public function get()
+    {
+        try {
+            $id   = $this->request->get['menuId'] ?? 0;
+            $postData = $this->wxMenuModel->getone(['menuId'=>$id]);
+
+            return $this->showMsg('success', '获取成功', '', $postData);
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 保存菜单
+     * @return bool
+     */
+    public function save()
+    {
+        try {
+            $postData              = $this->request->post;
+            $postData['addUserId'] = $this->user->getUid();
+            $wxMenu               = new \App\Service\WxMenu();
+            $rs                    = $wxMenu->saveMenu($postData);
+            if ($rs) {
+                return $this->showMsg('success', ($postData['menuId'] ? '编辑' : '添加') . '成功', '/admin/sysmenu/index');
+            }
+            throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '菜单失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 保存菜单排序
+     * @return bool
+     */
+    public function saveSort()
+    {
+        try {
+            $sortData = $this->request->post['sortData'];
+            if (empty($sortData)) {
+                throw new \Exception('排序数据有误');
+            }
+            $wxMenu = new \App\Service\WxMenu();
+            $rs      = $wxMenu->saveSort($sortData);
+            if ($rs) {
+                return $this->showMsg('success', '保存排序成功');
+            }
+            throw new \Exception('保存排序失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 删除菜单
+     * @return bool
+     */
+    public function del()
+    {
+        try {
+            $id   = $this->request->post['menuId'] ?? 0;
+            if (!$id){
+                throw new \Exception('请指定要删除的菜单');
+            }
+            $rs = $this->wxMenuModel->set($id, ['isDel'=>1]);
+            if ($rs){
+                return $this->showMsg('success', '删除成功');
+            }
+            throw new \Exception('删除失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
     }
 }
