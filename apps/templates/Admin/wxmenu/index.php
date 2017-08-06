@@ -270,6 +270,7 @@
                 },
                 datatype: "json",
                 success: function (data) {
+                    selectMenuType(data.data.menuType);
                     $("#form input[name='menuId']").val(data.data.menuId);
                     $("#form input[name='menuName']").val(data.data.menuName);
                     $("#form select[name='menuType']").val(data.data.menuType);
@@ -279,7 +280,8 @@
                     $("#form input[name='appid']").val(data.data.appid);
                     $("#form input[name='pagePath']").val(data.data.pagePath);
                     $("#form input[name='mediaId']").val(data.data.mediaId);
-                    selectMenuType(data.data.menuType);
+                    var isConditional = data.data.isConditional;
+                    $("#form input[name='isConditional'][value=" + isConditional +"]").prop('checked', 'checked');
                     selectIsConditional(data.data.isConditional);
                 }
             });
