@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -65,50 +65,88 @@
                     </div>
                     <div class="modal-body">
                         <form role="form" id="form" action="/Admin/WxMenu/save">
-                            <input type="hidden" name="menuId" id="menuId" value="0">
-                            <div class="form-group">
-                                <label>菜单类别</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="menuType" id="menuType">
-                                    <?php foreach ($menuTypeList as $typeKey => $typeName) {?>
-                                    <option value="<?php echo $typeKey; ?>"><?php echo $typeName; ?></option>
-                                    <?php }?>
-                                </select>
+                            <div class="row">
+                                <div class="col-lg-6 b-r form-left">
+                                    <input type="hidden" name="menuId" id="menuId" value="0">
+                                    <div class="form-group">
+                                        <label>菜单类别</label>
+                                        <select class="form-control m-b __web-inspector-hide-shortcut__" name="menuType" id="menuType">
+                                            <?php foreach ($menuTypeList as $typeKey => $typeName) {?>
+                                            <option value="<?php echo $typeKey; ?>"><?php echo $typeName; ?></option>
+                                            <?php }?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>菜单名称</label>
+                                        <input type="text" placeholder="输入菜单名称" class="form-control" name="menuName" id="menuName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>父级菜单</label>
+                                        <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentId">
+                                        </select>
+                                    </div>
+                                    <div class="form-group needChange view">
+                                        <label>网页链接</label>
+                                        <input type="text" placeholder="例如：https://mp.weixin.qq.com/" class="form-control" name="url" required>
+                                    </div>
+                                    <div class="form-group needChange click">
+                                        <label>菜单KEY值</label>
+                                        <input type="text" placeholder="例如：kefu" class="form-control" name="key" required>
+                                    </div>
+                                    <div class="form-group needChange miniprogram">
+                                        <label>appid</label>
+                                        <input type="text" placeholder="小程序的appid" class="form-control" name="appid" required>
+                                    </div>
+                                    <div class="form-group needChange miniprogram">
+                                        <label>页面路径</label>
+                                        <input type="text" placeholder="小程序的页面路径" class="form-control" name="pagepath" required>
+                                    </div>
+                                    <div class="form-group needChange media_id view_limited">
+                                        <label>素材ID</label>
+                                        <input type="text" placeholder="" class="form-control" name="mediaId" id="mediaId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>是否个性化菜单</label>
+                                        <div class="i-checks"><label><input type="radio" name="isConditional" value="1"> <i></i>是</label></div>
+                                        <div class="i-checks"><label><input type="radio" name="isConditional" value="0" checked> <i></i> 否</label></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 form-right">
+                                    <div class="form-group">
+                                        <label>用户标签</label>
+                                        <select class="form-control m-b __web-inspector-hide-shortcut__" name="tag_id">
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>用户性别</label>
+                                        <select class="form-control m-b __web-inspector-hide-shortcut__" name="tag_id">
+                                        </select>
+                                        <span class="help-block m-b-none">男（1）女（2），不填则不做匹配</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>国家</label>
+                                        <input type="text" placeholder="输入国家" class="form-control" name="country">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>省份</label>
+                                        <input type="text" placeholder="输入省份" class="form-control" name="province">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>城市</label>
+                                        <input type="text" placeholder="输入城市" class="form-control" name="city">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>客户端版本</label>
+                                        <input type="text" placeholder="输入客户端版本" class="form-control" name="client_platform_type">
+                                        <span class="help-block m-b-none">IOS(1), Android(2),Others(3)，不填则不做匹配</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>语言</label>
+                                        <input type="text" placeholder="输入语言" class="form-control" name="language">
+                                        <span class="help-block m-b-none">1、简体中文 "zh_CN" 2、繁体中文TW "zh_TW" 3、繁体中文HK "zh_HK" 4、英文 "en" 5、印尼 "id" 6、马来 "ms" 7、西班牙 "es" 8、韩国 "ko" 9、意大利 "it" 10、日本 "ja" 11、波兰 "pl" 12、葡萄牙 "pt" 13、俄国 "ru" 14、泰文 "th" 15、越南 "vi" 16、阿拉伯语 "ar" 17、北印度 "hi" 18、希伯来 "he" 19、土耳其 "tr" 20、德语 "de" 21、法语 "fr"</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>菜单名称</label>
-                                <input type="text" placeholder="输入菜单名称" class="form-control" name="menuName" id="menuName" required>
-                            </div>
-                            <div class="form-group">
-                                <label>父级菜单</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="parentId">
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>网页链接</label>
-                                <input type="text" placeholder="例如：https://mp.weixin.qq.com/" class="form-control" name="url" required>
-                            </div>
-                            <div class="form-group">
-                                <label>菜单KEY值</label>
-                                <input type="text" placeholder="例如：kefu" class="form-control" name="key" required>
-                            </div>
-                            <div class="form-group">
-                                <label>appid</label>
-                                <input type="text" placeholder="小程序的appid" class="form-control" name="appid" required>
-                            </div>
-                            <div class="form-group">
-                                <label>页面路径</label>
-                                <input type="text" placeholder="小程序的页面路径" class="form-control" name="pagepath" required>
-                            </div>
-                            <div class="form-group">
-                                <label>素材ID</label>
-                                <input type="text" placeholder="" class="form-control" name="mediaId" id="mediaId">
-                            </div>
-                            <div class="form-group">
-                                <label>是否个性化菜单</label>
-                                <div class="i-checks"><label><input type="radio" name="isConditional" value="1" checked> <i></i>是</label></div>
-                                <div class="i-checks"><label><input type="radio" name="isConditional" value="0"> <i></i> 否</label></div>
-                            </div>
-
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -132,6 +170,31 @@
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/nestable/jquery.nestable.js"></script>
 
 <script>
+    /**
+     * 根据菜单类别显示输入框
+     * @param menuType
+     */
+    function selectMenuType(menuType)
+    {
+        $("#form .needChange").hide();
+        $("#form ." + menuType).show();
+    }
+
+    /**
+     * 根据是否个性话菜单显示输入框
+     * @param isConditional
+     */
+    function selectIsConditional(isConditional)
+    {
+        if (isConditional == 1){//是个性化菜单
+            $(".form-left").addClass('col-lg-6 b-r');
+            $(".form-right").addClass('col-lg-6');
+            $(".form-right").show();
+        }else{
+            $(".form-left,.form-right").removeClass('col-lg-6');
+            $(".form-right").hide();
+        }
+    }
     $(document).ready(function(){
         //可嵌套列表
         // activate Nestable for list
@@ -180,19 +243,20 @@
             });
         }
         //弹窗
+        $("#form select[name='menuType']").on('change', function(){
+            selectMenuType($(this).val());
+        });
+        $("#form input[name='isConditional']").on('change', function(){
+            selectIsConditional($(this).val());
+        });
         $(".add").on('click', function () {
             //加载父级菜单选择项
             loadOption();
             $(".modal-title").html('添加菜单');
             $("#form")[0].reset();
             $("#form input[name='menuId']").val(0);
-        });
-        $(".addchild").on('click', function () {
-            $(".modal-title").html('添加菜单');
-            $("#form")[0].reset();
-            $("#form input[name='menuId']").val(0);
-            //加载父级菜单选择项
-            loadOption($(this).parents("li").attr('data-id'));
+            selectMenuType('click');
+            selectIsConditional(0);
         });
         $(".edit").on('click', function () {
             //加载父级菜单选择项
@@ -208,9 +272,15 @@
                 success: function (data) {
                     $("#form input[name='menuId']").val(data.data.menuId);
                     $("#form input[name='menuName']").val(data.data.menuName);
+                    $("#form select[name='menuType']").val(data.data.menuType);
                     $("#form select[name='parentId']").val(data.data.parentId);
+                    $("#form input[name='key']").val(data.data.key);
                     $("#form input[name='url']").val(data.data.url);
-                    $("#form input[name='iconClass']").val(data.data.iconClass);
+                    $("#form input[name='appid']").val(data.data.appid);
+                    $("#form input[name='pagePath']").val(data.data.pagePath);
+                    $("#form input[name='mediaId']").val(data.data.mediaId);
+                    selectMenuType(data.data.menuType);
+                    selectIsConditional(data.data.isConditional);
                 }
             });
         });
