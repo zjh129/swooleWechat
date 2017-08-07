@@ -79,7 +79,7 @@ class SysMenu extends Base
             $sysMenu               = new \App\Service\SysMenu();
             $rs                    = $sysMenu->saveMenu($postData);
             if ($rs) {
-                return $this->showMsg('success', ($postData['menuId'] ? '编辑' : '添加') . '成功', '/admin/sysmenu/index');
+                return $this->showMsg('success', ($postData['menuId'] ? '编辑' : '添加') . '成功', '/Admin/SysMenu/index');
             }
             throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '菜单失败');
         } catch (\Exception $e) {

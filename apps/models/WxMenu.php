@@ -34,13 +34,14 @@ class WxMenu extends \App\Component\BaseModel
     public function getMenuList()
     {
         $menuList = $this->gets([
-            'select' => 'menuId,wxMenuId,menuName,isConditional,parentId',
+            'select' => 'menuId,wxMenuId,menuType,menuName,isConditional,key,url,appid,pagePath,mediaId,matchrule,parentId',
             'where' => "`isDel`=0",
             'order' => "orderNum ASC,menuId ASC",
         ]);
         $newMenuList = [];
         foreach ($menuList as $v){
-            //$v['url'] = strtolower($v['url']);
+            $v['matchrule'] = json_decode($v['matchrule'], true);
+
             $newMenuList[(int)$v['menuId']] = $v;
         }
         return $newMenuList;

@@ -49,7 +49,11 @@ class WxUserTag extends Base
         $tree->load($tagList);
         $secId && $tree->optionSelectId = $secId;
         //菜单选择列表
-        $optionHtml = '<option value="0">顶级权限</option>';
+        if (isset($this->request->header['Referer']) && strpos(strtolower($this->request->header['Referer']), '/admin/wxusertag/index') !== false){
+            $optionHtml = '<option value="0">顶级权限</option>';
+        }else{
+            $optionHtml = '<option value="">请选择标签</option>';
+        }
         $optionHtml .= $tree->buildOptions();
         $this->http->finish($optionHtml);
     }

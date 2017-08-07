@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -71,8 +71,8 @@
                                     <div class="form-group">
                                         <label>菜单类别</label>
                                         <select class="form-control m-b __web-inspector-hide-shortcut__" name="menuType" id="menuType">
-                                            <?php foreach ($menuTypeList as $typeKey => $typeName) {?>
-                                            <option value="<?php echo $typeKey; ?>"><?php echo $typeName; ?></option>
+                                            <?php foreach ($menuTypeList as $key => $name) {?>
+                                            <option value="<?php echo $key; ?>"><?php echo $name; ?></option>
                                             <?php }?>
                                         </select>
                                     </div>
@@ -89,7 +89,7 @@
                                         <label>网页链接</label>
                                         <input type="text" placeholder="例如：https://mp.weixin.qq.com/" class="form-control" name="url" required>
                                     </div>
-                                    <div class="form-group needChange click">
+                                    <div class="form-group needChange click scancode_waitmsg scancode_push pic_sysphoto pic_photo_or_album pic_weixin location_select">
                                         <label>菜单KEY值</label>
                                         <input type="text" placeholder="例如：kefu" class="form-control" name="key" required>
                                     </div>
@@ -99,7 +99,7 @@
                                     </div>
                                     <div class="form-group needChange miniprogram">
                                         <label>页面路径</label>
-                                        <input type="text" placeholder="小程序的页面路径" class="form-control" name="pagepath" required>
+                                        <input type="text" placeholder="小程序的页面路径" class="form-control" name="pagePath" required>
                                     </div>
                                     <div class="form-group needChange media_id view_limited">
                                         <label>素材ID</label>
@@ -119,31 +119,44 @@
                                     </div>
                                     <div class="form-group">
                                         <label>用户性别</label>
-                                        <select class="form-control m-b __web-inspector-hide-shortcut__" name="tag_id">
+                                        <select class="form-control m-b __web-inspector-hide-shortcut__" name="sex">
+                                            <option value="">选择性别</option>
+                                            <option value="1">男</option>
+                                            <option value="2">女</option>
                                         </select>
-                                        <span class="help-block m-b-none">男（1）女（2），不填则不做匹配</span>
                                     </div>
                                     <div class="form-group">
                                         <label>国家</label>
                                         <input type="text" placeholder="输入国家" class="form-control" name="country">
+                                        <span class="help-block m-b-none">例如：中国</span>
                                     </div>
                                     <div class="form-group">
                                         <label>省份</label>
                                         <input type="text" placeholder="输入省份" class="form-control" name="province">
+                                        <span class="help-block m-b-none">例如：广东</span>
                                     </div>
                                     <div class="form-group">
                                         <label>城市</label>
                                         <input type="text" placeholder="输入城市" class="form-control" name="city">
+                                        <span class="help-block m-b-none">例如：广州</span>
                                     </div>
                                     <div class="form-group">
                                         <label>客户端版本</label>
-                                        <input type="text" placeholder="输入客户端版本" class="form-control" name="client_platform_type">
-                                        <span class="help-block m-b-none">IOS(1), Android(2),Others(3)，不填则不做匹配</span>
+                                        <select class="form-control m-b __web-inspector-hide-shortcut__" name="client_platform_type">
+                                            <option value="">请选择客户端</option>
+                                            <?php foreach ($clientPlatformTypeList as $key => $name) {?>
+                                                <option value="<?php echo $key; ?>"><?php echo $name; ?></option>
+                                            <?php }?>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label>语言</label>
-                                        <input type="text" placeholder="输入语言" class="form-control" name="language">
-                                        <span class="help-block m-b-none">1、简体中文 "zh_CN" 2、繁体中文TW "zh_TW" 3、繁体中文HK "zh_HK" 4、英文 "en" 5、印尼 "id" 6、马来 "ms" 7、西班牙 "es" 8、韩国 "ko" 9、意大利 "it" 10、日本 "ja" 11、波兰 "pl" 12、葡萄牙 "pt" 13、俄国 "ru" 14、泰文 "th" 15、越南 "vi" 16、阿拉伯语 "ar" 17、北印度 "hi" 18、希伯来 "he" 19、土耳其 "tr" 20、德语 "de" 21、法语 "fr"</span>
+                                        <select class="form-control m-b __web-inspector-hide-shortcut__" name="language">
+                                            <option value="">请选择语言</option>
+                                            <?php foreach ($languageList as $key => $name) {?>
+                                                <option value="<?php echo $key; ?>"><?php echo $name; ?></option>
+                                            <?php }?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -189,11 +202,47 @@
         if (isConditional == 1){//是个性化菜单
             $(".form-left").addClass('col-lg-6 b-r');
             $(".form-right").addClass('col-lg-6');
+            $(".modal-dialog").addClass(' modal-lg');
             $(".form-right").show();
         }else{
             $(".form-left,.form-right").removeClass('col-lg-6');
+            $(".modal-dialog").removeClass(' modal-lg');
             $(".form-right").hide();
         }
+    }
+    /**
+     * 载入标签树结构select的option的html
+     */
+    function loadTagIdOption() {
+        var secId = arguments[0] ? arguments[0] : 0;
+        $.ajax({
+            type: "get",
+            url: "/Admin/WxUserTag/getTreeOption",
+            data: {
+                'secId' : secId,
+            },
+            success: function (data) {
+                $("#form select[name='tag_id']").html(data);
+            }
+        });
+    }
+
+    /**
+     * 载入菜单树结构select的option的html
+     */
+    function loadMenuOption() {
+        var secId = arguments[0] ? arguments[0] : 0;
+        $.ajax({
+            type: "get",
+            url: "/Admin/WxMenu/getTreeOption",
+            data: {
+                'moduleType' : $("#moduleType").val(),
+                'secId' : secId,
+            },
+            success: function (data) {
+                $("#form select[name='parentId']").html(data);
+            }
+        });
     }
     $(document).ready(function(){
         //可嵌套列表
@@ -206,7 +255,7 @@
                 output = list.data('output');
             $.ajax({
                 type: "post",
-                url: "/admin/sysmenu/saveSort",
+                url: "/admin/WxMenu/saveSort",
                 data: {
                     'sortData' : list.nestable('serialize'),
                 },
@@ -227,21 +276,7 @@
                 $('.dd').nestable('collapseAll');
             }
         });
-        //载入树结构select的option的html
-        function loadOption() {
-            var secId = arguments[0] ? arguments[0] : 0;
-            $.ajax({
-                type: "get",
-                url: "/Admin/WxMenu/getTreeOption",
-                data: {
-                    'moduleType' : $("#moduleType").val(),
-                    'secId' : secId,
-                },
-                success: function (data) {
-                    $("#form select[name='parentId']").html(data);
-                }
-            });
-        }
+
         //弹窗
         $("#form select[name='menuType']").on('change', function(){
             selectMenuType($(this).val());
@@ -251,7 +286,8 @@
         });
         $(".add").on('click', function () {
             //加载父级菜单选择项
-            loadOption();
+            loadMenuOption();
+            loadTagIdOption();
             $(".modal-title").html('添加菜单');
             $("#form")[0].reset();
             $("#form input[name='menuId']").val(0);
@@ -260,7 +296,8 @@
         });
         $(".edit").on('click', function () {
             //加载父级菜单选择项
-            loadOption();
+            loadMenuOption();
+            loadTagIdOption();
             $(".modal-title").html('编辑菜单');
             $.ajax({
                 type: "get",

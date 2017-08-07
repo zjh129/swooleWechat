@@ -38,6 +38,8 @@ class WxMenu extends Base
         $this->addBreadcrumb('菜单管理', $this->currentUrl);
         //微信菜单类别
         $this->assign('menuTypeList', $this->wxMenuSer->getMenuTypeList());
+        $this->assign('clientPlatformTypeList', $this->wxMenuSer->getClientPlatformTypeList());
+        $this->assign('languageList', $this->wxMenuSer->getLanguageList());
         //菜单列表
         $menuList     = $this->wxMenuModel->getMenuList();
         //树结构菜单列表
@@ -102,7 +104,7 @@ class WxMenu extends Base
             $wxMenu               = new \App\Service\WxMenu();
             $rs                    = $wxMenu->saveMenu($postData);
             if ($rs) {
-                return $this->showMsg('success', ($postData['menuId'] ? '编辑' : '添加') . '成功', '/admin/sysmenu/index');
+                return $this->showMsg('success', ($postData['menuId'] ? '编辑' : '添加') . '成功', '/Admin/WxMenu/index');
             }
             throw new \Exception(($postData['menuId'] ? '编辑' : '添加') . '菜单失败');
         } catch (\Exception $e) {

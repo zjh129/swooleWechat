@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-03 22:57:25
+Date: 2017-08-07 23:05:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7567,44 +7567,6 @@ INSERT INTO `sys_global_region` VALUES ('4168', '374', ',2,237,374,4168,', '4', 
 INSERT INTO `sys_global_region` VALUES ('4169', '374', ',2,237,374,4169,', '4', '约克', 'York', 'yueke', 'YOR');
 
 -- ----------------------------
--- Table structure for sys_language
--- ----------------------------
-DROP TABLE IF EXISTS `sys_language`;
-CREATE TABLE `sys_language` (
-  `langId` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增序号',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '简体中文',
-  `nameEn` varchar(20) NOT NULL DEFAULT '',
-  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
-  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
-  PRIMARY KEY (`langId`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of sys_language
--- ----------------------------
-INSERT INTO `sys_language` VALUES ('1', '简体中文 ', 'zh_CN', '0', '0');
-INSERT INTO `sys_language` VALUES ('2', '繁体中文TW', 'zh_TW', '0', '0');
-INSERT INTO `sys_language` VALUES ('3', '繁体中文HK ', 'zh_HK', '0', '0');
-INSERT INTO `sys_language` VALUES ('4', '英文', 'en', '0', '0');
-INSERT INTO `sys_language` VALUES ('5', '印尼', 'id', '0', '0');
-INSERT INTO `sys_language` VALUES ('6', '马来', 'ms', '0', '0');
-INSERT INTO `sys_language` VALUES ('7', '西班牙 ', 'es', '0', '0');
-INSERT INTO `sys_language` VALUES ('8', '韩国', 'ko', '0', '0');
-INSERT INTO `sys_language` VALUES ('9', '意大利', 'it', '0', '0');
-INSERT INTO `sys_language` VALUES ('10', '日本', 'ja', '0', '0');
-INSERT INTO `sys_language` VALUES ('11', '波兰 ', 'pl', '0', '0');
-INSERT INTO `sys_language` VALUES ('12', '葡萄牙 ', 'pt', '0', '0');
-INSERT INTO `sys_language` VALUES ('13', '俄国', 'ru', '0', '0');
-INSERT INTO `sys_language` VALUES ('14', '泰文', 'th', '0', '0');
-INSERT INTO `sys_language` VALUES ('15', '越南', 'vi', '0', '0');
-INSERT INTO `sys_language` VALUES ('16', '阿拉伯语 ', 'ar', '0', '0');
-INSERT INTO `sys_language` VALUES ('17', '北印度', 'hi', '0', '0');
-INSERT INTO `sys_language` VALUES ('18', '希伯来', 'he', '0', '0');
-INSERT INTO `sys_language` VALUES ('19', '土耳其', 'tr', '0', '0');
-INSERT INTO `sys_language` VALUES ('20', '德语', 'de', '0', '0');
-INSERT INTO `sys_language` VALUES ('21', '法语 ', 'fr', '0', '0');
-
--- ----------------------------
 -- Table structure for sys_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
@@ -7711,26 +7673,6 @@ CREATE TABLE `sys_user_to_group` (
 -- ----------------------------
 -- Records of sys_user_to_group
 -- ----------------------------
-
--- ----------------------------
--- Table structure for wx_client_platform
--- ----------------------------
-DROP TABLE IF EXISTS `wx_client_platform`;
-CREATE TABLE `wx_client_platform` (
-  `clientPlatformId` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL DEFAULT '' COMMENT '客户端名称',
-  `nameEn` varchar(50) NOT NULL DEFAULT '',
-  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
-  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
-  PRIMARY KEY (`clientPlatformId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='客户端版本';
-
--- ----------------------------
--- Records of wx_client_platform
--- ----------------------------
-INSERT INTO `wx_client_platform` VALUES ('1', '苹果', 'IOS', '0', '0');
-INSERT INTO `wx_client_platform` VALUES ('2', '安卓', 'Android', '0', '0');
-INSERT INTO `wx_client_platform` VALUES ('3', '其他', 'Others', '0', '0');
 
 -- ----------------------------
 -- Table structure for wx_comment
@@ -7899,11 +7841,19 @@ CREATE TABLE `wx_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of wx_menu
 -- ----------------------------
+INSERT INTO `wx_menu` VALUES ('1', '', 'click', '访问首页', '0', 'home', '', '', '', '', '[]', '0', '0', '0', '2', '1502117263');
+INSERT INTO `wx_menu` VALUES ('2', '', 'click', '用户面板', '0', 'profile', '', '', '', '', '[]', '0', '2', '0', '2', '1502117452');
+INSERT INTO `wx_menu` VALUES ('3', '', 'click', '全屋定制', '0', 'customMade', '', '', '', '', '[]', '0', '1', '0', '2', '1502117612');
+INSERT INTO `wx_menu` VALUES ('4', '', 'click', '客服咨询', '0', 'kefu', '', '', '', '', '[]', '2', '0', '0', '2', '1502117686');
+INSERT INTO `wx_menu` VALUES ('5', '', 'view', '我的订单', '0', '', 'http://wx.tudouyu.cn/', '', '', '', '[]', '2', '1', '0', '2', '1502118027');
+INSERT INTO `wx_menu` VALUES ('6', '', 'click', '个人中心', '0', 'http://wx.tudouyu.cn/User/Index/index', '', '', '', '', '[]', '2', '2', '0', '2', '1502118161');
+INSERT INTO `wx_menu` VALUES ('7', '', 'view', '百度首页', '0', '', 'https://www.baidu.com', '', '', '', '[]', '1', '0', '0', '2', '1502118235');
+INSERT INTO `wx_menu` VALUES ('8', '', 'view', '微信公众平台文档', '0', '', 'https://mp.weixin.qq.com/wiki', '', '', '', '[]', '0', '3', '0', '2', '1502118308');
 
 -- ----------------------------
 -- Table structure for wx_qrcode_list
