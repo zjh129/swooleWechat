@@ -142,7 +142,7 @@ class WxMenu
         ];
         switch ($menuData['menuType']){
             case 'view':
-                $formatMenuData['url'] = $menuData['view'];
+                $formatMenuData['url'] = $menuData['url'];
                 break;
             case 'click':
             case 'scancode_push':
@@ -163,7 +163,7 @@ class WxMenu
                 $formatMenuData['media_id'] = $menuData['media_id'];
                 break;
         }
-        return $menuData;
+        return $formatMenuData;
     }
 
     /**
@@ -302,10 +302,7 @@ class WxMenu
             'isDel' => 0,
             'isConditional' => 0,
         ]);
-        if ($count >= 3){
-            throw new \Exception('自定义菜单最多包括3个一级菜单');
-        }
-        if ($saveData['parentId'] == 0 && $count >= 3){
+        if ($saveData['isConditional'] == 0 && $saveData['parentId'] == 0 && $count >= 3){
             throw new \Exception('自定义菜单最多包括3个一级菜单');
         }elseif ($saveData['parentId'] > 0 && $count >= 5){
             throw new \Exception('一级菜单最多包含5个二级菜单');

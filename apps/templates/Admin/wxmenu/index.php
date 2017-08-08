@@ -18,6 +18,8 @@
                     <div id="nestable-menu">
                         <button type="button" data-action="expand-all" class="btn btn-white btn-sm">全部展开</button>
                         <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">全部收缩</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm synconline"><i class="fa fa-download"></i>同步线上数据</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm pushline"><i class="fa fa-upload"></i>推送到线上</button>
                         <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>添加菜单</button>
                     </div>
                 </div>
@@ -320,6 +322,13 @@
                     var isConditional = data.data.isConditional;
                     $("#form input[name='isConditional'][value=" + isConditional +"]").prop('checked', 'checked');
                     selectIsConditional(data.data.isConditional);
+                    $("#form select[name='tag_id']").val(data.data.matchrule.tag_id);
+                    $("#form select[name='sex']").val(data.data.matchrule.sex);
+                    $("#form select[name='client_platform_type']").val(data.data.matchrule.client_platform_type);
+                    $("#form select[name='language']").val(data.data.matchrule.language);
+                    $("#form input[name='country']").val(data.data.country);
+                    $("#form input[name='province']").val(data.data.province);
+                    $("#form input[name='city']").val(data.data.city);
                 }
             });
         });
@@ -366,6 +375,48 @@
                     }
                 });
             }
+        });
+        //同步线上数据
+        $(".synconline").on('click', function(){
+            $.confirm({
+                title: "同步所有线上数据",
+                content: "此同步过程可能比较耗时",
+                buttons: {
+                    '确定': function () {
+                        $.ajax({
+                            type: "post",
+                            url: "/Admin/WxMenu/syncOnline",
+                            datatype: "json",
+                            success: function (data) {
+                                showToastr(data, true);
+                            }
+                        });
+                    },
+                    '取消': function () {
+                    },
+                }
+            });
+        });
+        //推送到线上
+        $(".pushline").on('click', function(){
+            $.confirm({
+                title: "推送菜单配置到线上",
+                content: "推送本地数据库菜单到线上",
+                buttons: {
+                    '确定': function () {
+                        $.ajax({
+                            type: "post",
+                            url: "/Admin/WxMenu/pushOnline",
+                            datatype: "json",
+                            success: function (data) {
+                                showToastr(data);
+                            }
+                        });
+                    },
+                    '取消': function () {
+                    },
+                }
+            });
         });
     });
 </script>

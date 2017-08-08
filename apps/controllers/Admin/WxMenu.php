@@ -42,6 +42,12 @@ class WxMenu extends Base
         $this->assign('languageList', $this->wxMenuSer->getLanguageList());
         //菜单列表
         $menuList     = $this->wxMenuModel->getMenuList();
+        foreach ($menuList as $k => $menuData){
+            if ($menuData['parentId'] == 0 && $menuData['isConditional'] == 1){
+                $menuData['menuName'] = $menuData['menuName'] . '(个性化菜单)';
+            }
+            $menuList[$k] = $menuData;
+        }
         //树结构菜单列表
         $tree          = new \App\Common\Tree('menuId', 'parentId', 'child');
         $tree->nameKey = 'menuName';
@@ -75,6 +81,40 @@ class WxMenu extends Base
         $optionHtml = '<option value="0">顶级菜单</option>';
         $optionHtml .= $tree->buildOptions();
         $this->http->finish($optionHtml);
+    }
+
+    /**
+     * 同步线上菜单到本地
+     * @return bool
+     */
+    public function syncOnline()
+    {
+        try {
+            $rs = $this->wxMenuSer->syncOnline();
+            if ($rs) {
+                return $this->showMsg('success', '同步成功', '/Admin/WxMenu/index');
+            }
+            throw new \Exception('同步失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 推送本地菜单到线上
+     * @return bool
+     */
+    public function pushOnline()
+    {
+        try {
+            $rs = $this->wxMenuSer->pushOnline();
+            if ($rs) {
+                return $this->showMsg('success', '同步成功', '/Admin/WxMenu/index');
+            }
+            throw new \Exception('同步失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
     }
     /**
      * 获取菜单数据

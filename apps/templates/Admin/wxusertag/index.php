@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" class="btn btn-outline btn-primary btn-sm syncOnline"><i class="fa fa-cloud-download"></i>同步线上数据</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm syncOnline"><i class="fa fa-download"></i>同步线上数据</button>
                         <button type="button" class="btn btn-outline btn-primary btn-sm add"><i class="fa fa-plus"></i>新增</button>
                         <button type="button" class="btn btn-outline btn-primary btn-sm addchild"><i class="fa fa-plus"></i>添加子项</button>
                         <button type="button" class="btn btn-outline btn-primary btn-sm edit"><i class="fa fa-pencil"></i>编辑</button>

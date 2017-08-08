@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-07 23:05:46
+Date: 2017-08-08 23:03:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7841,7 +7841,7 @@ CREATE TABLE `wx_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of wx_menu
@@ -7853,7 +7853,11 @@ INSERT INTO `wx_menu` VALUES ('4', '', 'click', '客服咨询', '0', 'kefu', '',
 INSERT INTO `wx_menu` VALUES ('5', '', 'view', '我的订单', '0', '', 'http://wx.tudouyu.cn/', '', '', '', '[]', '2', '1', '0', '2', '1502118027');
 INSERT INTO `wx_menu` VALUES ('6', '', 'click', '个人中心', '0', 'http://wx.tudouyu.cn/User/Index/index', '', '', '', '', '[]', '2', '2', '0', '2', '1502118161');
 INSERT INTO `wx_menu` VALUES ('7', '', 'view', '百度首页', '0', '', 'https://www.baidu.com', '', '', '', '[]', '1', '0', '0', '2', '1502118235');
-INSERT INTO `wx_menu` VALUES ('8', '', 'view', '微信公众平台文档', '0', '', 'https://mp.weixin.qq.com/wiki', '', '', '', '[]', '0', '3', '0', '2', '1502118308');
+INSERT INTO `wx_menu` VALUES ('8', '', 'view', '微信公众平台文档', '0', '', 'https://mp.weixin.qq.com/wiki', '', '', '', '[]', '1', '1', '0', '2', '1502118308');
+INSERT INTO `wx_menu` VALUES ('9', '', 'click', '男人战场', '1', 'profile', '', '', '', '', '{\"sex\":1}', '0', '3', '0', '2', '1502203798');
+INSERT INTO `wx_menu` VALUES ('10', '', 'click', '女人乐园', '1', 'profile', '', '', '', '', '{\"sex\":2}', '0', '4', '0', '2', '1502203951');
+INSERT INTO `wx_menu` VALUES ('11', '', 'click', '人在江湖', '0', 'jianghu', '', '', '', '', '[]', '9', '5', '0', '2', '1502204289');
+INSERT INTO `wx_menu` VALUES ('12', '', 'click', '云游四海', '0', 'yunyousihai', '', '', '', '', '[]', '10', '6', '0', '2', '1502204310');
 
 -- ----------------------------
 -- Table structure for wx_qrcode_list
