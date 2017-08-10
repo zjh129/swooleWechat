@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-08 23:03:03
+Date: 2017-08-11 00:25:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7851,13 +7851,13 @@ INSERT INTO `wx_menu` VALUES ('2', '', 'click', '用户面板', '0', 'profile', 
 INSERT INTO `wx_menu` VALUES ('3', '', 'click', '全屋定制', '0', 'customMade', '', '', '', '', '[]', '0', '1', '0', '2', '1502117612');
 INSERT INTO `wx_menu` VALUES ('4', '', 'click', '客服咨询', '0', 'kefu', '', '', '', '', '[]', '2', '0', '0', '2', '1502117686');
 INSERT INTO `wx_menu` VALUES ('5', '', 'view', '我的订单', '0', '', 'http://wx.tudouyu.cn/', '', '', '', '[]', '2', '1', '0', '2', '1502118027');
-INSERT INTO `wx_menu` VALUES ('6', '', 'click', '个人中心', '0', 'http://wx.tudouyu.cn/User/Index/index', '', '', '', '', '[]', '2', '2', '0', '2', '1502118161');
+INSERT INTO `wx_menu` VALUES ('6', '', 'click', '个人中心', '0', 'http://wx.tudouyu.cn/User/Index/index', '', '', '', '', '[]', '2', '4', '0', '2', '1502118161');
 INSERT INTO `wx_menu` VALUES ('7', '', 'view', '百度首页', '0', '', 'https://www.baidu.com', '', '', '', '[]', '1', '0', '0', '2', '1502118235');
 INSERT INTO `wx_menu` VALUES ('8', '', 'view', '微信公众平台文档', '0', '', 'https://mp.weixin.qq.com/wiki', '', '', '', '[]', '1', '1', '0', '2', '1502118308');
-INSERT INTO `wx_menu` VALUES ('9', '', 'click', '男人战场', '1', 'profile', '', '', '', '', '{\"sex\":1}', '0', '3', '0', '2', '1502203798');
-INSERT INTO `wx_menu` VALUES ('10', '', 'click', '女人乐园', '1', 'profile', '', '', '', '', '{\"sex\":2}', '0', '4', '0', '2', '1502203951');
-INSERT INTO `wx_menu` VALUES ('11', '', 'click', '人在江湖', '0', 'jianghu', '', '', '', '', '[]', '9', '5', '0', '2', '1502204289');
-INSERT INTO `wx_menu` VALUES ('12', '', 'click', '云游四海', '0', 'yunyousihai', '', '', '', '', '[]', '10', '6', '0', '2', '1502204310');
+INSERT INTO `wx_menu` VALUES ('9', '', 'click', '男人战场', '1', 'profile', '', '', '', '', '{\"sex\":1}', '2', '2', '0', '2', '1502203798');
+INSERT INTO `wx_menu` VALUES ('10', '', 'click', '女人乐园', '1', 'profile', '', '', '', '', '{\"sex\":2}', '2', '3', '0', '2', '1502203951');
+INSERT INTO `wx_menu` VALUES ('11', '', 'click', '人在江湖', '0', 'jianghu', '', '', '', '', '[]', '3', '0', '0', '2', '1502204289');
+INSERT INTO `wx_menu` VALUES ('12', '', 'click', '云游四海', '0', 'yunyousihai', '', '', '', '', '[]', '3', '1', '0', '2', '1502204310');
 
 -- ----------------------------
 -- Table structure for wx_qrcode_list

@@ -43,8 +43,8 @@ class WxMenu extends Base
         //菜单列表
         $menuList     = $this->wxMenuModel->getMenuList();
         foreach ($menuList as $k => $menuData){
-            if ($menuData['parentId'] == 0 && $menuData['isConditional'] == 1){
-                $menuData['menuName'] = $menuData['menuName'] . '(个性化菜单)';
+            if ($menuData['isConditional'] == 1){
+                $menuData['menuName'] = $menuData['menuName'] . '<font color="red">(个性化)</font>';
             }
             $menuList[$k] = $menuData;
         }

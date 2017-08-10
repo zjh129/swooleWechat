@@ -167,13 +167,21 @@ class WxMenu
     }
 
     /**
-     * 获取菜单列表数据
+     * 格式话菜单列表
+     * @param $menuList
      * @return array
      */
-    private function getFormatMenuList()
+    private function getFormatMenuList($menuList)
     {
-        //菜单原始列表
-        $menuList = $this->wxMenuModel->getMenuList();
+        //二维数组排序
+        $orderNumKey = [];
+        $menuIdKey = [];
+        foreach ($menuList as $v){
+            $orderNumKey[] = $v['orderNum'];
+            $menuIdKey[] = $v['menuId'];
+        }
+        array_multisort($orderNumKey, SORT_ASC, $menuIdKey, SORT_ASC, $menuList);
+
         //树结构菜单列表
         $tree          = new \App\Common\Tree('menuId', 'parentId', 'child');
         $tree->nameKey = 'menuName';
@@ -181,8 +189,8 @@ class WxMenu
         $treeList = $tree->deepTree(0);
         $formMenuList = [];
         if ($treeList){
-            $formMenuData = [];
             foreach ($treeList as $menuData){
+                $formMenuData = [];
                 if (isset($menuData['child']) && $menuData['child']){
                     $formMenuData['name'] = $menuData['menuName'];
                     foreach ($menuData['child'] as $childMenuData){
@@ -191,32 +199,69 @@ class WxMenu
                 }else{
                     $formMenuData = $this->getFormatMenuData($menuData);
                 }
-                if ($menuData['isConditional']){
-                    $formMenuData['matchrule'] = $menuData['matchrule'];
-                }
                 $formMenuList[] = $formMenuData;
             }
         }
         return $formMenuList;
+    }
+
+    /**
+     * 获取菜单列表数据
+     * @return array
+     */
+    private function getRuleGroupMenuList()
+    {
+        //菜单原始列表
+        $menuList = $this->wxMenuModel->getMenuList();
+        $normalMenuList = [];
+        $conditionalMenuList = [];
+        //抽离出普通菜单和个性化菜单
+        foreach ($menuList as $menuData){
+            if ($menuData['isConditional'] && $menuData['matchrule']){
+                $conditionalMenuList[] = $menuData;
+            }else{
+                $normalMenuList[] = $menuData;
+            }
+        }
+        //按照不同的个性化规则分成不同的菜单组合，这样避免重复创建菜单
+        $ruleGroupMenuList = [];
+        $ruleGroupMenuList['default']['list'] = $normalMenuList;
+        foreach ($conditionalMenuList as $menuData){
+            $matchRule = $menuData['matchrule'];
+            $key = md5(json_encode($matchRule));
+            //如果为创建个性化，则用普通菜单初始化，并且把个性化菜单放进来
+            if (!array_key_exists($key, $ruleGroupMenuList)){
+                $ruleGroupMenuList[$key]['list'] = $normalMenuList;
+                $ruleGroupMenuList[$key]['matchrule'] = $matchRule;
+            }
+            $ruleGroupMenuList[$key]['list'][] = $menuData;
+        }
+        //格式化
+        foreach ($ruleGroupMenuList as $k => $v){
+            $v['list'] = $this->getFormatMenuList($v['list']);
+            $ruleGroupMenuList[$k] = $v;
+        }
+        return $ruleGroupMenuList;
     }
     /**
      * 推送菜单配置到线上.
      */
     public function pushOnline()
     {
-        $formmatMenuList = $this->getFormatMenuList();
-        if ($formmatMenuList){
-            \Swoole::$php->easywechat->menu->destroy();
-            foreach ($formmatMenuList as $menuData){
-                if (isset($menuData['matchrule']) && $menuData['matchrule']){
-                    $matchRule = $menuData['matchrule'];
-                    unset($menuData['matchrule']);
-                    \Swoole::$php->easywechat->menu->add($menuData, $matchRule);
-                }else{
-                    \Swoole::$php->easywechat->menu->add($menuData);
+        $ruleGroupMenuList = $this->getRuleGroupMenuList();
+        \Swoole::$php->easywechat->menu->destroy();
+
+        if ($ruleGroupMenuList){
+            foreach ($ruleGroupMenuList as $menuData){
+                if (isset($menuData['matchrule']) && $menuData['matchrule']) {
+                    \Swoole::$php->easywechat->menu->add($menuData['list'], $menuData['matchrule']);
+                } else {
+                    \Swoole::$php->easywechat->menu->add($menuData['list']);
                 }
             }
+            return true;
         }
+        throw new \Exception('菜单为空');
     }
 
     /**

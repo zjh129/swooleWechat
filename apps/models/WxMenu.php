@@ -34,7 +34,7 @@ class WxMenu extends \App\Component\BaseModel
     public function getMenuList()
     {
         $menuList = $this->gets([
-            'select' => '`menuId`,`wxMenuId`,`menuType`,`menuName`,`isConditional`,`key`,`url`,`appid`,`pagePath`,`mediaId`,`matchrule`,`parentId`',
+            'select' => '`menuId`,`wxMenuId`,`menuType`,`menuName`,`isConditional`,`key`,`url`,`appid`,`pagePath`,`mediaId`,`matchrule`,`parentId`,`orderNum`',
             'where' => "`isDel`=0",
             'order' => "orderNum ASC,menuId ASC",
         ]);
