@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-11 00:25:36
+Date: 2017-08-14 23:06:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7582,25 +7582,40 @@ CREATE TABLE `sys_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', 'fa fa-dashboard', '0', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', 'fa fa-desktop', '1', '1', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '3', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '8', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', 'fa fa-sitemap', '3', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('5', 'admin', '系统用户组管理', '/Admin/SysUserGroup/index', 'fa fa-group', '3', '1', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('6', 'admin', '系统用户管理', '/Admin/SysUser/Index', 'fa fa-user', '3', '2', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', 'fa fa-gavel', '3', '3', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', 'fa fa-linux', '1', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('9', 'admin', '微信用户', '/Admin/WxUser/index', 'fa fa-user', '0', '2', '0', '2', '1500474574');
+INSERT INTO `sys_menu` VALUES ('9', 'admin', '微信用户', '/Admin/WxUser/index', 'fa fa-user', '0', '7', '0', '2', '1500474574');
 INSERT INTO `sys_menu` VALUES ('10', 'admin', '用户组管理', '/Admin/WxUserGroup/index', 'fa fa-group', '9', '1', '0', '2', '1500474665');
 INSERT INTO `sys_menu` VALUES ('11', 'admin', '微信用户管理', '/Admin/WxUser/index', 'fa fa-user', '9', '2', '0', '2', '1500474711');
 INSERT INTO `sys_menu` VALUES ('12', 'admin', '用户标签管理', '/Admin/WxUserTag/Index', 'fa fa-tag', '9', '0', '0', '2', '1501164293');
-INSERT INTO `sys_menu` VALUES ('13', 'admin', '自定义菜单', '/Admin/WxMenu/index', 'fa fa-list-alt', '0', '1', '0', '2', '1501509672');
-INSERT INTO `sys_menu` VALUES ('14', 'admin', '菜单管理', '/Admin/WxMenu/index', 'fa fa-list-alt', '13', '4', '0', '2', '1501510227');
+INSERT INTO `sys_menu` VALUES ('13', 'admin', '微信功能', '/Admin/WxMenu/index', 'fa fa-list-alt', '0', '5', '0', '2', '1501509672');
+INSERT INTO `sys_menu` VALUES ('14', 'admin', '菜单管理', '/Admin/WxMenu/index', 'fa fa-list-alt', '13', '0', '0', '2', '1501510227');
+INSERT INTO `sys_menu` VALUES ('15', 'admin', '微信账号管理', '/Admin/WxQrcode/index', 'fa fa-weixin', '0', '3', '0', '2', '1502720110');
+INSERT INTO `sys_menu` VALUES ('16', 'admin', '带参数二维码', '/Admin/WxQrcode/index', 'fa fa-qrcode', '25', '1', '0', '2', '1502720171');
+INSERT INTO `sys_menu` VALUES ('17', 'admin', '短链接管理', '/Admin/WxShorturl/index', 'fa fa-link', '15', '0', '0', '2', '1502720280');
+INSERT INTO `sys_menu` VALUES ('18', 'admin', '认证管理', '/Admin/WxVerify/index', 'fa fa-drivers-license', '15', '1', '0', '2', '1502720650');
+INSERT INTO `sys_menu` VALUES ('19', 'admin', '客服管理', '/Admin/WxKfAccount/index', 'fa fa-headphones', '0', '6', '0', '2', '1502721033');
+INSERT INTO `sys_menu` VALUES ('20', 'admin', '客服人员管理', '/Admin/WxKfAccount/index', 'fa fa-headphones', '19', '0', '0', '2', '1502721077');
+INSERT INTO `sys_menu` VALUES ('21', 'admin', '客服消息管理', '/Admin/WxKfMessage', 'fa fa-info', '19', '1', '0', '2', '1502721359');
+INSERT INTO `sys_menu` VALUES ('22', 'admin', '消息管理', '/Admin/WxMsgRec/index', 'fa fa-file-text', '0', '1', '0', '2', '1502721673');
+INSERT INTO `sys_menu` VALUES ('23', 'admin', '微信文本消息管理', '/Admin/WxMsgRecText/index', 'fa fa-text-width', '22', '1', '0', '2', '1502721829');
+INSERT INTO `sys_menu` VALUES ('24', 'admin', '模板消息管理', '/Admin/WxTemplate/index', 'fa fa-copy', '22', '0', '0', '2', '1502722201');
+INSERT INTO `sys_menu` VALUES ('25', 'admin', '二维码管理', '/Admin/WxQrcodeType/index', 'fa fa-qrcode', '0', '4', '0', '2', '1502722275');
+INSERT INTO `sys_menu` VALUES ('26', 'admin', '二维码类别', '/Admin/WxQrcodeType/index', 'fa fa-list', '25', '0', '0', '2', '1502722411');
+INSERT INTO `sys_menu` VALUES ('27', 'admin', '群发管理', '/Admin/WxMass/index', 'fa fa-send', '0', '2', '0', '2', '1502722989');
+INSERT INTO `sys_menu` VALUES ('28', 'admin', '群发消息管理', '/Admin/WxMass/index', 'fa fa-send', '27', '9', '0', '2', '1502723099');
+INSERT INTO `sys_menu` VALUES ('29', 'admin', '图文消息留言管理', '/Admin/WxComment/index', 'fa fa-comment', '27', '10', '0', '2', '1502723176');
 
 -- ----------------------------
 -- Table structure for sys_user
