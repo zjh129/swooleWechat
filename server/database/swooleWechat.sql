@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-14 23:06:51
+Date: 2017-08-15 23:19:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7582,40 +7582,66 @@ CREATE TABLE `sys_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('1', 'admin', '仪表盘', '/Admin/Dashboard/index', 'fa fa-dashboard', '0', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('2', 'admin', '控制面板', '/Admin/Index/index', 'fa fa-desktop', '1', '1', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '8', '0', '0', '0');
+INSERT INTO `sys_menu` VALUES ('3', 'admin', '系统管理', '/Admin/System/index', 'fa fa-cog', '0', '12', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('4', 'admin', '菜单管理', '/Admin/SysMenu/index', 'fa fa-sitemap', '3', '0', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('5', 'admin', '系统用户组管理', '/Admin/SysUserGroup/index', 'fa fa-group', '3', '1', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('6', 'admin', '系统用户管理', '/Admin/SysUser/Index', 'fa fa-user', '3', '2', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('7', 'admin', '权限管理', '/Admin/SysAuthRule/index', 'fa fa-gavel', '3', '3', '0', '0', '0');
 INSERT INTO `sys_menu` VALUES ('8', 'admin', '系统信息', '/Admin/Index/sysinfo', 'fa fa-linux', '1', '0', '0', '0', '0');
-INSERT INTO `sys_menu` VALUES ('9', 'admin', '微信用户', '/Admin/WxUser/index', 'fa fa-user', '0', '7', '0', '2', '1500474574');
+INSERT INTO `sys_menu` VALUES ('9', 'admin', '微信用户', '/Admin/WxUser/index', 'fa fa-user', '0', '1', '0', '2', '1500474574');
 INSERT INTO `sys_menu` VALUES ('10', 'admin', '用户组管理', '/Admin/WxUserGroup/index', 'fa fa-group', '9', '1', '0', '2', '1500474665');
 INSERT INTO `sys_menu` VALUES ('11', 'admin', '微信用户管理', '/Admin/WxUser/index', 'fa fa-user', '9', '2', '0', '2', '1500474711');
 INSERT INTO `sys_menu` VALUES ('12', 'admin', '用户标签管理', '/Admin/WxUserTag/Index', 'fa fa-tag', '9', '0', '0', '2', '1501164293');
-INSERT INTO `sys_menu` VALUES ('13', 'admin', '微信功能', '/Admin/WxMenu/index', 'fa fa-list-alt', '0', '5', '0', '2', '1501509672');
+INSERT INTO `sys_menu` VALUES ('13', 'admin', '微信设置', '/Admin/WxMenu/index', 'fa fa-list-alt', '0', '6', '0', '2', '1501509672');
 INSERT INTO `sys_menu` VALUES ('14', 'admin', '菜单管理', '/Admin/WxMenu/index', 'fa fa-list-alt', '13', '0', '0', '2', '1501510227');
-INSERT INTO `sys_menu` VALUES ('15', 'admin', '微信账号管理', '/Admin/WxQrcode/index', 'fa fa-weixin', '0', '3', '0', '2', '1502720110');
+INSERT INTO `sys_menu` VALUES ('15', 'admin', '欢迎词管理', '/Admin/WxConfig/welcome', 'fa fa-handshake-o', '13', '2', '0', '2', '1502720110');
 INSERT INTO `sys_menu` VALUES ('16', 'admin', '带参数二维码', '/Admin/WxQrcode/index', 'fa fa-qrcode', '25', '1', '0', '2', '1502720171');
-INSERT INTO `sys_menu` VALUES ('17', 'admin', '短链接管理', '/Admin/WxShorturl/index', 'fa fa-link', '15', '0', '0', '2', '1502720280');
-INSERT INTO `sys_menu` VALUES ('18', 'admin', '认证管理', '/Admin/WxVerify/index', 'fa fa-drivers-license', '15', '1', '0', '2', '1502720650');
-INSERT INTO `sys_menu` VALUES ('19', 'admin', '客服管理', '/Admin/WxKfAccount/index', 'fa fa-headphones', '0', '6', '0', '2', '1502721033');
+INSERT INTO `sys_menu` VALUES ('17', 'admin', '短链接管理', '/Admin/WxShorturl/index', 'fa fa-link', '13', '1', '0', '2', '1502720280');
+INSERT INTO `sys_menu` VALUES ('18', 'admin', '认证管理', '/Admin/WxVerify/index', 'fa fa-drivers-license', '13', '3', '0', '2', '1502720650');
+INSERT INTO `sys_menu` VALUES ('19', 'admin', '客服管理', '/Admin/WxKfAccount/index', 'fa fa-headphones', '0', '7', '0', '2', '1502721033');
 INSERT INTO `sys_menu` VALUES ('20', 'admin', '客服人员管理', '/Admin/WxKfAccount/index', 'fa fa-headphones', '19', '0', '0', '2', '1502721077');
 INSERT INTO `sys_menu` VALUES ('21', 'admin', '客服消息管理', '/Admin/WxKfMessage', 'fa fa-info', '19', '1', '0', '2', '1502721359');
-INSERT INTO `sys_menu` VALUES ('22', 'admin', '消息管理', '/Admin/WxMsgRec/index', 'fa fa-file-text', '0', '1', '0', '2', '1502721673');
-INSERT INTO `sys_menu` VALUES ('23', 'admin', '微信文本消息管理', '/Admin/WxMsgRecText/index', 'fa fa-text-width', '22', '1', '0', '2', '1502721829');
+INSERT INTO `sys_menu` VALUES ('22', 'admin', '消息管理', '/Admin/WxMsgRec/index', 'fa fa-file-text', '0', '2', '0', '2', '1502721673');
+INSERT INTO `sys_menu` VALUES ('23', 'admin', '微信接收消息管理', '/Admin/WxMsgRecText/index', 'fa fa-recycle', '0', '10', '0', '2', '1502721829');
 INSERT INTO `sys_menu` VALUES ('24', 'admin', '模板消息管理', '/Admin/WxTemplate/index', 'fa fa-copy', '22', '0', '0', '2', '1502722201');
-INSERT INTO `sys_menu` VALUES ('25', 'admin', '二维码管理', '/Admin/WxQrcodeType/index', 'fa fa-qrcode', '0', '4', '0', '2', '1502722275');
+INSERT INTO `sys_menu` VALUES ('25', 'admin', '二维码管理', '/Admin/WxQrcodeType/index', 'fa fa-qrcode', '0', '5', '0', '2', '1502722275');
 INSERT INTO `sys_menu` VALUES ('26', 'admin', '二维码类别', '/Admin/WxQrcodeType/index', 'fa fa-list', '25', '0', '0', '2', '1502722411');
-INSERT INTO `sys_menu` VALUES ('27', 'admin', '群发管理', '/Admin/WxMass/index', 'fa fa-send', '0', '2', '0', '2', '1502722989');
-INSERT INTO `sys_menu` VALUES ('28', 'admin', '群发消息管理', '/Admin/WxMass/index', 'fa fa-send', '27', '9', '0', '2', '1502723099');
-INSERT INTO `sys_menu` VALUES ('29', 'admin', '图文消息留言管理', '/Admin/WxComment/index', 'fa fa-comment', '27', '10', '0', '2', '1502723176');
+INSERT INTO `sys_menu` VALUES ('27', 'admin', '群发管理', '/Admin/WxMass/index', 'fa fa-send', '0', '4', '0', '2', '1502722989');
+INSERT INTO `sys_menu` VALUES ('28', 'admin', '群发消息管理', '/Admin/WxMass/index', 'fa fa-send', '27', '0', '0', '2', '1502723099');
+INSERT INTO `sys_menu` VALUES ('29', 'admin', '图文消息留言管理', '/Admin/WxComment/index', 'fa fa-comment', '27', '1', '0', '2', '1502723176');
+INSERT INTO `sys_menu` VALUES ('30', 'admin', '素材管理', '/Admin/WxMedia/index', 'fa fa-picture-o', '0', '3', '0', '2', '1502804002');
+INSERT INTO `sys_menu` VALUES ('31', 'admin', '图片素材', '/Admin/WxMediaImage', 'fa fa-picture-o', '30', '0', '0', '2', '1502805401');
+INSERT INTO `sys_menu` VALUES ('32', 'admin', '语音素材', '/Admin/WxMediaVoice/index', 'fa fa-volume-up', '30', '1', '0', '2', '1502805509');
+INSERT INTO `sys_menu` VALUES ('33', 'admin', '视频素材', '/Admin/WxmediaVideo/index', 'fa fa-video-camera', '30', '2', '0', '2', '1502805632');
+INSERT INTO `sys_menu` VALUES ('34', 'admin', '缩略图素材', '/Admin/WxMediaThumb/index', 'fa fa-file-image-o', '30', '3', '0', '2', '1502805797');
+INSERT INTO `sys_menu` VALUES ('35', 'admin', '门店管理', '/Admin/WxPoi/index', 'fa fa-paypal', '0', '8', '0', '2', '1502807088');
+INSERT INTO `sys_menu` VALUES ('36', 'admin', '自动回复管理', '/Admin/WxAutoReply/index', 'fa fa-mail-reply-all', '22', '1', '0', '2', '1502807340');
+INSERT INTO `sys_menu` VALUES ('37', 'admin', '文本消息', '/Admin/WxMsgRecText/index', 'fa fa-text-width', '23', '0', '0', '2', '1502808761');
+INSERT INTO `sys_menu` VALUES ('38', 'admin', '图片消息', '/Admin/WxMsgRecImage/index', 'fa fa-file-image-o', '23', '1', '0', '2', '1502808903');
+INSERT INTO `sys_menu` VALUES ('39', 'admin', '语音消息', '/Admin/WxMsgRecVoice', 'fa fa-file-image-o', '23', '2', '0', '2', '1502809050');
+INSERT INTO `sys_menu` VALUES ('40', 'admin', '视频消息', '/Admin/WxMsgRecVideo/index', 'fa fa-file-image-o', '23', '3', '0', '2', '1502809091');
+INSERT INTO `sys_menu` VALUES ('41', 'admin', '短视频消息', '/Admin/WxMsgRecShortvideo/index', 'fa fa-file-image-o', '23', '4', '0', '2', '1502809135');
+INSERT INTO `sys_menu` VALUES ('42', 'admin', '链接消息', '/Admin/WxMsgRecLink/index', 'fa fa-file-image-o', '23', '5', '0', '2', '1502809194');
+INSERT INTO `sys_menu` VALUES ('43', 'admin', '地理位置消息', '/Admin/WxMsgRecLocation/index', 'fa fa-file-image-o', '23', '6', '0', '2', '1502809230');
+INSERT INTO `sys_menu` VALUES ('44', 'admin', '微信事件推送消息', '/Admin/WxMsgRecEvent/index', 'fa fa-file-image-o', '0', '11', '0', '2', '1502809315');
+INSERT INTO `sys_menu` VALUES ('45', 'admin', '扫码推送消息', '/Admin/WxMsgRecScan', 'fa fa-file-image-o', '44', '0', '0', '2', '1502809361');
+INSERT INTO `sys_menu` VALUES ('46', 'admin', '关注推送消息', '/Admin/WxMsgRecSubscribe/index', 'fa fa-file-image-o', '44', '1', '0', '2', '1502809398');
+INSERT INTO `sys_menu` VALUES ('47', 'admin', '菜单事件推送消息', '/Admin/WxMsgRecMenu/index', 'fa fa-file-image-o', '44', '2', '0', '2', '1502809427');
+INSERT INTO `sys_menu` VALUES ('48', 'admin', '地理位置上报推送消息', '/Admin/WxMsgRecLocation/index', 'fa fa-file-image-o', '44', '3', '0', '2', '1502809721');
+INSERT INTO `sys_menu` VALUES ('49', 'admin', '模板消息推送消息', '/Admin/WxMsgRecTemplate/index', 'fa fa-file-image-o', '44', '4', '0', '2', '1502809772');
+INSERT INTO `sys_menu` VALUES ('50', 'admin', '群发结果推送消息', '/Admin/WxMsgRecMass/index', 'fa fa-file-image-o', '44', '5', '0', '2', '1502809933');
+INSERT INTO `sys_menu` VALUES ('51', 'admin', '数据统计', '/Admin/WxTj/index', 'fa fa-area-chart', '0', '9', '0', '2', '1502810016');
+INSERT INTO `sys_menu` VALUES ('52', 'admin', '用户分析', '/Admin/WxtjUser/index', 'fa fa-area-chart', '51', '13', '0', '2', '1502810122');
+INSERT INTO `sys_menu` VALUES ('53', 'admin', '图文分析', '/Admin/WxtjArticle/index', 'fa fa-area-chart', '51', '14', '0', '2', '1502810181');
+INSERT INTO `sys_menu` VALUES ('54', 'admin', '消息统计', '/Admin/WxtjUpstreammsg/index', '', '51', '15', '0', '2', '1502810226');
+INSERT INTO `sys_menu` VALUES ('55', 'admin', '接口分析', '/Admin/WxtjInterface/index', '', '51', '16', '0', '2', '1502810278');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -7687,6 +7713,29 @@ CREATE TABLE `sys_user_to_group` (
 
 -- ----------------------------
 -- Records of sys_user_to_group
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wx_autoreply
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_autoreply`;
+CREATE TABLE `wx_autoreply` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增序号',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '自动回复名称',
+  `keywords` tinytext NOT NULL COMMENT '关键字列表',
+  `startTime` int(10) NOT NULL DEFAULT '0' COMMENT '时间',
+  `endTime` int(10) NOT NULL DEFAULT '0' COMMENT '时间',
+  `mediaType` varchar(10) NOT NULL DEFAULT '' COMMENT '媒体类型',
+  `mediaId` int(10) NOT NULL DEFAULT '0' COMMENT '本地微信素材库ID',
+  `content` text NOT NULL COMMENT '回复文本内容',
+  `orderNum` int(10) NOT NULL DEFAULT '0' COMMENT '排序',
+  `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='自动回复表';
+
+-- ----------------------------
+-- Records of wx_autoreply
 -- ----------------------------
 
 -- ----------------------------
