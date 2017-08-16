@@ -127,6 +127,7 @@ class WxMenu
      */
     public function syncOnline()
     {
+        return true;
     }
 
     /**

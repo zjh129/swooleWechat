@@ -18,7 +18,7 @@
                     <div id="nestable-menu">
                         <button type="button" data-action="expand-all" class="btn btn-white btn-sm">全部展开</button>
                         <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">全部收缩</button>
-                        <button type="button" class="btn btn-outline btn-primary btn-sm synconline"><i class="fa fa-download"></i>同步线上数据</button>
+                        <!--<button type="button" class="btn btn-outline btn-primary btn-sm synconline"><i class="fa fa-download"></i>同步线上数据</button>-->
                         <button type="button" class="btn btn-outline btn-primary btn-sm pushline"><i class="fa fa-upload"></i>推送到线上</button>
                         <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>添加菜单</button>
                     </div>

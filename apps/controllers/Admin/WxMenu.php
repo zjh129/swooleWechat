@@ -24,7 +24,7 @@ class WxMenu extends Base
     public function __construct(\Swoole $swoole)
     {
         parent::__construct($swoole);
-        $this->addBreadcrumb('自定义菜单', '/Admin/WxMenu/index');
+        $this->addBreadcrumb('菜单管理', '/Admin/WxMenu/index');
         $this->wxMenuModel = model('WxMenu');
         $this->wxMenuSer = new WxMenuService();
     }

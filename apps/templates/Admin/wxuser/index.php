@@ -420,7 +420,7 @@
                 }
             });
         });
-        //用户授权表单验证
+        //用户标签设置表单验证
         $("#tagform").validate({
             submitHandler: function(form) {
                 var checkedNode = $("#jstree").jstree('get_checked');
