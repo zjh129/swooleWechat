@@ -40,7 +40,7 @@
             </div>
         </div>
         <!-- 用户分组编辑model -->
-        <div class="modal inmodal" id="groupModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal inmodal" id="keyModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
@@ -49,19 +49,21 @@
                     </div>
                     <div class="modal-body">
                         <form role="setKeyform" id="setKeyform" action="/Admin/WxTemplate/setKey">
-                            <input type="hidden" name="ids[]" id="ids" value="0">
+                            <input type="hidden" name="id" id="id" value="0">
                             <div class="form-group">
                                 <label>使用场景</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="groupId" id="groupId" required>
+                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="usekey" id="usekey">
                                     <option value="">不设置</option>
-
+                                    <?php foreach ($keyList as $k => $v){?>
+                                    <option value="<?php echo $k;?>"><?php echo $v;?></option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="javascript:$('#groupform').submit();">保存</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:$('#setKeyform').submit();">保存</button>
                     </div>
                 </div>
             </div>
@@ -135,7 +137,7 @@
             },
             columns:[
                 {data: "templateId",title:"序号",orderable:false,searchable:true,},
-                {data: "key",title:"使用KEY",orderable:false,searchable:true,},
+                {data: "usekey",title:"使用KEY",orderable:false,searchable:true,},
                 {data: "keyName",title:"使用场景",orderable:false,searchable:true,},
                 {data: "title",title: "模板标题",orderable:false, searchable:true,},
                 {data: "wxTemplateId",title: "微信模板ID",orderable:false, searchable:true,},
@@ -147,21 +149,14 @@
                     data:null, title: "操作", orderable:false, searchable:false,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs setGroup" data-toggle="modal" data-target="#groupModal"><i class="fa fa-group"></i>设置分组</button>';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs setRemark" data-toggle="modal" data-target="#remarkModal"><i class="fa fa-pencil"></i>设置备注</button>';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs setTag" data-toggle="modal" data-target="#tagModal"><i class="fa fa-pencil"></i>设置标签</button>';
-                        if (cellData.isBlock == 1){
-                            html += '<button type="button" setBlock=0 class="btn btn-outline btn-success btn-xs setBlock"><i class="fa fa-lock"></i>解锁</button>';
-                        }else{
-                            html += '<button type="button" setBlock=1 class="btn btn-outline btn-danger btn-xs setBlock"><i class="fa fa-unlock"></i>拉黑</button>';
-                        }
+                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs setGroup" data-toggle="modal" data-target="#keyModal"><i class="fa fa-group"></i>设置使用场景</button>';
                         $(td).html(html);
                     }
                 },
             ],
         });
         //设置分组
-        var groupValidator = $("#groupform").validate({
+        var groupValidator = $("#setKeyform").validate({
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     type:'post',
@@ -169,7 +164,7 @@
                     success:function(data) {
                         showToastr(data);
                         if (data.status == 'success'){
-                            $('#groupModal').modal('hide');
+                            $('#keyModal').modal('hide');
                             table.ajax.reload();
                         }
                     }
@@ -187,9 +182,8 @@
                 },
                 datatype: "json",
                 success: function (data) {
-                    $("#groupform input[name='ids[]']").val(data.data.userId);
-                    //载入用户组选项
-                    loadGroupIdOption(data.data.groupId);
+                    $("#setKeyform input[name='id']").val(data.data.templateId);
+                    $("#setKeyform select[name='usekey']").val(data.data.usekey);
                 }
             });
         });

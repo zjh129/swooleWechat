@@ -11,10 +11,10 @@ class WxTemplate
      */
     private $wxTemplateModel;
     /**
-     * 模板关键词key列表
+     * 模板关键词usekey列表
      * @var array
      */
-    private $keyList = [
+    private $usekeyList = [
         'score_change' => '积分变更提醒',
         'order_submit' => '订单提交提醒',
         'order_cancel' => '订单取消提醒',
@@ -35,36 +35,38 @@ class WxTemplate
      */
     public function getKeyList()
     {
-        return $this->keyList;
+        return $this->usekeyList;
     }
     /**
      * 获取模板关键词名称
-     * @param string $key
+     * @param string $usekey
      */
-    public function getKeyName($key = '')
+    public function getKeyName($usekey = '')
     {
-        return isset($this->keyList[$key]) ? $this->keyList[$key] : '';
+        return isset($this->usekeyList[$usekey]) ? $this->usekeyList[$usekey] : '';
     }
 
     /**
-     * 设置KEY
+     * 设置使用场景
      * @param $templateId
-     * @param $key
+     * @param $usekey
      */
-    public function setKey($templateId, $key)
+    public function setKey($templateId, $usekey)
     {
         $templateData = $this->wxTemplateModel->getone(['templateId'=>$templateId, 'isDel'=>0]);
-        if (empty($templateD)){
+        if (empty($templateData)){
             throw new \Exception('模板数据不存在');
         }
-        if ($templateData['key'] == $key){
-            throw new \Exception('该模板已设置该KEY');
+        if ($usekey){
+            if ($templateData['usekey'] == $usekey){
+                throw new \Exception('该模板已设置该场景');
+            }
+            $findOther = $this->wxTemplateModel->getone(['usekey'=>$usekey,'isDel'=>0]);
+            if ($findOther){
+                throw new \Exception('该场景已被占用');
+            }
         }
-        $findOther = $this->wxTemplateModel->getone(['key' => $key, 'isDel'=> 0]);
-        if ($findOther){
-            throw new \Exception('该KEY已被占用');
-        }
-        return $this->wxTemplateModel->set($templateId, ['key'=>$key]);
+        return $this->wxTemplateModel->set($templateId, ['usekey'=>$usekey]);
     }
     /**
      * 同步拉取线上模板消息列表
@@ -140,12 +142,12 @@ class WxTemplate
 
     /**
      * 发送模板消息
-     * @param $key
+     * @param $usekey
      * @param array $templateData
      */
-    public function send($key, $defineData = [])
+    public function send($usekey, $defineData = [])
     {
-        $templateData = $this->wxTemplateModel->getone(['key'=>$key, 'isDel'=>0, 'select'=>'templateId,wxTemplateId']);
+        $templateData = $this->wxTemplateModel->getone(['usekey'=>$usekey, 'isDel'=>0, 'select'=>'templateId,wxTemplateId']);
         if (empty($templateD)){
             throw new \Exception('模板数据不存在');
         }

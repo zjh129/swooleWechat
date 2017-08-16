@@ -48,7 +48,7 @@ class WxTemplate extends Base
         //绘制计数器。
         $draw = (int) ($this->request->request['draw'] ?? 0);
         $where = [
-            'select' => '`templateId`,`key`,`wxTemplateId`,`title`,`primaryIndustry`,`deputyIndustry`,`content`,`example`',
+            'select' => '`templateId`,`usekey`,`wxTemplateId`,`title`,`primaryIndustry`,`deputyIndustry`,`content`,`example`',
         ];
         //开始位置
         $start = (int) ($this->request->request['start'] ?? 0);
@@ -65,7 +65,7 @@ class WxTemplate extends Base
         if ($order){
             switch ($order[0]['column']){
                 case 1:
-                    $where['order'] = '`key` '.$order[0]['dir'];
+                    $where['order'] = '`usekey` '.$order[0]['dir'];
                     break;
                 default:
                     $where['order'] = '`templateId` DESC';
@@ -82,7 +82,10 @@ class WxTemplate extends Base
         $list = $this->wxTemplateModel->getList($where);
         if ($list){
             foreach ($list as $k => $v){
-                $v['keyName'] = $this->wxTemplateSer->getKeyName($v['key']);
+                $v['DT_RowId'] = $v['templateId'];
+                $v['keyName'] = $this->wxTemplateSer->getKeyName($v['usekey']);
+                $v['content'] = str_replace(PHP_EOL, "<br>", $v['content']);
+                $v['example'] = str_replace(PHP_EOL, "<br>", $v['example']);
                 $list[$k] = $v;
             }
         }
@@ -92,6 +95,23 @@ class WxTemplate extends Base
         return $data;
     }
 
+    /**
+     * 获取模板消息数据
+     * @return bool
+     */
+    public function get()
+    {
+        try {
+            $id   = $this->request->get['id'] ?? 0;
+            $data = $this->wxTemplateModel->getone([
+                'where'=>"`templateId`=$id",
+                'select' => "`templateId`,`usekey`,`wxTemplateId`",
+            ]);
+            return $this->showMsg('success', '获取成功', '', $data);
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
     /**
      * 同步线上模板
      * @return bool
@@ -108,8 +128,24 @@ class WxTemplate extends Base
             return $this->showMsg('error', $e->getMessage());
         }
     }
+
+    /**
+     * 设置使用场景
+     * @return bool
+     */
     public function setKey()
     {
+        try {
+            $id   = $this->request->post['id'] ?? 0;
+            $usekey = $this->request->post['usekey'] ?? '';
 
+            $rs = $this->wxTemplateSer->setKey($id, $usekey);
+            if ($rs){
+                return $this->showMsg('success', '设置使用场景成功');
+            }
+            throw new \Exception('设置使用场景失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
     }
 }

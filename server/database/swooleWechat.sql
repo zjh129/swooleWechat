@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-15 23:19:02
+Date: 2017-08-17 00:17:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7992,6 +7992,7 @@ CREATE TABLE `wx_shorturl` (
 DROP TABLE IF EXISTS `wx_template`;
 CREATE TABLE `wx_template` (
   `templateId` int(10) NOT NULL AUTO_INCREMENT COMMENT '模板自增序号',
+  `usekey` varchar(20) NOT NULL DEFAULT '' COMMENT '模板关键词key，用来设置使用场景',
   `wxTemplateId` varchar(50) NOT NULL DEFAULT '' COMMENT '微信模板ID',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '模板标题',
   `primaryIndustry` varchar(30) NOT NULL DEFAULT '' COMMENT '模板所属行业的一级行业',
@@ -8003,11 +8004,12 @@ CREATE TABLE `wx_template` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`templateId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模板列表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='模板列表';
 
 -- ----------------------------
 -- Records of wx_template
 -- ----------------------------
+INSERT INTO `wx_template` VALUES ('1', 'order_submit', 'gKPaIQQXCspgsAH-g4i9t6V8r8ac2x2wo1LrVL1YbpI', '订单消息', '', '', '{{title.DATA}}\n订单状态：{{status.DATA}}\n订单编号：{{orderNo.DATA}}\n订单名称：{{name.DATA}}\n订单金额：{{money.DATA}}\n{{remark.DATA}}', '', '[]', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for wx_user
