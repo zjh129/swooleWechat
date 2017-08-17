@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-17 00:17:04
+Date: 2017-08-17 23:50:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7582,7 +7582,7 @@ CREATE TABLE `sys_menu` (
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`menuId`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -7617,9 +7617,9 @@ INSERT INTO `sys_menu` VALUES ('27', 'admin', '群发管理', '/Admin/WxMass/ind
 INSERT INTO `sys_menu` VALUES ('28', 'admin', '群发消息管理', '/Admin/WxMass/index', 'fa fa-send', '27', '0', '0', '2', '1502723099');
 INSERT INTO `sys_menu` VALUES ('29', 'admin', '图文消息留言管理', '/Admin/WxComment/index', 'fa fa-comment', '27', '1', '0', '2', '1502723176');
 INSERT INTO `sys_menu` VALUES ('30', 'admin', '素材管理', '/Admin/WxMedia/index', 'fa fa-picture-o', '0', '3', '0', '2', '1502804002');
-INSERT INTO `sys_menu` VALUES ('31', 'admin', '图片素材', '/Admin/WxMediaImage', 'fa fa-picture-o', '30', '0', '0', '2', '1502805401');
+INSERT INTO `sys_menu` VALUES ('31', 'admin', '图片素材', '/Admin/WxMediaImage/index', 'fa fa-picture-o', '30', '0', '0', '2', '1502805401');
 INSERT INTO `sys_menu` VALUES ('32', 'admin', '语音素材', '/Admin/WxMediaVoice/index', 'fa fa-volume-up', '30', '1', '0', '2', '1502805509');
-INSERT INTO `sys_menu` VALUES ('33', 'admin', '视频素材', '/Admin/WxmediaVideo/index', 'fa fa-video-camera', '30', '2', '0', '2', '1502805632');
+INSERT INTO `sys_menu` VALUES ('33', 'admin', '视频素材', '/Admin/WxMediaVideo/index', 'fa fa-video-camera', '30', '2', '0', '2', '1502805632');
 INSERT INTO `sys_menu` VALUES ('34', 'admin', '缩略图素材', '/Admin/WxMediaThumb/index', 'fa fa-file-image-o', '30', '3', '0', '2', '1502805797');
 INSERT INTO `sys_menu` VALUES ('35', 'admin', '门店管理', '/Admin/WxPoi/index', 'fa fa-paypal', '0', '8', '0', '2', '1502807088');
 INSERT INTO `sys_menu` VALUES ('36', 'admin', '自动回复管理', '/Admin/WxAutoReply/index', 'fa fa-mail-reply-all', '22', '1', '0', '2', '1502807340');
@@ -7638,10 +7638,11 @@ INSERT INTO `sys_menu` VALUES ('48', 'admin', '地理位置上报推送消息', 
 INSERT INTO `sys_menu` VALUES ('49', 'admin', '模板消息推送消息', '/Admin/WxMsgRecTemplate/index', 'fa fa-file-image-o', '44', '4', '0', '2', '1502809772');
 INSERT INTO `sys_menu` VALUES ('50', 'admin', '群发结果推送消息', '/Admin/WxMsgRecMass/index', 'fa fa-file-image-o', '44', '5', '0', '2', '1502809933');
 INSERT INTO `sys_menu` VALUES ('51', 'admin', '数据统计', '/Admin/WxTj/index', 'fa fa-area-chart', '0', '9', '0', '2', '1502810016');
-INSERT INTO `sys_menu` VALUES ('52', 'admin', '用户分析', '/Admin/WxtjUser/index', 'fa fa-area-chart', '51', '13', '0', '2', '1502810122');
-INSERT INTO `sys_menu` VALUES ('53', 'admin', '图文分析', '/Admin/WxtjArticle/index', 'fa fa-area-chart', '51', '14', '0', '2', '1502810181');
-INSERT INTO `sys_menu` VALUES ('54', 'admin', '消息统计', '/Admin/WxtjUpstreammsg/index', '', '51', '15', '0', '2', '1502810226');
-INSERT INTO `sys_menu` VALUES ('55', 'admin', '接口分析', '/Admin/WxtjInterface/index', '', '51', '16', '0', '2', '1502810278');
+INSERT INTO `sys_menu` VALUES ('52', 'admin', '用户分析', '/Admin/WxtjUser/index', 'fa fa-area-chart', '51', '0', '0', '2', '1502810122');
+INSERT INTO `sys_menu` VALUES ('53', 'admin', '图文分析', '/Admin/WxtjArticle/index', 'fa fa-area-chart', '51', '1', '0', '2', '1502810181');
+INSERT INTO `sys_menu` VALUES ('54', 'admin', '消息统计', '/Admin/WxtjUpstreammsg/index', '', '51', '2', '0', '2', '1502810226');
+INSERT INTO `sys_menu` VALUES ('55', 'admin', '接口分析', '/Admin/WxtjInterface/index', '', '51', '3', '0', '2', '1502810278');
+INSERT INTO `sys_menu` VALUES ('56', 'admin', '图文素材管理', '/Admin/WxMediaArticle/index', 'fa fa-outdent', '30', '4', '0', '2', '1502984883');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -8000,16 +8001,18 @@ CREATE TABLE `wx_template` (
   `content` text NOT NULL COMMENT '模板内容',
   `example` text NOT NULL COMMENT '模板示例',
   `keywords` text NOT NULL COMMENT '关键字列表',
+  `statusIs` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`templateId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='模板列表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='模板列表';
 
 -- ----------------------------
 -- Records of wx_template
 -- ----------------------------
-INSERT INTO `wx_template` VALUES ('1', 'order_submit', 'gKPaIQQXCspgsAH-g4i9t6V8r8ac2x2wo1LrVL1YbpI', '订单消息', '', '', '{{title.DATA}}\n订单状态：{{status.DATA}}\n订单编号：{{orderNo.DATA}}\n订单名称：{{name.DATA}}\n订单金额：{{money.DATA}}\n{{remark.DATA}}', '', '[]', '0', '0', '0');
+INSERT INTO `wx_template` VALUES ('1', 'order_submit', 'gKPaIQQXCspgsAH-g4i9t6V8r8ac2x2wo1LrVL1YbpI', '订单消息', '', '', '{{title.DATA}}\n订单状态：{{status.DATA}}\n订单编号：{{orderNo.DATA}}\n订单名称：{{name.DATA}}\n订单金额：{{money.DATA}}\n{{remark.DATA}}', '', '[]', '1', '1', '0', '0');
+INSERT INTO `wx_template` VALUES ('2', '', 'DePVQRbtxxeNq0s9l-8J0s76SfonKrkJI6EQJ7n74bc', '积分变更提醒', '', '', '{{title.DATA}}\n积分状态：{{status.DATA}}\n积分数量：{{orderNo.DATA}}\n积分总数：{{name.DATA}}\n{{remark.DATA}}', '', '[]', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for wx_user

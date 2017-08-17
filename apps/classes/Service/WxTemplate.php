@@ -95,6 +95,8 @@ class WxTemplate
                     if ($findData){
                         $this->wxTemplateModel->set($findData['templateId'], $data);
                     }else{
+                        $data['addUserId'] = (new \Swoole\Auth())->getUid();
+                        $data['addTime'] = time();
                         $this->wxTemplateModel->put($data);
                     }
                 }
@@ -122,8 +124,29 @@ class WxTemplate
      */
     public function add($shortId)
     {
+        $rs = \Swoole::$php->easywechat->notice->getIndustry();
+        $rs = $rs->toArray();
+        print_r($rs);
+        return true;
+
         \Swoole::$php->easywechat->notice->addTemplate($shortId);
         $this->syncOnline();
+        return true;
+    }
+
+    /**
+     * 设置模板启用状态
+     * @param $templateId
+     * @param $status
+     * @throws \Exception
+     */
+    public function setStatus($templateId, $status)
+    {
+        $templateData = $this->wxTemplateModel->getone(['templateId'=>$templateId, 'select'=>'templateId,wxTemplateId']);
+        if (empty($templateData)){
+            throw new \Exception('模板数据不存在');
+        }
+        return $this->wxTemplateModel->set($templateData['templateId'], ['statusIs'=>$status]);
     }
 
     /**
@@ -133,11 +156,12 @@ class WxTemplate
     public function del($templateId)
     {
         $templateData = $this->wxTemplateModel->getone(['templateId'=>$templateId, 'isDel'=>0, 'select'=>'templateId,wxTemplateId']);
-        if (empty($templateD)){
+        if (empty($templateData)){
             throw new \Exception('模板数据不存在');
         }
         \Swoole::$php->easywechat->notice->deletePrivateTemplate($templateData['wxTemplateId']);
         $this->wxTemplateModel->set($templateData['templateId'], ['isDel'=>1]);
+        return true;
     }
 
     /**
@@ -147,9 +171,12 @@ class WxTemplate
      */
     public function send($usekey, $defineData = [])
     {
-        $templateData = $this->wxTemplateModel->getone(['usekey'=>$usekey, 'isDel'=>0, 'select'=>'templateId,wxTemplateId']);
-        if (empty($templateD)){
+        $templateData = $this->wxTemplateModel->getone(['usekey'=>$usekey, 'isDel'=>0, 'select'=>'templateId,wxTemplateId,statusIs']);
+        if (empty($templateData)){
             throw new \Exception('模板数据不存在');
+        }
+        if ($templateData['statusIs'] != 1){
+            throw new \Exception('该模板消息已禁用');
         }
         if (empty($defineData['touser'])){
             throw new \Exception('请设置接收模板消息用户');

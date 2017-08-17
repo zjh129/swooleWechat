@@ -48,13 +48,14 @@ class WxTemplate extends Base
         //绘制计数器。
         $draw = (int) ($this->request->request['draw'] ?? 0);
         $where = [
-            'select' => '`templateId`,`usekey`,`wxTemplateId`,`title`,`primaryIndustry`,`deputyIndustry`,`content`,`example`',
+            'select' => '`templateId`,`usekey`,`wxTemplateId`,`title`,`primaryIndustry`,`deputyIndustry`,`content`,`example`,`statusIs`',
         ];
         //开始位置
         $start = (int) ($this->request->request['start'] ?? 0);
         //长度
         $length = (int) ($this->request->request['length'] ?? 10);
         $where['limit'] = $start . ',' . $length;
+        $where['where'] = 'isDel=0';
         //搜索关键字
         $keyword = $this->request->request['search']['value'] ?? '';
         if ($keyword){
@@ -130,6 +131,23 @@ class WxTemplate extends Base
     }
 
     /**
+     * 新增模板
+     * @return bool
+     */
+    public function add()
+    {
+        try {
+            $templateIdShort              = $this->request->post['templateIdShort'];
+            $rs = $this->wxTemplateSer->add($templateIdShort);
+            if ($rs) {
+                return $this->showMsg('success', '新增模板成功', '/Admin/WxTemplate/index');
+            }
+            throw new \Exception('新增模板失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+    /**
      * 设置使用场景
      * @return bool
      */
@@ -144,6 +162,49 @@ class WxTemplate extends Base
                 return $this->showMsg('success', '设置使用场景成功');
             }
             throw new \Exception('设置使用场景失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 设置模板启用状态
+     * @return bool
+     */
+    public function setStatus()
+    {
+        try {
+            $id   = $this->request->post['id'] ?? 0;
+            $status = (int) $this->request->post['status'] ?? 0;
+            $actName = $status == 1 ? '启用' : '禁用';
+            if (!$id){
+                throw new \Exception('请指定要'.$actName.'的模板');
+            }
+            $rs = $this->wxTemplateSer->setStatus($id, $status);
+            if ($rs){
+                return $this->showMsg('success', $actName . '成功');
+            }
+            throw new \Exception($actName . '失败');
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 删除
+     * @return bool
+     */
+    public function del()
+    {
+        try {
+            $id   = $this->request->post['id'] ?? 0;
+            if (!$id){
+                throw new \Exception('请指定要删除的模板消息');
+            }
+            if ($this->wxTemplateSer->del($id)){
+                return $this->showMsg('success', '删除成功');
+            }
+            throw new \Exception('删除失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }
