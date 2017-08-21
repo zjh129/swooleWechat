@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-17 23:50:39
+Date: 2017-08-21 23:23:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7827,13 +7827,16 @@ CREATE TABLE `wx_media` (
   `mediaType` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '媒体文件类型',
   `wxMediaId` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '媒体文件上传后，获取标识',
   `title` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '素材的标题',
-  `introduction` tinytext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '素材的描述',
+  `intro` tinytext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '素材的描述',
   `uploadPath` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '上传文件地址',
+  `remoteUrl` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '远程访问地址',
   `wxRemoteUrl` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '微信端图片访问地址',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `uploadTime` int(10) NOT NULL DEFAULT '0' COMMENT '最后上传时间',
   `addUserId` int(10) NOT NULL DEFAULT '0' COMMENT '添加用户ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
-  PRIMARY KEY (`mediaId`)
+  PRIMARY KEY (`mediaId`),
+  KEY `index1` (`mediaType`,`isDel`,`addTime`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------

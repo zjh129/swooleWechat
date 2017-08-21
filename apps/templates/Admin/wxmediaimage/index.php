@@ -20,9 +20,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" class="btn btn-outline btn-primary btn-sm syncOnline"><i class="fa fa-download"></i>同步线上模板</button>
-                        <!--<button type="button" class="btn btn-outline btn-primary btn-sm setIndustry" data-toggle="modal" data-target="#setIndustryModal"><i class="fa fa-gear"></i>设置行业</button>
-                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i>添加模板</button>-->
+                        <button type="button" class="btn btn-outline btn-primary btn-sm syncOnline"><i class="fa fa-download"></i>同步线上素材</button>
+                        <button type="button" class="btn btn-outline btn-primary btn-sm add" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i>添加图片素材</button>
                     </div>
                 </div>
             </div>
@@ -30,7 +29,7 @@
                 <div class="col-lg-12">
                     <div class="ibox ">
                         <div class="ibox-title">
-                            <h5>用户列表</h5>
+                            <h5>素材列表</h5>
                         </div>
                         <div class="ibox-content">
                             <table class="table table-striped table-bordered table-hover" id="tableBox">
@@ -41,48 +40,28 @@
                 </div>
             </div>
         </div>
-        <!-- 用户分组编辑model -->
-        <div class="modal inmodal" id="keyModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content animated fadeIn">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">设置使用场景</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form role="setKeyform" id="setKeyform" action="/Admin/WxTemplate/setKey">
-                            <input type="hidden" name="id" id="id" value="0">
-                            <div class="form-group">
-                                <label>使用场景</label>
-                                <select class="form-control m-b __web-inspector-hide-shortcut__" name="usekey" id="usekey">
-                                    <option value="">不设置</option>
-                                    <?php foreach ($keyList as $k => $v){?>
-                                    <option value="<?php echo $k;?>"><?php echo $v;?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="javascript:$('#setKeyform').submit();">保存</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!--模板新增-->
         <div class="modal inmodal" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content animated fadeIn">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">模板新增</h4>
+                        <h4 class="modal-title">新增图片素材</h4>
                     </div>
                     <div class="modal-body">
                         <form role="form" id="addform" action="/Admin/WxTemplate/add">
                             <div class="form-group">
-                                <label for="templateIdShort">模板库中模板的编号</label>
-                                <input type="text" placeholder="输入模板库中模板的编号" class="form-control" name="templateIdShort" id="templateIdShort" required>
+                                <label for="title">素材标题</label>
+                                <input type="text" placeholder="输入素材标题" class="form-control" name="title" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="intro">素材说明</label>
+                                <textarea class="form-control" name="intro" id="intro" placeholder="输入用户备注"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>素材类别</label>
+                                <div class="i-checks"><label><input type="radio" name="mediaType" value="image" checked> <i></i>永久素材</label></div>
+                                <div class="i-checks"><label><input type="radio" name="mediaType" value="imagetemp" > <i></i> 临时素材</label></div>
                             </div>
                         </form>
                     </div>
@@ -157,21 +136,26 @@
             serverSide: true,
             //数据来源（包括处理分页，排序，过滤） ，即url，action，接口，等等
             ajax: {
-                url : '/Admin/WxTemplate/getPageList',
+                url : '/Admin/WxMediaImage/getPageList',
                 type : 'POST',
             },
             columns:[
-                {data: "templateId",title:"序号",orderable:false,searchable:true,},
-                {data: "usekey",title:"使用KEY",orderable:false,searchable:true,},
-                {data: "keyName",title:"使用场景",orderable:false,searchable:true,},
-                {data: "title",title: "模板标题",orderable:false, searchable:true,},
-                {data: "wxTemplateId",title: "微信模板ID",orderable:false, searchable:true,},
-                {data: "primaryIndustry",title: "一级行业",orderable:false, searchable:true,},
-                {data: "deputyIndustry",title: "二级行业",orderable:false, searchable:true,},
-                {data: "content",title: "模板内容",orderable:false, searchable:false,},
-                {data: "example",title: "模板示例",orderable:false, searchable:false,},
+                {data: "mediaId",title:"序号",orderable:false,searchable:true,},
+                {data: "wxMediaId",title:"微信端素材ID",orderable:false,searchable:true,},
+                {data: "title",title: "图片标题",orderable:false, searchable:true,},
+                {data: "introduction",title: "图片说明",orderable:false, searchable:true,},
                 {
-                    data: 'statusIs',title: "状态",orderable:false, searchable:true,
+                    data: "remoteUrl",title: "预览",orderable:false, searchable:true,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        var html = '';
+                        if (cellData){
+                            html = '<img src="' + cellData + '" class="img-circle img-sm">';
+                        }
+                        $(td).html(html);
+                    }
+                },
+                {
+                    data: 'isDel',title: "状态",orderable:false, searchable:true,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
                         if (cellData == 1){

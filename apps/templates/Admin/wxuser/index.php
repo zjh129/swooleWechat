@@ -76,7 +76,7 @@
                         <form role="form" id="remarkform" action="/Admin/WxUser/setRemark">
                             <input type="hidden" name="id" id="id" value="0">
                             <div class="form-group">
-                                <label for="password">备注内容</label>
+                                <label for="remark">备注内容</label>
                                 <textarea class="form-control" name="remark" id="remark" placeholder="输入用户备注"></textarea>
                             </div>
                         </form>
