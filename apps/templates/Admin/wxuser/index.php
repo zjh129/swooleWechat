@@ -124,9 +124,6 @@
 <script src="//static.tudouyu.cn/jsTree/3.3.4/jstree.min.js"></script>
 <!-- dataTables -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
-<!-- Password meter -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pwstrength/pwstrength-bootstrap.min.js"></script>
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pwstrength/zxcvbn.js"></script>
 <script>
     //载入树结构select的option的html
     function loadGroupIdOption() {
@@ -143,19 +140,6 @@
         });
     }
     $(document).ready(function(){
-        //密码强度
-        var options1 = {};
-        options1.ui = {
-            container: "#form",
-            showVerdictsInsideProgressBar: true,
-            viewports: {
-                progress: ".pwstrength_viewport_progress"
-            }
-        };
-        options1.common = {
-            debug: false
-        };
-        $('#password').pwstrength(options1);
         //列表
         var table = $('#tableBox').DataTable({
             language: {

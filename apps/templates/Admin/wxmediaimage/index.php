@@ -6,6 +6,8 @@
 <link href="//static.tudouyu.cn/jsTree/3.3.4/themes/default/style.min.css" rel="stylesheet">
 <!-- dataTables-->
 <link rel="stylesheet" type="text/css" href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/dataTables/datatables.min.css">
+<!--dropzone-->
+<link href="//static.tudouyu.cn/jasny/3.1.3/css/jasny-bootstrap.min.css" rel="stylesheet">
 <!-- 头部结束部分代码 -->
 <?php echo $this->fetch('common/header-end.php'); ?>
 <body>
@@ -49,19 +51,31 @@
                         <h4 class="modal-title">新增图片素材</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="addform" action="/Admin/WxTemplate/add">
+                        <form role="form" id="addform" action="/Admin/WxMediaImage/add" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="title">素材标题</label>
                                 <input type="text" placeholder="输入素材标题" class="form-control" name="title" id="title" required>
                             </div>
                             <div class="form-group">
                                 <label for="intro">素材说明</label>
-                                <textarea class="form-control" name="intro" id="intro" placeholder="输入用户备注"></textarea>
+                                <textarea class="form-control" name="intro" id="intro" placeholder="输入用户备注" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label>素材类别</label>
-                                <div class="i-checks"><label><input type="radio" name="mediaType" value="image" checked> <i></i>永久素材</label></div>
-                                <div class="i-checks"><label><input type="radio" name="mediaType" value="imagetemp" > <i></i> 临时素材</label></div>
+                                <div class="i-checks"><label><input type="radio" name="mediaType" value="image" checked required> <i></i>永久素材</label></div>
+                                <div class="i-checks"><label><input type="radio" name="mediaType" value="imagetemp" required> <i></i> 临时素材</label></div>
+                            </div>
+                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                <div class="form-control" data-trigger="fileinput">
+                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                    <span class="fileinput-filename"></span>
+                                </div>
+                                <span class="input-group-addon btn btn-default btn-file">
+                                    <span class="fileinput-new">选择图片</span>
+                                    <span class="fileinput-exists">重选图片</span>
+                                    <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" name="imagefile"/>
+                                </span>
+                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">删除</a>
                             </div>
                         </form>
                     </div>
@@ -86,24 +100,12 @@
 <script src="//static.tudouyu.cn/jsTree/3.3.4/jstree.min.js"></script>
 <!-- dataTables -->
 <script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
-<!-- Password meter -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pwstrength/pwstrength-bootstrap.min.js"></script>
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pwstrength/zxcvbn.js"></script>
+<!-- Jasny -->
+<script src="//static.tudouyu.cn/jasny/3.1.3/js/jasny-bootstrap.min.js"></script>
+
 <script>
+
     $(document).ready(function(){
-        //密码强度
-        var options1 = {};
-        options1.ui = {
-            container: "#form",
-            showVerdictsInsideProgressBar: true,
-            viewports: {
-                progress: ".pwstrength_viewport_progress"
-            }
-        };
-        options1.common = {
-            debug: false
-        };
-        $('#password').pwstrength(options1);
         //列表
         var table = $('#tableBox').DataTable({
             language: {
@@ -182,8 +184,18 @@
                 },
             ],
         });
-        //新增模板
+        //新增素材
         var validator = $("#addform").validate({
+            rules:{
+                imagefile:{
+                    required:true,
+                }
+            },
+            messages:{
+                imagefile:{
+                    required:'请选择图片文件',
+                }
+            },
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     type:'post',

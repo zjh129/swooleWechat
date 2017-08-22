@@ -43,7 +43,7 @@ class WxMediaImage extends Base
         //绘制计数器。
         $draw = (int) ($this->request->request['draw'] ?? 0);
         $where = [
-            'select' => '`mediaId`,`wxMediaId`,`title`,`introduction`,`uploadPath`,`wxRemoteUrl`',
+            'select' => '`mediaId`,`wxMediaId`,`title`,`intro`,`uploadPath`,`wxRemoteUrl`',
         ];
         //开始位置
         $start = (int) ($this->request->request['start'] ?? 0);
@@ -86,5 +86,13 @@ class WxMediaImage extends Base
         $data['recordsFiltered'] = count($list);
 
         return $data;
+    }
+
+    /**
+     * 新增图片素材
+     */
+    public function add()
+    {
+
     }
 }
