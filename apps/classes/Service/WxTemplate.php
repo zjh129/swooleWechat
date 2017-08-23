@@ -124,11 +124,6 @@ class WxTemplate
      */
     public function add($shortId)
     {
-        $rs = \Swoole::$php->easywechat->notice->getIndustry();
-        $rs = $rs->toArray();
-        print_r($rs);
-        return true;
-
         \Swoole::$php->easywechat->notice->addTemplate($shortId);
         $this->syncOnline();
         return true;

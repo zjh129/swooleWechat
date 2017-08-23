@@ -73,7 +73,7 @@
                                 <span class="input-group-addon btn btn-default btn-file">
                                     <span class="fileinput-new">选择图片</span>
                                     <span class="fileinput-exists">重选图片</span>
-                                    <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" name="imagefile"/>
+                                    <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" name="mediafile"/>
                                 </span>
                                 <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">删除</a>
                             </div>

@@ -93,6 +93,28 @@ class WxMediaImage extends Base
      */
     public function add()
     {
-
+        try {
+            $this->upload->base_dir = '/tmp/uploads/';
+            $this->upload->sub_dir = 'images';
+            $uprs = $this->upload->save('mediafile', null, ['gif','jpeg','jpg','png']);
+            if (!$uprs){
+                throw new Exception($this->upload->error_msg());
+            }
+            $baseUrl = $this->upload->base_dir . $this->upload->sub_dir;
+            $uprs['baseUrl'] = $baseUrl;
+            $pathinfo = pathinfo($uprs['url']);
+            $uprs['basename'] = $pathinfo['basename'];
+            $uprs['filename'] = $pathinfo['filename'];
+            print_r($uprs);
+            return true;
+            /*$templateIdShort              = $this->request->post['templateIdShort'];
+            $rs = $this->wxTemplateSer->add($templateIdShort);
+            if ($rs) {
+                return $this->showMsg('success', '新增模板成功', '/Admin/WxTemplate/index');
+            }
+            throw new \Exception('新增模板失败');*/
+        } catch (\Exception $e) {
+            return $this->showMsg('error', $e->getMessage());
+        }
     }
 }
