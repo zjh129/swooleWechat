@@ -5,7 +5,8 @@
     "flow/jsonpath": "> 0.2",
     "php-amqplib/php-amqplib": "2.6.*",
     "overtrue/wechat": "~3.1",
-    "endroid/qrcode": "^2.2"
+    "endroid/qrcode": "^2.2",
+    "qiniu/php-sdk": "^7.1"
   },
   "repositories": {
     "packagist": {
