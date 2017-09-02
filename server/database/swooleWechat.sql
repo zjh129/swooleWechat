@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80001
 File Encoding         : 65001
 
-Date: 2017-08-21 23:23:39
+Date: 2017-08-24 00:12:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7828,7 +7828,7 @@ CREATE TABLE `wx_media` (
   `wxMediaId` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '媒体文件上传后，获取标识',
   `title` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '素材的标题',
   `intro` tinytext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '素材的描述',
-  `uploadPath` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '上传文件地址',
+  `fileName` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件名',
   `remoteUrl` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '远程访问地址',
   `wxRemoteUrl` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '微信端图片访问地址',
   `isDel` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
