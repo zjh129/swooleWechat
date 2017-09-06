@@ -60,6 +60,10 @@ class AdminBaseController extends BaseController
         $this->menuHtml = (new \App\Service\SysMenu())->buildAdminTreeMenu(strtolower($this->currentUrl));
         //添加面包屑
         $this->addBreadcrumb('首页','/Admin/Index/index');
+
+        //添加系统配置
+        $siteconf = \Swoole::$php->config['site'];
+        $this->assign('siteconf', $siteconf);
     }
     /**
      * 设置网页seo标题.

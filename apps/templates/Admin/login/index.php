@@ -1,5 +1,5 @@
 <?php echo $this->fetch('common/header-start.php');?>
-<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="<?php echo $siteconf['cdnurl']?>/AdminInspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
 <?php echo $this->fetch('common/header-end.php');?>
 
 <body class="gray-bg">
@@ -50,7 +50,7 @@
 
 <?php echo $this->fetch('common/footer-start.php');?>
 <!-- iCheck -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/iCheck/icheck.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.i-checks').iCheck({

@@ -1,9 +1,9 @@
 <!-- 头部开始部分代码 -->
 <?php echo $this->fetch('common/header-start.php'); ?>
 <!-- Gritter -->
-<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+<link href="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
 <!-- jsTree -->
-<link href="//static.tudouyu.cn/jsTree/3.3.4/themes/default/style.min.css" rel="stylesheet">
+<link href="<?php echo $siteconf['cdnurl']?>/jsTree/dist/themes/default/style.min.css" rel="stylesheet">
 <!-- 头部结束部分代码 -->
 <?php echo $this->fetch('common/header-end.php'); ?>
 <body>
@@ -106,9 +106,9 @@
 <!-- 文档页脚代码开始 -->
 <?php echo $this->fetch('common/footer-start.php'); ?>
 <!-- Nestable List -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/nestable/jquery.nestable.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/nestable/jquery.nestable.js"></script>
 <!-- jsTree -->
-<script src="//static.tudouyu.cn/jsTree/3.3.4/jstree.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/jsTree/dist/jstree.min.js"></script>
 <script>
     $(document).ready(function(){
         //模块选择

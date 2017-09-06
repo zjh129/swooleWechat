@@ -1,15 +1,15 @@
 <!-- Mainly scripts -->
-<script src="//static.tudouyu.cn/jQuery/jquery-3.2.1.min.js"></script>
-<script src="//static.tudouyu.cn/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <?php if (strpos($this->currentUrl, '/admin/login') === false){?>
 <!-- Custom and plugin javascript -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/inspinia.js"></script>
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/pace/pace.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/inspinia.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/pace/pace.min.js"></script>
 <?php }?>
 <!-- Toastr script -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/toastr/toastr.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/toastr/toastr.min.js"></script>
 <script>
     toastr.options = {
         "positionClass": "toast-top-center",
@@ -38,9 +38,9 @@
     }
 </script>
 <!-- Jquery Validate -->
-<script src="//static.tudouyu.cn/validate/1.16.0/jquery.validate.min.js"></script>
-<script src="//static.tudouyu.cn/validate/1.16.0/messages_zh.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/jquery-validation/src/localization/messages_zh.js"></script>
 <!-- Jquery Form -->
-<script src="//static.tudouyu.cn/jquery-form/3.51.0/jquery.form.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/jquery-form/dist/jquery.form.min.js"></script>
 <!-- Jquery-confirm -->
-<script src="//static.tudouyu.cn/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/jquery-confirm2/dist/jquery-confirm.min.js"></script>

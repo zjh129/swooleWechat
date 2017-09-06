@@ -1,10 +1,10 @@
 <!-- 头部开始部分代码 -->
 <?php echo $this->fetch('common/header-start.php');?>
 <!-- Toastr style -->
-<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+<link href="<?php echo $siteconf['cdnurl']?>/AdminInspinia/css/plugins/toastr/toastr.min.css" rel="stylesheet">
 
 <!-- Gritter -->
-<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+<link href="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
 <!-- 头部结束部分代码 -->
 <?php echo $this->fetch('common/header-end.php');?>
 <body>

@@ -1,11 +1,11 @@
 <!-- 头部开始部分代码 -->
 <?php echo $this->fetch('common/header-start.php'); ?>
 <!-- Gritter -->
-<link href="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+<link href="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
 <!-- jsTree -->
-<link href="//static.tudouyu.cn/jsTree/3.3.4/themes/default/style.min.css" rel="stylesheet">
+<link href="<?php echo $siteconf['cdnurl']?>/jsTree/dist/themes/default/style.min.css" rel="stylesheet">
 <!-- dataTables-->
-<link rel="stylesheet" type="text/css" href="//static.tudouyu.cn/AdminInspinia/2.7.1/css/plugins/dataTables/datatables.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $siteconf['cdnurl']?>/AdminInspinia/css/plugins/dataTables/datatables.min.css">
 <!-- 头部结束部分代码 -->
 <?php echo $this->fetch('common/header-end.php'); ?>
 <body>
@@ -121,9 +121,9 @@
 <!-- 文档页脚代码开始 -->
 <?php echo $this->fetch('common/footer-start.php'); ?>
 <!-- jsTree -->
-<script src="//static.tudouyu.cn/jsTree/3.3.4/jstree.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/jsTree/dist/jstree.min.js"></script>
 <!-- dataTables -->
-<script src="//static.tudouyu.cn/AdminInspinia/2.7.1/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
 <script>
     //载入树结构select的option的html
     function loadGroupIdOption() {
