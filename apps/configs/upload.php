@@ -1,9 +1,7 @@
 <?php
-$conFilePath = __DIR__ . DS . ENV . DS . 'upload.php';
-if (file_exists($conFilePath)){
-    $upload = require_once $conFilePath;
-}else{
-    $upload = [];
-}
+$upload = [
+    'base_dir' => '/tmp/uploads',
+    'base_url' => '/tmp/uploads',
+];
 
 return $upload;

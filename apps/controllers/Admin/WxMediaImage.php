@@ -13,6 +13,10 @@ class WxMediaImage extends Base
      */
     private $wxMediaModel;
     /**
+     * @var \App\Service\WxMedia
+     */
+    private $wxMediaSer;
+    /**
      * 构造函数
      * @param \Swoole $swoole
      */
@@ -21,6 +25,7 @@ class WxMediaImage extends Base
         parent::__construct($swoole);
         $this->addBreadcrumb('素材管理', '/Admin/WxMediaImage/index');
         $this->wxMediaModel = model('WxMedia');
+        $this->wxMediaSer = new \App\Service\WxMedia();
     }
 
     /**
@@ -94,25 +99,27 @@ class WxMediaImage extends Base
     public function add()
     {
         try {
-            $this->upload->base_dir = '/tmp/uploads/';
             $this->upload->sub_dir = 'images';
             $uprs = $this->upload->save('mediafile', null, ['gif','jpeg','jpg','png']);
             if (!$uprs){
-                throw new Exception($this->upload->error_msg());
+                throw new \Exception($this->upload->error_msg());
             }
-            $baseUrl = $this->upload->base_dir . $this->upload->sub_dir;
-            $uprs['baseUrl'] = $baseUrl;
             $pathinfo = pathinfo($uprs['url']);
-            $uprs['basename'] = $pathinfo['basename'];
-            $uprs['filename'] = $pathinfo['filename'];
-            print_r($uprs);
-            return true;
-            /*$templateIdShort              = $this->request->post['templateIdShort'];
-            $rs = $this->wxTemplateSer->add($templateIdShort);
+            $imgData = [
+                'title' => $this->request->post['title'] ?? '',
+                'intro' => $this->request->post['intro'] ?? '',
+                'mediaType' => $this->request->post['mediaType'] ?? '',
+                'fileName' => $pathinfo['basename'],
+                'filePath' => $uprs['url'],
+                'fileSize' => $uprs['size'],
+                'fileExt' => $uprs['type'],
+            ];
+            print_r($imgData);
+            $rs = $this->wxMediaSer->save($imgData);
             if ($rs) {
-                return $this->showMsg('success', '新增模板成功', '/Admin/WxTemplate/index');
+                return $this->showMsg('success', '新增图片素材成功', '/Admin/WxTemplate/index');
             }
-            throw new \Exception('新增模板失败');*/
+            throw new \Exception('新增图片素材失败');
         } catch (\Exception $e) {
             return $this->showMsg('error', $e->getMessage());
         }
