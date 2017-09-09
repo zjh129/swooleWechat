@@ -64,6 +64,7 @@ class AdminBaseController extends BaseController
         //添加系统配置
         $siteconf = \Swoole::$php->config['site'];
         $this->assign('siteconf', $siteconf);
+        \Swoole::$php->config['qiniu'];
     }
     /**
      * 设置网页seo标题.

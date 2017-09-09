@@ -48,7 +48,7 @@ class WxMediaImage extends Base
         //绘制计数器。
         $draw = (int) ($this->request->request['draw'] ?? 0);
         $where = [
-            'select' => '`mediaId`,`wxMediaId`,`title`,`intro`,`uploadPath`,`wxRemoteUrl`',
+            'select' => '`mediaId`,`wxMediaId`,`title`,`intro`,`filePath`,`remoteUrl`,`wxRemoteUrl`,`statusIs`',
         ];
         //开始位置
         $start = (int) ($this->request->request['start'] ?? 0);
@@ -83,7 +83,7 @@ class WxMediaImage extends Base
         $list = $this->wxMediaModel->getList($where);
         if ($list){
             foreach ($list as $k => $v){
-                $v['DT_RowId'] = $v['templateId'];
+                $v['DT_RowId'] = $v['mediaId'];
                 $list[$k] = $v;
             }
         }
@@ -114,8 +114,7 @@ class WxMediaImage extends Base
                 'fileSize' => $uprs['size'],
                 'fileExt' => $uprs['type'],
             ];
-            print_r($imgData);
-            $rs = $this->wxMediaSer->save($imgData);
+            $rs = $this->wxMediaSer->saveNormal($imgData);
             if ($rs) {
                 return $this->showMsg('success', '新增图片素材成功', '/Admin/WxTemplate/index');
             }

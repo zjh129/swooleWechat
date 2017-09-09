@@ -3,7 +3,7 @@
 <!-- Gritter -->
 <link href="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
 <!-- jsTree -->
-<link href="<?php echo $siteconf['cdnurl']?>/jsTree/dist/themes/default/style.min.css" rel="stylesheet">
+<link href="<?php echo $siteconf['cdnurl']?>/jstree/dist/themes/default/style.min.css" rel="stylesheet">
 <!-- dataTables-->
 <link rel="stylesheet" type="text/css" href="<?php echo $siteconf['cdnurl']?>/AdminInspinia/css/plugins/dataTables/datatables.min.css">
 <!--jasny-->
@@ -97,7 +97,7 @@
 <!-- 文档页脚代码开始 -->
 <?php echo $this->fetch('common/footer-start.php'); ?>
 <!-- jsTree -->
-<script src="<?php echo $siteconf['cdnurl']?>/jsTree/dist/jstree.min.js"></script>
+<script src="<?php echo $siteconf['cdnurl']?>/jstree/dist/jstree.min.js"></script>
 <!-- dataTables -->
 <script src="<?php echo $siteconf['cdnurl']?>/AdminInspinia/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
 <!-- Jasny -->
@@ -145,7 +145,7 @@
                 {data: "mediaId",title:"序号",orderable:false,searchable:true,},
                 {data: "wxMediaId",title:"微信端素材ID",orderable:false,searchable:true,},
                 {data: "title",title: "图片标题",orderable:false, searchable:true,},
-                {data: "introduction",title: "图片说明",orderable:false, searchable:true,},
+                {data: "intro",title: "图片说明",orderable:false, searchable:true,},
                 {
                     data: "remoteUrl",title: "预览",orderable:false, searchable:true,
                     createdCell: function (td, cellData, rowData, row, col) {
@@ -157,7 +157,7 @@
                     }
                 },
                 {
-                    data: 'isDel',title: "状态",orderable:false, searchable:true,
+                    data: 'statusIs',title: "状态",orderable:false, searchable:true,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
                         if (cellData == 1){
