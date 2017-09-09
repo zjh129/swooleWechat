@@ -120,6 +120,25 @@ class WxMediaImage extends Base
             }
             throw new \Exception('新增图片素材失败');
         } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+            return $this->showMsg('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * 同步线上数据
+     */
+    public function syncOnline()
+    {
+        try {
+            $wxMediaSer = new \App\Service\WxMedia();
+            $rs = $wxMediaSer->syncOnline('image');
+            if ($rs) {
+                return $this->showMsg('success', '同步成功', '/Admin/WxMedia/index');
+            }
+            throw new \Exception('同步失败');
+        } catch (\Exception $e) {
+            //throw new \Exception($e->getMessage());
             return $this->showMsg('error', $e->getMessage());
         }
     }

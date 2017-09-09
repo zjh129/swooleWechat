@@ -172,8 +172,6 @@
                     data:null, title: "操作", orderable:false, searchable:false,
                     createdCell: function (td, cellData, rowData, row, col) {
                         var html = '';
-                        html += '<button type="button" class="btn btn-outline btn-primary btn-xs setGroup" data-toggle="modal" data-target="#keyModal"><i class="fa fa-group"></i>设置使用场景</button>';
-                        //html += '<button type="button" class="btn btn-outline btn-danger btn-xs del"><i class="fa fa-trash"></i>删除</button>';
                         if (cellData.statusIs == 1){
                             html += '<button type="button" setStatus=0 class="btn btn-outline btn-warning btn-xs setStatus"><i class="fa fa-unlock"></i>禁用</button>';
                         }else{
@@ -251,7 +249,7 @@
                     '确定': function () {
                         $.ajax({
                             type: "post",
-                            url: "/Admin/WxTemplate/syncOnline",
+                            url: "/Admin/WxMediaImage/syncOnline",
                             datatype: "json",
                             success: function (data) {
                                 showToastr(data);

@@ -43,8 +43,9 @@ class WxMedia
                         "pathFormat" => '/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
                         "allowFiles" => ['gif','jpeg','jpg','png'],
                     ]);
+
                     $result = $uploader->upByPath($formData['filePath']);
-                    if ($result['state'] != 'SUCCESS'){
+                    if (isset($result['state']) || $result['state'] != 'SUCCESS'){
                         throw new \Exception($result['state']);
                     }
                     $formData['remoteUrl'] = $result['url'];
@@ -80,5 +81,38 @@ class WxMedia
     public function saveArticle()
     {
 
+    }
+
+    /**
+     * 检查线上数据
+     * @param $mediaType
+     */
+    private function checkOnlineMedia($mediaType)
+    {
+
+    }
+    /**
+     * 同步图文素材列表
+     * @param $type
+     */
+    public function syncOnline($mediaType)
+    {
+        if (!in_array($mediaType, $this->mediaTypeList)){
+            throw new \Exception('无效的素材类别');
+        }
+        if (strpos($mediaType, 'temp') !== false){
+            throw new \Exception('暂不支持临时素材的同步');
+        }
+        $offset = 0;
+        $stepCount = 10;
+        $count = 0;
+        do{
+            $lists = \Swoole::$php->easywechat->material->lists($mediaType, $offset, $stepCount);
+            //$lists = $lists->toArray();
+            $count = isset($lists['item_count']) && $lists['item_count'] ? (int) $lists['item_count'] : 0;
+            $offset += $count;
+        }while($count != 0 && $count == $stepCount);
+
+        return true;
     }
 }
